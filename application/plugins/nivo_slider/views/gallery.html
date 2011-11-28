@@ -1,0 +1,22 @@
+<div class="title">{{ G.gallery_title }}</div>
+<div class="author">{{ G.user_name }}</div>
+<div class="content theme-default">
+  <div class="ribbon"></div>
+  <div id="slider" class="nivoSlider">
+  {% for IMG in G.images %}
+    <img src="{{ IMG.url }}"/>
+  {% endfor %}
+  </div>
+</div>
+<div class="description">
+  <div class="text">
+    {{ G.gallery_description|raw }}
+  </div>  
+</div>
+<script type="text/javascript">
+  $(window).load(function() {
+    $('#slider').nivoSlider({
+      pauseTime: {{ pauseTime }} * 1000
+    });
+  });
+</script>

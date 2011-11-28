@@ -1,0 +1,534 @@
+@CHARSET "UTF-8";
+@import url("paging.css");
+/*** основные классы и теги ***/
+* {
+  color:#393939;
+  font-family:Arial, Verdana, Geneva, Helvetica, sans-serif;
+  font-size:17px;
+  line-height:20px;
+  margin:0px;
+  padding:0px;
+}
+html {
+ height: 100%;
+}
+body {
+ background:url(../images/bg-head.jpg) repeat-x;
+ height: 100%;
+ min-height:100%;
+ overflow-y:scroll;
+}
+#wrapper {
+  height: auto !important;
+  min-height:100%;
+  height: 100%;
+  margin:0px auto;
+  overflow:hidden;
+  width:100%;
+}
+article,aside,figcaption,figure,footer,header,hgroup,nav,section {
+  display:block;
+}
+.fl-left {
+  display:block;
+  float:left;
+  position:relative;
+}
+.fl-right {
+  display:block;
+  float:right;
+  position:relative;
+}
+.cleared {
+  clear:both;
+  display:block;
+  font-size:1px;
+  height:1px;
+  line-height:1px;
+  margin:0px;
+  padding:0px;
+}
+a {
+  outline:none;
+}
+.red {
+  color:#d60000;
+}
+/*** end основные классы и теги ***/
+
+
+
+/*** шапка ***/
+header {
+  display:block;
+  height:95px;
+  margin:0px auto;
+  overflow:hidden;
+  padding:5px 0px 0px 0px;
+  width:1130px;
+}
+section {
+  display:block;
+  margin:0px auto;
+  width:1130px;
+}
+#logotype{
+  background:url(../images/logotype.jpg) no-repeat;
+  display:block;
+  height:1px;
+  margin:15px 0px 0px 20px;
+  overflow:hidden;
+  padding:71px 0px 0px 194px;
+}
+menu#menu li{
+  border-left:#d2d2d2 solid 1px;
+  display:block;
+  float:left;
+  height:94px;
+  padding:0px;
+  position:relative;
+}
+menu#menu .current{
+  background:url(../images/corner.jpg) center top no-repeat;
+}
+menu#menu .current a {
+  opacity:0.5;
+}
+#gallery {
+  background:url(../images/exhibitions.jpg) 44px 38px no-repeat;
+  display:block;
+  height:1px;
+  overflow:hidden;
+  padding:94px 50px 0px;
+}
+#photographers {
+  background:url(../images/photographers.jpg) 44px 38px no-repeat;
+  display:block;
+  height:1px;
+  overflow:hidden;
+  padding:94px 70px 0px;
+}
+#fast-login {
+  height:82px!important;
+  font-size:12px;
+  line-height:14px;
+  padding:12px 0px 0px 50px!important;
+  width:184px;
+}
+#fast-login a {
+  font-size:12px;
+}
+#fast-login input[type=text], #fast-login input[type=password] {
+  border:#bbbbbb solid 1px;
+  display:block;
+  font-size:12px;
+  padding:0px;
+  width:150px;
+}
+#fast-login input[type=submit] {
+  border:#bbbbbb solid 1px;
+  font-size:12px!important;
+  margin:-37px 0 0 102px;
+  padding:0px 20px;
+  position:absolute;
+  text-decoration:underline;
+  z-index:10;
+}
+#fast-login input[type=checkbox] {
+  position:relative;
+  top:1px;
+}
+#fast-login .pass label {
+  font-size:12px;
+}
+#fast-login #user_password {
+  margin-top:5px;
+}
+#fast-login a#registration {
+  font-size:12px;
+  top:-77px;
+  left:193px;
+  position:relative;
+}
+#fast-login a#remind-password {
+  font-size:12px;
+  top:-69px;;
+  left:193px;
+  position:relative;
+}
+/*** end шапка ***/
+
+/*** футер ***/
+#footer_guarantor {
+  clear:both;
+  display:block;
+  height:80px;
+}
+footer {
+  background-color:#e3e3e3;
+  display:block;
+  height:70px;
+  margin:-71px auto;
+  padding:1px 0px 0px;
+}
+.copyright {
+  display:block;
+  font-size:12px;
+  margin:0px auto;
+  padding:10px;
+  width:1110px;
+}
+.copyright a {
+  font-size:12px;
+}
+/*** end футер ***/
+
+/*** регистрация ***/
+#reg-form input[type=text], #reg-form input[type=password]{
+  border:#bbbbbb solid 1px;
+  display:block; 
+  font-size:20px;
+  padding:5px;
+  width:400px;
+}
+#reg-form .label {
+  margin-top:20px;
+}
+/*** end регистрация ***/
+
+/*** личный кабинет ***/
+#pcabinet-error {
+  color:#c63828;
+}
+#pcabinet-message {
+  color:#006600;
+}
+/*** end личный кабинет ***/
+
+/*** главная ***/
+#main-gallery {
+  display:block;
+  height:440px;
+  margin:20px 0px 40px;
+}
+#main-gallery .title {
+  background:#1d1d1d;
+  color:#fff;
+  display:block;
+  float:left;
+  font-size:24px;
+  margin:20px 0px 0px 0px;
+  padding:5px 10px;
+  position:relative;
+  z-index:10;
+}
+#main-gallery .author {
+  background:#1d1d1d;
+  color:#fff;
+  clear:both;
+  display:block;
+  float:left;
+  font-size:14px;
+  padding:2px 10px;
+  position:relative;
+  z-index:10;
+}
+#main-gallery .content {
+  clear:both;
+  display:block;
+  height:440px;
+  line-height:16px;
+  margin-bottom:-440px;
+  overflow:hidden;
+  position:relative;
+  top:-74px;
+  width:1130px;
+  z-index:1;
+}
+#main-gallery .content #slider {
+  margin-top:-100px;
+}
+#main-gallery .description {
+  background:url(../images/uzor1.png) repeat;
+  display:block;
+  float:right;
+  height:400px;
+  padding:20px;
+  position:relative;
+  top:-74px;
+  width:250px;
+  z-index:10;
+}
+#main-gallery .description .text {
+  background-color:#fff;
+  color:#2f2f2f;
+  font-size:14px;
+  padding:10px;
+  border-radius:5px;  
+  -webkit-border-radius:5px;  
+  -moz-border-radius:5px;  
+}
+#main-gallery  .nivo-controlNav {
+  top: 500px;
+}
+#main-gallery .nivo-prevNav, #main-gallery .nivo-nextNav {
+  display:none!important;
+}
+.theme-default .nivo-controlNav {
+  left:7%!important;
+}
+#main-exhibitions {
+  background:url(../images/bg-head1.jpg) repeat-x;
+  display:block;
+  height:31px;
+  padding-top:4px;
+  width:1130px;
+}
+#main-exhibitions a{
+  background:url(../images/exhibitions.png) no-repeat;
+  display:block;
+  margin:0px 0px 0px 20px;
+  height:23px;
+  width:144px;
+}
+.gallery-list {
+  clear:both;
+  display:block;
+  position:relative;
+  top:10px;
+}
+.main-gallery {
+  display:block;
+  float:left;
+  margin:8px;
+  position:relative;
+  top:0px;
+  width:266px;  
+}
+.main-gallery .gal {
+  display:block;
+  line-height:1px;
+  overflow:hidden;
+  padding:0px;
+}
+.main-gallery .description {
+  background:url(../images/pixel.png) repeat;
+  bottom:0px;
+  padding:5px;
+  position:absolute;
+  width:256px;
+}
+.main-gallery .author {
+  color:#fff;
+  font-size:12px;
+  text-decoration:underline;
+}
+.main-gallery .author:hover {
+  text-decoration:none;
+}
+.main-gallery .title {
+  color:#fff;
+  font-size:18px;
+}
+.main-gallery .count {
+  color:#fff;
+  font-size:12px;
+  text-decoration:none;
+}
+/*** end главная ***/
+
+
+/*** выставки - галереи ***/
+.gallery-page {
+  padding-top:10px;
+}
+.gallery-column {
+  display:block;
+  float:left;
+  margin:8px;
+  position:relative;
+  top:0px;
+  width:266px;  
+}
+.gallery .gal {
+  display:block;
+  line-height:1px;
+  overflow:hidden;
+  padding:0px;
+}
+.gallery .description {
+  background-color:#e6e6e6;
+  color:#7c7c7c;
+  font-size:12px;
+  margin-bottom:16px;
+  padding:10px 5px 10px 20px;
+  width:241px;
+}
+.gallery .description * {
+  color:#7c7c7c;
+  font-size:12px;
+}
+.gallery .title {
+  color:#3e3e3e!important;
+  font-size:18px;
+  text-decoration:underline;
+}
+.gallery .title:hover {
+  text-decoration:none;
+}
+.gallery .author {
+  color:#7c7c7c;
+  font-size:12px;
+  text-decoration:underline;
+}
+.gallery .author:hover {
+  text-decoration:none;
+}
+.gallery .count {
+  color:#7c7c7c;
+  font-size:12px;
+  text-decoration:none;
+}
+.gallery .text {
+  padding:10px 0px 0px 0px;
+}
+#gallery-author {
+  background:url(../images/bg-head1.jpg) 0px 30px repeat-x;
+  display:block;
+  font-size:20px;
+  font-weight:100;
+  height:36px;
+  margin-top:20px;
+  padding-top:4px;
+  width:1130px;
+
+}
+/*** end выставки - галереи ***/
+
+/*** пользователи ***/
+.user-page {
+  padding-top:10px;
+}
+.user-column {
+  display:block;
+  float:left;
+  margin:8px;
+  position:relative;
+  top:0px;
+  width:266px;  
+}
+.user .user-avatar {
+  clear:both;
+  display:block;
+  overflow:hidden;
+  position:relative;
+  height:266px;
+  width:100%;
+}
+.user-avatar .author {
+  background:url(../images/pixel.png);
+  bottom: 0px;
+  color:#fff;
+  display:block;
+  margin: auto;
+  max-height: 150px;
+  padding:10px 5%;
+  position:absolute;
+  text-align:center;
+  width:90%;
+} 
+.user .description {
+  background-color:#e6e6e6;
+  color:#7c7c7c;
+  font-size:12px;
+  line-height:15px;
+  margin-bottom:0px;
+  padding:10px 5px 10px 20px;
+  width:241px;
+}
+.user .corner-bottom {
+  background:url(../images/corner-bottom.jpg) 30px 0px no-repeat;
+  display:block;
+  height:5px;
+  margin-bottom:20px;
+  width:100%;
+}
+.user .gallery {
+  border:#e6e6e6 solid 1px;
+  display:block;
+  margin-bottom:20px;
+  padding:0px 15px 10px 15px;
+  width:234px;
+}
+.user .gallery .title {
+  color:#3e3e3e!important;
+  font-size:18px;
+}
+.user .corner-top {
+  background:url(../images/corner-top.jpg) 30px 0px no-repeat;
+  display:block;
+  height:5px;
+  margin-top:5px;
+  width:100%;  
+}
+.user .gallery-description {
+  background-color:#c1c1c1;
+  color:#fff;
+  font-size:10px;
+  margin-bottom:10px;
+  padding:3px;
+}
+dl.star-rating dt {
+  display:block;
+  color:#fff;
+  font-size:10px;
+  width:65px;  
+}
+dl.star-rating dd {
+  display:block;
+  color:#fff;
+  font-size:10px;
+  width:20px;  
+}
+dl.star-rating ol {
+  background:url(../images/raiting.gif) 0px -12px;
+  height: 12px;
+  list-style: none;
+  margin: 4px 0px 0px 0px;
+  padding: 0px;
+  width: 15px;
+}
+dl.star-rating li {
+  float:left;
+  margin: 0px;
+  padding: 0px;
+  }
+dl.star-rating li a {
+  display: block;
+  height: 12px;
+  text-indent: -9999px;
+  position: absolute;
+  text-decoration: none;
+  width:3px;
+  z-index: 10;
+}
+dl.star-rating li a:hover {
+  background:url(../images/raiting.gif) 0px -24px;
+  left: 0;
+  z-index: 2;
+}
+dl.star-rating a.star1 { left: 0px; } dl.star-rating a.star1:hover { width: 3px;}
+dl.star-rating a.star2 { left: 3px; } dl.star-rating a.star2:hover { width: 6px;}
+dl.star-rating a.star3 { left: 6px; } dl.star-rating a.star3:hover { width: 9px;}
+dl.star-rating a.star4 { left: 9px; } dl.star-rating a.star4:hover { width: 12px;}
+dl.star-rating a.star5 { left: 12px; } dl.star-rating a.star5:hover { width: 15px;}
+dl.star-rating li.current {
+  background: url(../images/raiting.gif) 0px 0px;
+  height: 12px;
+  position:absolute;
+  z-index: 1;
+}
+dl.star-rating li.current {
+  background: url(../images/raiting.gif) 0px 0px;
+}
+/*** end пользователи ***/

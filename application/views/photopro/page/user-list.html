@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+
+{% block content %}
+  {% set i = 0 %}
+  {% if per_page > 3 %} 
+    {% set col_count = per_page / 4 %}
+  {% else %}
+    {% set col_count = 1 %}
+  {% endif %}
+  <div class="user-page">
+    <div class="user-column">
+    {% for U in USER %}
+      {% if i % col_count == 0 and i != 0%}
+        </div>
+        <div class="user-column">
+      {% endif %}
+      <div class="user">
+        <a class="user-avatar" href="/gallery/user/{{ U.user_uniqid }}/" style="background:url(/application/views/photopro/images/avatar-{{ U.user_sex }}.jpg) center center no-repeat;">
+          <span class="author" href="/gallery/user/{{ U.user_uniqid }}/" class="author">{{ U.user_first_name }} {{ U.user_last_name }}</span>
+          <img src="/image/266x500/avatar_{{ U.user_uniqid }}.jpg" border="0" />
+        </a>
+        <div class="description">
+          {{ U.user_about }}
+          <div class="cleared" style="height:20px;"></div>
+          Выставки автора:
+        </div>
+        <div class="gallery">
+          <div class="corner-bottom"></div>
+          {% for G in GALLERY[U.user_uniqid] %}
+            <a class="title" href="/gallery/{{ G.gallery_url }}/">{{ G.gallery_title }}</a>
+            <div class="corner-top"></div>
+            <div class="gallery-description">
+              {{ G.gallery_image_count }} фото
+              <dl class="star-rating fl-right">
+                <dt class="fl-left">Рейтинг: 4.3</dt>
+                <dd class="fl-left">
+                  <ol>
+                    <li><a href="#" class="star1">Ужасно</a></li>
+                    <li><a href="#" class="star2">Плохо</a></li>
+                    <li class="current" style="width:9px;"><a href="#" class="star3">Нормально</a></liclass>
+                    <li><a href="#" class="star4">Хорошо</a></li>
+                    <li><a href="#" class="star5">Отлично</a></li>
+                  </ol>
+                </dd>
+              </dl>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% set i = i + 1 %}
+    {% endfor %}
+    </div>
+  </div>
+  <div class="cleared"></div>
+  {% include "paging.html" %}
+{% endblock %}
+
+
+{#% extends "index.html" %}
+
+{% block content %}
+  <div class="users-page">
+    {% for U in USER %}
+      <div class="gallery">
+        <a class="gal" href="/gallery/user/{{ U.user_uniqid }}/">
+          <img src="/image/100x100/avatar_{{ U.user_uniqid }}.jpg" border="0" />
+        </a>
+        <div class="description">
+          <a class="author" href="/gallery/user/{{ G.user_uniqid }}/">{{ G.user_name }}</a><br />
+          <a href="/gallery/{{ G.gallery_url }}/" class="title">{{ G.gallery_title }}</a><br />
+          <span class="count">({{ G.gallery_image_num }} фото)</span>
+          <div class="text">{{ G.gallery_description|raw }}</div>
+        </div>
+      </div>
+      {% set i = i + 1 %}
+    {% endfor %}
+  </div>
+  <div class="cleared"></div>
+  {% include "paging.html" %}
+{% endblock %#}

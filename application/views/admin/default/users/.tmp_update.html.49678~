@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+
+{% block content %}
+  <ul id="users-list" class="list">
+    {% for U in USERS %}
+      <li>
+        <a href="/{{ admin_url }}/users/update/{{ U.user_uniqid }}/" class="fl-left">{{ U.user_email }}</a>
+        <a href="/{{ admin_url }}/users/delete/{{ U.user_uniqid }}/" class="delete fl-left"></a>
+      </li>
+    {% endfor %}
+  </ul>
+  <script type="text/javascript">
+    $(function(){
+      
+    });
+  </script>
+{% endblock %}

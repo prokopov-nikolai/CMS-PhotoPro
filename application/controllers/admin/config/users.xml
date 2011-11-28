@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<controller>
+  <title>Пользователи</title>
+  <name>users</name>
+  <description>В этом разделе Вы можете управлять пользователями</description>
+  <sort>3</sort>
+  <method display="none">
+    <title>Изменить данные пользователя</title>
+    <name>update</name>
+    <description>Измените данные пользователя и нажмите обновить</description>
+  </method>       
+  <method display="none">
+    <title>Список пользователей</title>
+    <name></name>
+    <description>Выберите пользователя для редактирования.</description>
+  </method>       
+</controller>

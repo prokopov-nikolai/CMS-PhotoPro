@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<controller>
+  <title>Галереи</title>
+  <name>gallery</name>
+  <description>Раздел "Галереи" предназначен для управления базой картинок и их оперативной загрузки.%br% В этом разделе Вы можете выбрать галерею в которую нужно загрузить картинки или добавить новую.</description>
+  <sort>2</sort>
+  <script>{{ path_template }}js/jquery.cleditor.min.js</script>
+  <script>{{ path_template }}js/jquery.cleditor.xhtml.min.js</script>
+  <style>{{ path_template }}css/jquery.cleditor.css</style>  
+  <script>{{ path_template }}uploadify/jquery.uploadify.v2.1.4.min.js</script>
+  <script>{{ path_template }}uploadify/swfobject.js</script>
+  <style>{{ path_template }}uploadify/uploadify.css </style>    
+  <method display="none">
+    <title>Загрузка картинок</title>
+    <name>gallery</name>
+    <description>Выберите картинки которые Вы хотите загрузить в текущую галерею и подпишите для каждой теги.</description>
+  </method>       
+</controller>

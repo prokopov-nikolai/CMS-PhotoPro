@@ -1,0 +1,37 @@
+{% extends "index.html" %}
+
+{% block content %}
+  {% set i = 0 %}
+  {% if per_page > 3 %} 
+    {% set col_count = per_page / 4 %}
+  {% else %}
+    {% set col_count = 1 %}
+  {% endif %}
+  {% if A %}
+    <div id="gallery-author">Автор: {{ A.user_first_name }} {{ A.user_last_name }}</div>
+  {% endif %}
+  <div class="gallery-page">
+    <div class="gallery-column">
+    {% for G in GALLERY %}
+      {% if i % col_count == 0 and i != 0%}
+        </div>
+        <div class="gallery-column">
+      {% endif %}
+      <div class="gallery">
+        <a class="gal" href="/gallery/{{ G.gallery_url }}/">
+          <img src="/image/266x500/{{ G.image_name }}" border="0" />
+        </a>
+        <div class="description">
+          <a class="author" href="/gallery/user/{{ G.user_uniqid }}/">{{ G.user_name }}</a><br />
+          <a href="/gallery/{{ G.gallery_url }}/" class="title">{{ G.gallery_title }}</a><br />
+          <span class="count">({{ G.gallery_image_num }} фото)</span>
+          <div class="text">{{ G.gallery_description|raw }}</div>
+        </div>
+      </div>
+      {% set i = i + 1 %}
+    {% endfor %}
+    </div>
+  </div>
+  <div class="cleared"></div>
+  {% include "paging.html" %}
+{% endblock %}

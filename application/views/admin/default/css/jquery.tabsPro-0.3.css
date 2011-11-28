@@ -1,0 +1,11 @@
+/* 
+ * @name   Plugin for jquery "TabsPro" 
+ * @author Николай Прокопов
+ * @site   http://prokopov-nikolai.ru
+ * @version v 0.2
+ * @date 25.10.2011
+ */
+.fl-left{display:block;float:left;position:relative;}
+.tab {-webkit-border-top-right-radius:5px;-webkit-border-top-left-radius:5px;-moz-border-radius-topright:5px;-moz-border-radius-topleft:5px;border-top-right-radius:5px;border-top-left-radius:5px;border:#777777 solid 1px;padding:10px;border-bottom:none!important;text-decoration:none;background-color:#bbbbbb;color:#fff;}
+.tab-content{display:block;-webkit-border-bottom-right-radius:5px;-webkit-border-bottom-left-radius:5px;-moz-border-radius-bottomright:5px;-moz-border-radius-bottomleft:5px;border-bottom-right-radius:5px;border-bottom-left-radius:5px;-webkit-border-top-right-radius:5px;-moz-border-radius-topright:5px;border-top-right-radius:5px;border:#777777 solid 1px;padding:10px 2%;width:96%;position:relative;top:-1px; z-index:10;}
+.tab-active{background-color:#fff;color:#555555;z-index:100;}

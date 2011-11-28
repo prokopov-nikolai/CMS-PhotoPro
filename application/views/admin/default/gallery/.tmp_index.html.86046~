@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+
+{%  block content %}
+  <form action="/{{ admin_url }}/gallery/insert/" method="post">
+    <div class="form" style="display:none;">
+      <label for="gallery_title">Название галереи <i style="color:#ababab;">(title)</i></label><br />
+      <input type="text" name="gallery_title" value="" /><br />
+
+      <label for="gallery_keywords">Ключевые слова <i style="color:#ababab;">(keywords)</i></label><br />
+      <input type="text" name="gallery_keywords" value="" /><br />
+
+      <label for="gallery_description">Описание галереи <i style="color:#ababab;">(description)</i></label><br />
+      <textarea name="gallery_description" id="gallery_description"></textarea><br />
+    </div>
+    <input type="submit" value="Добавить галерею" onclick="show_form($(this)); return false;" />
+  </form>
+  <ul id="gallery-list">
+    {% for G in GALLERY %}
+      <li><a href="/{{ admin_url }}/gallery/load/{{ G.gallery_url }}/">{{ G.gallery_title }}</a></li>
+    {% endfor%}
+  </ul>
+  <script type="text/javascript">
+    $(function(){
+      $('#gallery_description').cleditor({
+        width:'540px'
+      });
+    });
+  </script>
+{%  endblock %}

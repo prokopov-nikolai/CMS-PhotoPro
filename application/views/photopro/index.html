@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta content="SitePro" name="generator" />
+  <meta content="Nikolai Prokopov" name="author" />
+  <meta content="{{ keywords }}" name="keywords" />
+  <meta content="{{ description }}" name="description" />
+  <link rel="shortcut icon" href="{{ path_template }}images/favicon.gif" type="image/x-icon" />
+  <link type="text/css" href="{{ path_template }}css/style.css" rel="stylesheet" />
+  <script type="text/javascript" src="{{ path_template }}js/jquery-1.6.2.min.js"></script>
+  <script type="text/javascript" src="{{ path_template }}js/jquery.showpassword.js"></script>
+  <script type="text/javascript" src="{{ path_template }}js/functions.js"></script>
+  {{ plugin_headers|raw }}
+  {% block head %}{% endblock %}
+  <!--[if lt IE 9]>
+   <script>
+    var e = ("article,aside,figcaption,figure,footer,header,hgroup,nav,section").split(',');
+    for (var i = 0; i < e.length; i++) {
+      document.createElement(e[i]);
+    }
+   </script>
+  <![endif]-->
+  <title>{{ title }}</title>
+</head>
+<body>
+  <div id="wrapper">
+    <header>
+      <a href="/" id="logotype" class="fl-left">CMS PhotoPro</a>
+      <menu id="menu">
+        <li class="{{ active_gallery }}"><a href="/gallery/" id="gallery">фотовыставки</a></li>
+        <li><a href="/users/" id="photographers" class="{{ active_photographers }}">фотографы</a></li>
+        <li id="fast-login">
+          {% if U.user_uniqid == '' %}
+            <form method="post" action="/login/">
+              <input type="text" name="user_email" value="{{ user_email }}" size="26" />
+              <div class="cleared" style="margin-top:5px;"></div>
+              
+              <input id="user_password" type="password" name="user_password" value="{{ user_password }}" size="22" />
+              <div class="cleared" style="margin-top:5px;"></div>
+            
+              <div class="pass"></div>
+            
+              <a href="/registration/" id="registration">Регистрация</a><br />
+              <a href="/remind_password/" id="remind-password">Забыли пароль</a>
+            
+              <input type="submit" value ="Войти" style="font-size:20px;"/>
+            </form>
+            <script type="text/javascript">
+             $(function(){
+               $('#user_password').showPassword('.pass', { text: ' &nbsp;Показать пароль', name: 'user_show_password' });
+             });
+            </script>
+            {% else %}
+              {% if U.user_last_name == '' and U.user_first_name == '' %}
+                <a href="/users/person_data/">Заполните личные данные!</a>
+              {% else %}
+                <a href="/users/person_data/">{{ U.user_first_name }} {{ U.user_last_name }}</a> 
+              {% endif %}
+              <br /><a href="/logout/">Выход</a>
+            {% endif %}
+        </li>
+      </menu>
+    </header>
+    <section>
+      {% block content %}{% endblock %}
+    </section>
+    <div id="footer_guarantor"></div>
+  </div>
+  <footer>
+    <div class="cleared" style="border-top:#fff solid 1px;"></div>
+    <div class="copyright">
+      &copy; 2011-2012 <a href="http://www.cms-photopro.com">CMS PhotoPro</a> <br />
+      Created by <a href="http://www.prokopov-nikolai.ru" target="_blank">Николай Прокопов</a> & <a href="http://www.bitepix.ru" target="_blank">Bitepix</a></div> 
+  </footer>
+  {% if environment == 'production' %}
+    <!-- Yandex.Metrika counter -->
+  {% endif %}
+</body>
+</html>

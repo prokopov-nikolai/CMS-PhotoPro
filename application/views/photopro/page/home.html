@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+  <div id="main-gallery">
+    {{ main_gallery|raw }}
+  </div>
+  <div id="main-exhibitions"><a href="/gallery/"></a></div>
+  <div class="gallery-list">
+  {% for G in GALLERY %}
+    <div class="main-gallery">
+      <a class="gal" href="/gallery/{{ G.gallery_url }}/">
+        <img src="/image/266x500/{{ G.image_name }}" border="0" />
+      </a>
+      <div class="description">
+        <a class="author" href="/gallery/user/{{ G.user_uniqid }}/">{{ G.user_name }}</a><br />
+        <span class="title">{{ G.gallery_title }}</span><br />
+        <span class="count">({{ G.gallery_image_count }} фото)</span>
+      </div>
+    </div>  
+  {% endfor %}
+  </div>
+
+{% endblock %}

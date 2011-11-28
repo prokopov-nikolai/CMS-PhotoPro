@@ -1,0 +1,24 @@
+<div class="title">{{ G.gallery_title }}</div>
+<div class="author"><a href="/gallery/user/{{  G.user_uniqid }}/">{{ G.user_name }}</a></div>
+<div class="description">
+  <div class="text">
+    {{ G.gallery_description|raw }}
+  </div>  
+</div>
+<div class="content">
+  <div class="ribbon"></div>
+  <div id="pretty" class="prettyPhoto">
+  {% for IMG in G.images %}
+    <a href="{{ IMG.url }}" rel="prettyPhoto[photopro]"><img src="/image/260x500/{{ IMG.name }}" border="0"/></a>
+  {% endfor %}
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+        $("a[rel^='prettyPhoto']").prettyPhoto({
+          theme:'light_square',
+          slideshow: {{ pauseTime }} * 1000, 
+          autoplay_slideshow: true
+        });
+  });
+</script>

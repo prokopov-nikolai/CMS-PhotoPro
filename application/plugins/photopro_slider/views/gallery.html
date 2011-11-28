@@ -1,0 +1,112 @@
+{# Гелерея формируется вот из такого массива данных
+Array
+(
+    [gallery_id] => 5
+    [gallery_url] => galereya-na-glavnoy
+    [gallery_title] => Галерея на главной
+    [gallery_keywords] => Галерея на главной
+    [gallery_description] => Фотография стала для нас всем
+
+    [gallery_cover_id] => 4ec204966fad5
+    [user_uniqid] => 4e973fc217240583774882
+    [image_name] => iphone-mjkcce.jpg
+    [user_name] => Николай Прокопов
+    [gallery_image_num] => 12
+    [images] => Array
+        (
+            [4ea7b63494f76] => Array
+                (
+                    [id] => 4ea7b63494f76
+                    [url] => /image/1140x713/rewalls.com-50625-skqiuf.jpg
+                    [name] => rewalls.com-50625-skqiuf.jpg
+                    [filename] => rewalls.com-50625-skqiuf3494f76.jpg
+                    [width] => 1140
+                    [height] => 713
+                    [tag] => Array
+                        (
+                            [0] => 11
+                        )
+
+                )
+
+            [4ea7b63615829] => Array
+                (
+                    [id] => 4ea7b63615829
+                    [url] => /image/1140x713/rewalls.com-50627-rwibur.jpg
+                    [name] => rewalls.com-50627-rwibur.jpg
+                    [filename] => rewalls.com-50627-rwibur3615829.jpg
+                    [width] => 1140
+                    [height] => 713
+                    [tag] => Array
+                        (
+                            [0] => 11
+                        )
+
+                )
+        )
+)             
+#}
+
+{% set w = 80 %} {# max ширина превью #}
+{% set h = 120 %} {# max высота превью #}
+{% set wB = 550 %} {# max ширина превью #}
+{% set hB = 825 %} {# max высота превью #}
+<div class="fl-left photopro-box">
+  <div class="box">
+    <img src="/image/{{ wB }}x{{ hB }}/{{ G.image_name }}" />
+  </div>
+</div>
+
+<div class="fl-left photopro-list">
+  <div class="title">{{ G.gallery_title }}</div>
+  <div class="author"><a href="/gallery/user/{{ G.user_uniqid }}/">{{ G.user_name }}</a></div>
+  <div class="description">
+    {{ G.gallery_description|raw }}
+  </div>
+  
+  {% set IMG = G.images %}                    {# все картинки #}
+  {% set img_count = IMG|size %}              {# количество картинок #}
+  {% set col_count = 6 %}                     {# количество колонок с превью #}
+  {% set row_count = (img_count / col_count) | floor %} {# количество полных строк #}
+  {% set mod_count = img_count % col_count %} {# остаток картинок в неполной строке #}
+  {% set mod = 0 %}                           {# перебор картинок в остатке #}
+  <div class="previews">
+    {% for col in 1..col_count %}
+      <div class="preview-column">
+         {% for row in 0..row_count %}
+           {% if row > 0%}
+             {% set I = IMG|array_shift %} {# извлечем первую картинку - массив #}
+             {% set IMG = IMG|unset_array_shift %} {# удалим этот массив из общего массива картинок #}
+             {% if G.image_name == I.name %}
+               {% set class = 'photopro-current' %}
+             {% else %}
+               {% set class = '' %}
+             {% endif %}
+             <a href="#{{ I.id }}" data-url="/image/{{ wB }}x{{ hB }}/{{ I.name }}" class="prev {{ class }}">
+               <img src="/image/{{ w }}x{{ h }}/{{ I.name }}" border="0"/>
+             </a>
+           {% endif %}
+         {% endfor %}
+         {% if mod < mod_count %} 
+           {% set mod = mod + 1 %}
+           {% set I = IMG|array_shift %} {# перебор картинок в неполной строке #}
+           {% set IMG = IMG|unset_array_shift %}
+           {% if G.image_name == I.name %}
+             {% set class = 'photopro-current' %}
+           {% else %}
+             {% set class = '' %}
+           {% endif %}
+           <a href="#{{ I.id }}" data-url="/image/{{ wB }}x{{ hB }}/{{ I.name }}" class="prev {{ class }}">
+             <img src="/image/{{ w }}x{{ h }}/{{ I.name }}" border="0"/>
+           </a>
+         {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    $('.prev').photopro({});
+  });
+</script>

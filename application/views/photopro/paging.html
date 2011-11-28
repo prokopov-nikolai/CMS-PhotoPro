@@ -1,0 +1,63 @@
+<div class="paging">
+  {% if total_rows > 0 %}
+    <ul class="pages">
+      <li class="{% if current_page == 1 %}current{% endif %}"><a href="{{ base_url }}1/">1</a></li>
+      
+      {% if current_page > 2 + num_links %}
+        <li class="prev">...</li>
+        {% set a = current_page - num_links  %}
+        {% set b = current_page - 1  %}
+        {% for i in a..b %}
+          <li><a href="{{ base_url }}{{ i }}/">{{ i }}</a></li>
+        {% endfor %}
+      {% else %}
+        {% set a = 2  %}
+        {% set b = current_page - 1  %}
+        {% if a <= b %}
+          {% for i in a..b %}
+            <li><a href="{{ base_url }}{{ i }}/">{{ i }}</a></li>
+          {% endfor %}
+        {% endif %}
+      {% endif %}
+      
+      
+      {% if current_page != 1 and current_page != total_pages %}
+        <li class="current"><a href="{{ base_url }}{{ current_page }}/">{{ current_page }}</a></li>
+      {% endif %}
+  
+      
+      {% if current_page < total_pages - num_links - 1 %}
+        {% set a = current_page + 1  %}
+        {% set b = current_page + num_links  %}
+        {% for i in a..b %}
+          <li><a href="{{ base_url }}{{ i }}/">{{ i }}</a></li>
+        {% endfor %}
+        <li class="prev">...</li>
+      {% else %}
+        {% set a = current_page + 1  %}
+        {% set b = total_pages - 1  %}
+        {% if a <= b %}
+          {% for i in a..b %}
+            <li><a href="{{ base_url }}{{ i }}/">{{ i }}</a></li>
+          {% endfor %}
+        {% endif %}
+      {% endif %}
+      
+      {% if total_pages != 1 %}
+        <li class="{% if current_page == total_pages %}current{% endif %}"><a href="{{ base_url }}{{ total_pages }}/">{{ total_pages }}</a></li>
+      {% endif %}
+    </ul>
+  {% endif %}
+  
+  <div class="fl-left total-rows">
+  <b>всего {{ paging_name|lower }} </b> : {{ total_rows }}
+  </div>
+  <form action="" method="post">  
+    <div class="per-page fl-right">
+      количество {{ paging_name }} на странице 
+      <input type="image" class="per-page-button" src="{{ path_template }}images/per-page.jpg" />
+      <input type="text" class="per-page-input" name="per_page" value="{{ per_page }}" size="3"/>
+    </div>
+  </form>
+</div>
+<div class="cleared" style="height:10px;"></div>

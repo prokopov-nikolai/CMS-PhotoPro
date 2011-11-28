@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<controller>
+  <title>Страницы</title>
+  <name>page</name>
+  <description>В этом разделе вы можете управлять страницами Вашего сайта </description>
+  <sort>1</sort>
+  <script>{{ path_template }}js/jquery.cleditor.min.js</script>
+  <script>{{ path_template }}js/jquery.cleditor.xhtml.min.js</script>
+  <style>{{ path_template }}css/jquery.cleditor.css</style>
+  <method>
+    <title>Добавить</title>
+    <name>add</name>
+    <description>Здесь вы можете добавить новую страницу</description>
+  </method>       
+  <method display="none">
+    <title>Редактировать</title>
+    <name>edit</name>
+    <description></description>
+  </method>       
+  <method>
+    <title>Список</title>
+    <name>get_list</name>
+    <description>Выберите нужную страницу для редактирования</description>
+  </method>       
+  <method>
+    <title>Рубрики</title>
+    <name>category</name>
+    <description>Создайте рубрики для Ваших страниц</description>
+  </method>       
+</controller>

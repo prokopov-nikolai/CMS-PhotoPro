@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<controller>
+  <title>Голосования</title>
+  <name>vote</name>
+  <description>Создайте новый опрос на своем сайте или посмотрите архив.</description>
+  <sort>3</sort>
+  <method display="none">
+    <title>index</title>
+    <name>index</name>
+    <description></description>
+  </method>       
+</controller>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta content="SitePro" name="generator" />
+  <meta content="Nikolai Prokopov" name="author" />
+  <meta content="" name="keywords" />
+  <meta content="" name="description" />
+  <link rel="shortcut icon" href="{{ path_template }}images/logo.png" type="image/x-icon" />
+  <link type="text/css" href="{{ path_template }}css/style.css" rel="stylesheet" />
+  <script type="text/javascript" src="{{ path_template }}js/jquery-1.6.2.min.js"></script>
+  <script type="text/javascript" src="{{ path_template }}js/jquery.showpassword.js"></script>
+  <script type="text/javascript" src="{{ path_template }}js/functions.js"></script>
+  {% block head %}{% endblock %}
+  {% autoescape false %}{{ headers }}{% endautoescape %}
+  <!--[if lt IE 9]>
+   <script>
+    var e = ("article,aside,figcaption,figure,footer,header,hgroup,nav,section").split(',');
+    for (var i = 0; i < e.length; i++) {
+      document.createElement(e[i]);
+    }
+   </script>
+  <![endif]-->
+  <title>{{ META.title }}</title>
+</head>
+<body>
+  <header>
+    <a href="/{{ admin_url }}/"id="logotype" class="fl-left">CMS PhotoPro</a>
+  </header>
+  <div id="wrapper">
+  <aside class="fl-left">
+    {% if MENU != '' %}
+    {% set section  = '' %}
+    {% if subsection is empty %}
+      {% set subsection  = '' %}
+    {% endif %}
+    {% set description = '' %}
+    {% set description_main = '' %}
+      <a href="/admin/settings/cache_delete/" id="cache-del">Сбросить кеш</a>
+      <menu id="main">
+        {% for key in MENU|keys %}
+          <li >
+            {% if MENU[key]['name'] == controller %}
+              {% set section = MENU[key]['title'] %}
+              {% set description_main = MENU[key]['description'] %}
+            {% endif %}
+            <a href="/{{ admin_url }}/{{ MENU[key]['name']}}/" class="{% if MENU[key]['name'] == controller %}controller{% endif %}">{{ MENU[key]['title'] }}</a>
+            {% if MENU[key]['name'] == '' %}
+              {% set SUB  = SUBMENU[0] %}
+            {% else %}
+              {% set SUB  = SUBMENU[MENU[key]['name']] %}
+            {% endif %}
+            {% if SUB[0] is not empty %}
+              <menu style="{% if MENU[key]['name'] != controller %}display:none;{% endif %}">
+                {% for k in SUB|keys %}
+                  {% if SUB[k]['name'] == method %}
+                    {% set description = SUB[k]['description'] %}
+                  {% endif %}
+                  {% if SUB[k]['display'] != 'none' %}
+                    <li>
+                      <a href="/{{ admin_url }}/{{ MENU[key]['name']}}/{{ SUB[k]['name'] }}/" class="{% if SUB[k]['name'] == method and MENU[key]['name'] == controller %}method{% endif %}">{{ SUB[k]['title'] }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </menu>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </menu>
+      <a href="/logout/" id="exit">Выйти</a>
+    {% endif %}
+  </aside>
+  <section class="fl-left">
+    {% for key in SUBMENU[controller]|keys %}
+      {% if SUBMENU[controller][key]['name'] == method and  subsection is empty %}
+        {% set subsection = SUBMENU[controller][key]['title']%}
+      {% endif %}
+    {% endfor %}
+    <nav>
+      {% if section %}
+        <h1>
+          {{ section }}
+          {% if subsection %}
+            > {{ subsection }}
+          {% endif %}
+          {% if subsubsection %}
+            > {{ subsubsection }}
+          {% endif %}
+        </h1>
+      {% endif %}
+    </nav>
+    <p id="section-descr">
+      {% autoescape false %}
+        {% if method == '' %} 
+          {{ description_main|replace({'%br%': "<br />" }) }}
+        {% else %}
+          {{ description|replace({'%br%': "<br />"}) }}
+        {% endif %}
+      {% endautoescape %}
+    </p>
+    {% if USER.message %}
+      <div id="user-message">
+        {{ USER.message }}
+      </div>
+    {% endif %}
+    {% if USER.error %}
+      <div id="user-error">
+        {{ USER.error }}
+      </div>
+    {% endif %}
+    {% if SUBMENU[controller][0] is not empty and subsection == ''%}
+      <menu>
+        {% for key in SUBMENU[controller]|keys %}
+          {% if SUBMENU[controller][key]['display'] != 'none' %}
+            <li class="{% if SUBMENU[controller][key]['name'] == method %}method{% endif %}">
+              <a href="/{{ admin_url }}/{{ controller }}/{{ SUBMENU[controller][key]['name'] }}/">{{ SUBMENU[controller][key]['title'] }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </menu>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </section>
+  </div>
+  <footer></footer>
+  {% if environment == 'production' %}
+    <!-- Yandex.Metrika counter -->
+  {% endif %}
+</body>
+</html>

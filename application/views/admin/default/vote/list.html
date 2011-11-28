@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+
+{% block content %}
+  <form action="/{{ admin_url }}/vote/insert/" method="post">
+    <div class="form" style="display:none;">
+      <label for="vote_question">Вопрос</label><br />
+      <input type="text" name="vote_question" value="" /><br />
+    </div>
+    <input type="submit" value="Добавить опрос" onclick="show_form($(this)); return false;" />
+  </form>
+  <div>
+  <form action="/{{ admin_url }}/vote/insert/" method="post">
+    <div class="form" style="display:none;">
+      <label for="vote_question">Вопрос</label><br />
+      <select id="vote_id">
+        {% for vote_id in VOTES|keys %}
+        <option value="{{ vote_id }}">{{ VOTES[vote_id].question }}</option>
+        {% endfor %}    
+      </select>
+      <label for="vote_answer_text">Ответ</label><br />
+      <input type="text" name="vote_answer_text" id="vote_answer_text" value="" /><br />
+    </div>
+    <input type="submit" value="Добавить ответ" id="add-answer" />
+  </form>
+  <ul id="vote-list">
+    {% for vote_id in VOTES|keys %}
+      <li>
+        <a href="#" class="vote fl-left" data-vote-id="vote-{{ vote_id }}" data-answers="{{ VOTES[vote_id].answers }}">{{ VOTES[vote_id].question }}</a>
+        <a class="delete fl-left" href="/{{ admin_url }}/vote/delete/{{ vote_id }}/"></a>
+      </li>
+    {% endfor%}
+  </ul>
+  <script type="text/javascript">
+    $(function(){
+      $('#add-answer').click(function(){
+        $(this).parent().find('.form').slideToggle('normal', function(){
+          $('#add-answer').unbind('click');
+          $('#add-answer').click(function(){
+            $.ajax({
+              type: 'post',
+              url: '/{{ admin_url }}/vote/insert_answer/',
+              data: {vote_id:parseInt($('#vote_id').val()),answer_text:$('#vote_answer_text').val()},
+              success: function(answ){
+                $block = $('#vote-' + $('#vote_id').val()).parent();
+                $('#vote-' + $('#vote_id').val()).remove();
+                $results = render_results(answ).css('display', 'block').attr('id', 'vote-' + $('#vote_id').val());
+                $block.append($results);
+                $('#vote_answer_text').val('');
+              }
+            });
+            return false;
+          });
+        });
+        return false;
+      });
+      // -----------------------------------------------------------------------
+      $('.vote').each(function(){
+        $results = render_results($(this).attr('data-answers'));
+        $id = $(this).attr('data-vote-id');
+        $results.attr('id', $id);
+        $(this).parent().append($results);
+        $(this).removeAttr('data-answers');
+      });
+      // -----------------------------------------------------------------------
+      $('.vote').click(function(){
+        $(this).parent().find('.answers').slideToggle();
+        return false;
+      });
+    });
+  </script>
+{% endblock %}

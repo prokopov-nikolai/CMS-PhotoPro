@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+
+{%  block content %}
+&nbsp;<br />
+<div id="reg-form" style="margin-left:370px;">
+<h1>Регистрация нового пользователя</h1>
+&nbsp;<br />
+<form method="post" action="/registration/">
+
+  <div class="red">
+  	{% autoescape false %}
+		  {{ error }}
+    {% endautoescape %}
+	</div>
+
+  <div class="label">Email:</div>
+	<input class="reg-input" type="text" name="user_email" value="{{ user_email }}" size="22" />
+	
+  <div class="label" style="margin-top:20px;">Пароль:</div>
+  <input class="reg-input" type="password" id="reg_password" name="user_password" value="{{ user_password }}" size="22" />
+
+  <div class="cleared" style="height:20px;"></div>
+	<div class="checker"></div>
+	<div class="cleared" style="height:20px;"></div>
+	<input type="submit" value="Регистрироваться" style="font-size:20px; padding: 5px 10px; width: 300px; margin-left:57px;"/>
+</form>
+</div>
+<script type="text/javascript">
+ $(function(){
+ 	 $('#reg_password').showPassword('.checker', { text: ' Показать пароль', name: 'user_show_password' });
+ });
+</script>
+{% endblock %}

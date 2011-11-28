@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+
+{% block content %}
+&nbsp;<br />
+<div id="reg-form" style="margin-left:370px;">
+  <h1>Авторизация на сайте</h1>
+  &nbsp;<br />
+  {% if U.user_uniqid == '' %}
+  <form method="post" action="/login/">
+    <div class="label">Email:</div>
+    <input type="text" name="user_email" value="{{ user_email }}" size="26" />
+    <div class="red" style="padding:0px 0px 0px 8px; font-size:12px; line-height:14px;">
+      {% if error == 'Пользователь с таким email не найден!' or error == 'Не корректный email!' %}
+        {% autoescape false %}
+          {{ error }}
+        {% endautoescape %}
+      {% endif %}
+      &nbsp;
+    </div>
+  
+    <div class="label" style="margin-top:6px;">Пароль:</div>
+    <input id="user_password1" type="password" name="user_password" value="{{ user_password }}" size="22" />
+    {% if error == 'Пароль не может быть пустым!' or error == 'Не верный пароль!' %}
+    <div class="red" style="padding:0px 0px 0px 0px; font-size:12px; line-height:14px;">
+      {% autoescape false %}
+        {{ error }}
+      {% endautoescape %}
+      &nbsp;
+    </div>
+    {% endif %}
+    <div class="cleared" style="height:30px;"></div>
+  
+    <div class="pass1"></div>
+    <input type="submit" value ="Войти"  style="font-size:20px; padding: 5px 10px; width: 232px; margin:0px 0px 0px 182px; position:relative; top:-32px;"/>
+    <br />
+    <a href="/registration/" id="registration" style="margin-left:314px;">Регистрация</a><br />
+    <a href="/remind_password/" id="remind-password" style="margin-left:293px;">Забыли пароль</a>
+  </form>
+  <script type="text/javascript">
+   $(function(){
+     $('#user_password1').showPassword('.pass1', { text: ' &nbsp;Показать пароль', name: 'user_show_password' });
+   });
+  </script>
+  {% else %}
+    {% if U.user_last_name == '' and U.user_first_name == '' %}
+      <a href="/person_data/">Заполните личные данные!</a>
+    {% else %}
+      <a href="/person_data/">{{ U.user_first_name }} {{  user_last_name }}</a> 
+    {% endif %}
+    <br /><a href="/logout/">Выход</a>
+  {% endif %}
+</div>
+{% endblock %}

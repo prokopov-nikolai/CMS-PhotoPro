@@ -1,0 +1,140 @@
+{% extends "index.html" %}
+{% block head %}
+  {% if browser_name %}
+    <script type="text/javascript" src="{{ path_template }}js/html5slider.js"></script>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{{ browser_name }}
+  <b>Автор:</b> {{ G.user_name }}
+  <div class="cleared"></div>
+  {% for IMG in G.images %}
+    <div class="fl-left image">
+      <div class="cover fl-left {% if G.gallery_cover_id == IMG.id %}cover-current{% endif %}" data-image-id="{{ IMG.id }}" title="Назначить обложку"></div>
+      <div class="delete fl-right" data-image-id="{{ IMG.id }}"></div>
+      <div class="box">
+        <img src="{{ IMG.url }}" />
+      </div>
+      <div class="size">{{ IMG.width }}x{{ IMG.height }}</div>
+      <div class="tags">
+        {% for key in IMG.tag|keys %}{% if key > 0%}, {% endif%}<a href="/{{ admin_url }}/gallery/image_tag/?tag={{ IMG.tag[key] }}">{{ IMG.tag[key]|replace({'+':' '}) }}</a>{% endfor %}
+      </div>
+      <div class="url">
+        <input type="checkbox" data-image-id="{{ IMG.id }}" class="select-img fl-right" />
+        <input type="text" class="src" value="{{ IMG.url }}" data-image-filename="{{ IMG.filename }}" />
+      </div>
+      <div class="slider"><input class="resize" type="range" min="10" max="{{ IMG.width }}" value="{{ IMG.width }}" data-max-height="{{ IMG.height }}"/></div>
+    </div>
+  {% endfor %}
+  <div class="cleared"></div>
+  <button style="font-size:16px; padding-bottom:8px;" id="delete-all"><img src="{{ path_template }}images/delete-all.png" border="0" style="margin-bottom:-8px;"/> Удалить выбранные</button>
+  <div class="cleared" style="height:10px;"></div>
+  <form id="form" action="/{{ admin_url }}/gallery/images_load/" method="post" enctype="multipart/form-data">
+    <div class="radius uploadifyQueue" id="custom-queue"></div>
+    <div id="response"></div>
+    <input id="file_upload" name="file_upload" type="file" />
+    <input type="hidden" name="gallery_url"  id="gallery_url" value="{{ G.gallery_url }}" />
+    <input type="hidden" name="gallery_id" value="{{ G.gallery_id }}" /><br />
+    <input type="submit" value="Сохранить" />
+    <input name="MAX_FILE_SIZE" type="hidden" value="10737418240" />
+  </form>
+  <script type="text/javascript">
+  $(function() {
+    $('#file_upload').uploadify({
+      'uploader'  : '{{ path_template }}uploadify/uploadify.swf',
+      'script'    : '{{ path_template }}uploadify/uploadify.php',
+      'cancelImg' : '{{ path_template }}uploadify/cancel.png',
+      'folder'    : '/images/buffer',
+      'multi'     : true,
+      'fileExt'   : '*.jpg;*.gif;*.png',
+      'fileDesc'  : '*.jpg;*.gif;*.png',
+      'width'     :   120,
+      'height'    :   32,
+      'queueID'   : 'custom-queue',
+      'removeCompleted': false, 
+      'auto'      : true,
+      'onComplete': function(event,queueID,fileObj,response,data) {
+         $h = $('#file_upload' + queueID + ' .fileName').html().split(' ');
+         $img = $('<img/>').attr('src', response).css({width:'150px', display:'block', margin:'0px auto'});
+         $obj = $('#file_upload' + queueID + ' .fileName');
+         $obj.html('');
+         $obj.append($img);
+         $obj.append('<input type="text" name="tags[' + queueID + ']" value="'+ $h[0] +'"/>' + $h[1]);
+         $s = $('.files-up').size();
+         $('#form').append('<input type="hidden" class="files-up" name="upfile[' + queueID + ']" value="' + response + '" />');
+        }
+    });
+    // -------------------------------------------------------------------------
+    $('.delete, #delete-all').click(function(){
+      if ($(this).hasClass('remove') == false) {
+        $(this).parents('.image').addClass('remove');        
+      }
+      message = 'картинку';
+      image_ids = new Array();
+      if($('.remove').size() > 1) {
+        message = 'выбранные картинки';
+        $('.remove').each(function(){
+          image_ids.push($(this).find('.delete').attr('data-image-id'));
+        });
+      }
+      if (confirm('Вы дейсвительно хотите удалить ' + message + '?')) {
+        if ($(this).attr('data-image-id') != 'undefined') {
+          image_ids.push($(this).attr('data-image-id'));          
+        }
+        images_delete(image_ids);
+      } else {
+        $(this).removeClass('remove');
+      }
+    });
+    // -------------------------------------------------------------------------
+    $('.select-img').click(function(){
+      if(this.checked == true){
+        $(this).parents('.image').addClass('remove');
+      } else {
+        $(this).parents('.image').removeClass('remove');
+      }
+    });
+    // -------------------------------------------------------------------------
+    $('.resize').change(function(){
+      h = parseInt($(this).attr('data-max-height'));
+      k = h / parseInt($(this).attr('max'));
+      $fn = $(this).parents('.image').find('.src');
+      $fn.val('/image/' + $(this).val() + 'x' +  parseInt($(this).val() * k) + '/' + $fn.attr('data-image-filename'));
+    });
+    // -------------------------------------------------------------------------
+    $('.cover').click(function(){
+      $('.cover-current').removeClass('cover-current');
+      $(this).addClass('cover-current');
+      $.ajax({
+        type: 'post',
+        url: '/{{ admin_url }}/gallery/cover_set/',
+        data: {'cover_id':$(this).attr('data-image-id'), 'gallery_url': $('#gallery_url').val()},
+        success:function(answ){
+          answ = $.parseJSON(answ);
+          if (typeof(answ.success) != 'undefined' && answ.success == 'true'){
+            alert('Обложка успешно установлена');
+          }
+        }
+      });
+    });
+  });
+  // -------------------------------------------------------------------------
+  function images_delete(image_ids){
+    $.ajax({
+      type: 'post',
+      url: '/{{ admin_url }}/gallery/image_delete/',
+      data: {image_ids:image_ids},
+      success: function (answ) {
+        answ = $.parseJSON(answ);
+        if (answ['success'] == 'true') {
+          $('.remove').fadeOut('normal', function(){ $(this).remove();});
+        } else {
+          alert('Возникла ошибка при удалении картинки!');
+        }
+      }
+        });
+  }
+  </script>
+
+{% endblock %}

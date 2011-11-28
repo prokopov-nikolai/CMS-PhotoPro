@@ -1,0 +1,38 @@
+.photopro-box {
+  padding-top:20px;
+  width:550px;
+}
+.photopro-list {
+  padding:20px 0px 0px 20px;
+}
+.photopro-list .title {
+  color:#898989;
+  font-size:24px;
+  font-weight:100; 
+}
+.photopro-list .author a {
+  font-size:12px;
+  text-decoration:underline;
+}
+.photopro-list .author a:hover {
+  text-decoration:none;
+}
+.photopro-list .description {
+  color:#7c7c7c;
+  font-size:12px;
+  padding:10px 0px;
+}
+.photopro-list .prev {
+  margin:8px 8px 0px 0px;
+  text-decoration:none;
+}
+.photopro-list .preview-column {
+  display:block;
+  float:left;
+  position:relative;
+  width:92px;
+}
+.photopro-list .photopro-current {
+  cursor:default;
+  opacity:1;
+ }

@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+
+{% block content %}
+  {% set cat_name = '' %}
+  {% for P in PAGES%}
+    {% if cat_name != P.category_title %}
+      {% if cat_name != '' %}</ul>{% endif %}   
+      {% set cat_name = P.category_title %}
+      <div class="cleared"></div>
+      <a href="#{{ P.category_url }}_{{ P.category_id }}" class="show_cat">{{ P.category_title }}</a><br />
+      <ul id="{{ P.category_url }}_{{ P.category_id }}" style="display:none;" class="list">
+    {% endif %}
+    <li>
+      <a href="/{{ admin_url }}/page/edit/{{ P.page_url }}/" class="fl-left">{{ P.page_title }}</a>
+      <a href="/{{ admin_url }}/page/delete/{{ P.page_url }}/" class="delete fl-left"></a>
+    </li>
+  {% endfor %}
+  </ul>
+  <script type="text/javascript">
+    $(function(){
+      $('.show_cat').click(function(){
+        $list = $($(this).attr('href'));
+        if ($list.css('display') == 'none') {
+          $list.show();
+        } else {
+          $list.hide(); 
+        }
+      });
+    });
+  </script>
+{% endblock %}

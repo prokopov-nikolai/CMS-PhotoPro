@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+
+{%  block content %}
+&nbsp;<br />
+<div id="reg-form" style="margin-left:370px;">
+<h1>Персональные данные</h1>
+&nbsp;<br />
+<form enctype="multipart/form-data" name="form" method="post" action="/users/person_data/">
+
+  {% autoescape false %}
+    <div id="pcabinet-error">{{ error }}</div>
+    <div id="pcabinet-message">{{ message }}</div>
+  {% endautoescape %}
+  {% if first_visit == 1 %}
+    <div id="pcabinet-message">
+      Вы успешно зарегистрированы!
+      <div class="cleared"></div>
+      Рекомендуем Вам заполнить личные данные.
+    </div>
+  {% endif %}
+  <div class="label">Фамилия:</div>
+  <input class="reg-input" type="text" name="user_last_name" value="{{ U.user_last_name }}" size="22" />
+  
+  <div class="label">Имя:</div>
+  <input class="reg-input" type="text" name="user_first_name" value="{{ U.user_first_name }}" size="22" />
+  
+  <div class="label">Отчество:</div>
+  <input class="reg-input" type="text" name="user_patronymic" value="{{ U.user_patronymic }}" size="22" />
+
+  <div class="label">О себе:</div>
+  <textarea class="reg-input" name="user_about" style="display:block; width:410px; height:150px;">{{ U.user_about }}</textarea>
+
+  <div class="label">Новый пароль (введите для изменения):</div>
+  <input class="reg-input" type="text" name="user_password" value="" size="22" />
+    
+  <div class="label">ФОТО (максимум 500x500):</div>
+  <img src="/image/100x100/avatar_{{ U.user_uniqid }}.jpg?{{ ''|mktime }} " alt="" /><br />
+  <input type="file" name="user_photo" />
+  
+  <div class="label">Пол:</div>
+  <input type="radio" name="user_sex" value="1" {% if U.user_sex == 1 %}checked{% endif %}/>муж. &nbsp;&nbsp;&nbsp;
+  <input type="radio" name="user_sex" value="0" {% if U.user_sex != 1 and U.user_sex != '' %}checked{% endif %}/> жен. 
+
+  <div class="label"><input class="reg-input" {% if U.user_subscribe == 1 or U.user_subscribe == 'on' %}checked{% endif %} type="checkbox" name="user_subscribe" /> Подписаться на новости CMS PhotoPro</div>
+  
+
+  
+  <br />
+  &nbsp;<br />
+  <input type="submit" value="Сохранить" />
+  {% if first_visit == 1 %}
+    <input type="submit" value="Я заполню позже" />
+  {% endif %}
+</form>
+</div>
+
+{% endblock %}

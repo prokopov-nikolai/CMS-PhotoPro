@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     15.08.2011 15:47:29                                                        
+
+     www.effe-rest.ru    
+     Moscow Restaurant
+                   
+     ProkopovNI
+     http://prokopov-nikolai.ru                                                             
+     ====================================================================== -->
+<project name="CI" default="minify">
+	<taskdef name="yuicompress" classname="com.yahoo.platform.yui.compressor.YUICompressTask">
+    <classpath>
+     <fileset dir="D:\apm\yuicompressor\build">
+     <include name="*.jar"/>
+     </fileset>
+    </classpath>
+  </taskdef>
+	
+	<target name="minify">
+    <echo>Minify Files!</echo>
+		<yuicompress munge="yes" linebreak="5000" preserveallsemicolons="yes" outputfolder="js">
+  		<fileset dir="js">
+  		  <include name="jquery.tabsPro.min.js"/>
+  		</fileset>
+		</yuicompress>
+	</target>
+	
+</project>

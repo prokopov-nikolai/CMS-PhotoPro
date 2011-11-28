@@ -1,0 +1,47 @@
+{% extends "index.html" %}
+
+{%  block content %}
+<div id="reg-form">
+  <form method="post" action="">
+    <div class="cleared" style="margin:10px 0px 0px 0px;"></div>
+    <label for="user_email">Email</label>
+    <div class="cleared"></div>
+    <div class="login">
+      <input type="text" name="user_email" value="{{ user_email }}" size="26" style="display:block; width:400px; font-size:20px;" />
+    </div>
+    <div class="red" style="padding:0px 0px 0px 8px; font-size:12px; line-height:14px;">
+      {% if error == 'Пользователь с таким email не найден!' %}
+        {% autoescape false %}
+          {{ error }}
+        {% endautoescape %}
+      {% endif %}
+      &nbsp;
+    </div>
+    <div class="cleared" style="margin:5px 0px 0px 0px;"></div>
+    
+    <label for="user_password">Пароль</label>
+    <div class="login">
+      <input id="user_password" class="reg-input" type="password" name="user_password" value="{{ user_password }}" size="22" />
+      {% if error == 'Пароль не может быть пустым!' or error == 'Не верный пароль!' %}
+        <div class="red" style="padding:0px 0px 0px 0px; font-size:12px; line-height:14px;">
+          {% autoescape false %}
+            {{ error }}
+          {% endautoescape %}
+          &nbsp;
+        </div>
+      {% endif %}
+      <div class="cleared" style="margin:5px 0px 0px 0px;"></div>
+      <div class="checker"></div>
+    </div>
+    <div class="cleared" style="margin:10px 0px 0px 0px;"></div>
+    <input type="submit" value="Войти" style="font-size:20px;" class="exit"/>
+  </form>
+</div>
+<script type="text/javascript">
+ $(function(){
+   $('#user_password').showPassword('.checker', { text: ' &nbsp;Показать пароль', name: 'user_show_password' });
+   $('aside').css('display', 'none');
+   $('section').css({'width': '100%', 'padding': '50px 0px'});
+ });
+</script>
+{% endblock %}
