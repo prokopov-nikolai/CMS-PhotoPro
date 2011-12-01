@@ -3,11 +3,6 @@
  * КОНФИГА САЙТА 
  */
 
-/**
- * Урл админки
- */
-$config['admin_url'] = 'admin';
-
 /*
 |-------------------------------------------------------------------------------
 | ШАБЛОНЫ 
@@ -64,7 +59,7 @@ $config['site_close'] = '';
 /**
  * url 
  */
-$config['site_url'] = 'http://www.ci-twig.lh';
+$config['site_url'] = 'http://photopro.lh';
 
 /**
  * Admin email 

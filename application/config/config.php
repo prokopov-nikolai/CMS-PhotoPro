@@ -1,4 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * Урл админки
+ * === Переносить в конфиги сайта нельзя                 === 
+ * === поскольку используется в файлах роутинга плагинов ===
+ */
+$config['admin_url'] = 'admin';
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -265,7 +272,7 @@ $config['sess_time_to_update'] = 300;
 |
 */
 $config['cookie_prefix'] = '';
-$config['cookie_domain'] = '.ci-twig.lh';
+$config['cookie_domain'] = '.photopro.lh';
 $config['cookie_path'] = '/';
 $config['cookie_secure'] = FALSE;
 
