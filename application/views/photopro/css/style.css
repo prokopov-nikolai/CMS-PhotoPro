@@ -122,6 +122,7 @@ menu#menu .current a {
   border:#bbbbbb solid 1px;
   display:block;
   font-size:12px;
+  height:15px;
   padding:0px;
   width:150px;
 }
@@ -156,6 +157,11 @@ menu#menu .current a {
   left:193px;
   position:relative;
 }
+#fast-login  .login-form {
+  display:block;
+  height:71px;
+  overflow:hidden;
+}
 /*** end шапка ***/
 
 /*** футер ***/
@@ -164,11 +170,17 @@ menu#menu .current a {
   display:block;
   height:80px;
 }
+#footer_guarantorbig {
+  clear:both;
+  display:block;
+  height:60px;
+}
 footer {
   background-color:#e3e3e3;
   display:block;
   height:70px;
   margin:-71px auto;
+  overflow:hidden;
   padding:1px 0px 0px;
 }
 .copyright {

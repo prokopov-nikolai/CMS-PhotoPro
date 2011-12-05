@@ -24,7 +24,7 @@
         <div class="description">
           <a class="author" href="/gallery/user/{{ G.user_uniqid }}/">{{ G.user_name }}</a><br />
           <a href="/gallery/{{ G.gallery_url }}/" class="title">{{ G.gallery_title }}</a><br />
-          <span class="count">({{ G.gallery_image_num }} фото)</span>
+          <span class="count">({{ G.gallery_image_count }} фото)</span>
           <div class="text">{{ G.gallery_description|raw }}</div>
         </div>
       </div>
@@ -33,5 +33,4 @@
     </div>
   </div>
   <div class="cleared"></div>
-  {% include "paging.html" %}
 {% endblock %}

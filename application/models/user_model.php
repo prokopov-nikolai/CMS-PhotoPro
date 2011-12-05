@@ -214,7 +214,7 @@ Class User_model extends CI_Model {
     if ($this->uniqid != '') {
       $this->db->where('u.user_uniqid', $this->uniqid);
       $this->db->limit(1);
-    } else if($this->page != '') {
+    } else if($this->page > 0) {
       $this->db->limit($this->per_page, ($this->page - 1) * $this->per_page);
     }
     $query = $this->db->get();

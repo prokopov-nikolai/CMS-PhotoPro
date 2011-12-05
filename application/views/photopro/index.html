@@ -29,21 +29,21 @@
       <a href="/" id="logotype" class="fl-left">CMS PhotoPro</a>
       <menu id="menu">
         <li class="{{ active_gallery }}"><a href="/gallery/" id="gallery">фотовыставки</a></li>
-        <li><a href="/users/" id="photographers" class="{{ active_photographers }}">фотографы</a></li>
+        <li class="{{ active_photographers }}"><a href="/users/" id="photographers">фотографы</a></li>
         <li id="fast-login">
           {% if U.user_uniqid == '' %}
             <form method="post" action="/login/">
-              <input type="text" name="user_email" value="{{ user_email }}" size="26" />
-              <div class="cleared" style="margin-top:5px;"></div>
+              <div class="login-form">
+                <input type="text" name="user_email" value="{{ user_email }}" size="26" />
+                <div class="cleared" style="margin-top:5px;"></div>
+                
+                <input id="user_password" type="password" name="user_password" value="{{ user_password }}" size="22" />
+                <div class="cleared" style="margin-top:5px;"></div>
               
-              <input id="user_password" type="password" name="user_password" value="{{ user_password }}" size="22" />
-              <div class="cleared" style="margin-top:5px;"></div>
-            
-              <div class="pass"></div>
-            
+                <div class="pass"></div>
+              </div>
               <a href="/registration/" id="registration">Регистрация</a><br />
               <a href="/remind_password/" id="remind-password">Забыли пароль</a>
-            
               <input type="submit" value ="Войти" style="font-size:20px;"/>
             </form>
             <script type="text/javascript">
@@ -65,13 +65,19 @@
     <section>
       {% block content %}{% endblock %}
     </section>
-    <div id="footer_guarantor"></div>
+    {% if total_rows > 0 %}
+      {% set classbig = "big" %}
+    {% endif %}
+    <div id="footer_guarantor{{ classbig }}"></div>
   </div>
-  <footer>
+  <footer class="{{ classbig }}">
+    {% if total_rows > 0 %} 
+      {% include "paging.html" %}
+    {% endif %}
     <div class="cleared" style="border-top:#fff solid 1px;"></div>
     <div class="copyright">
       &copy; 2011-2012 <a href="http://www.cms-photopro.com">CMS PhotoPro</a> <br />
-      Created by <a href="http://www.prokopov-nikolai.ru" target="_blank">Николай Прокопов</a> & <a href="http://www.bitepix.ru" target="_blank">Bitepix</a></div> 
+      Created by <a href="http://www.prokopov-nikolai.ru" target="_blank">Николай Прокопов</a> & <a href="http://www.bitepix.ru" target="_blank">Bitepix</a></div>
   </footer>
   {% if environment == 'production' %}
     <!-- Yandex.Metrika counter -->

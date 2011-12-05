@@ -30,6 +30,7 @@ class Users extends CMS_Controller {
     // извлечем всех пользователй
     $this->load->model('user_model');
     $user = $this->user_model;
+    $user->per_page($this->common->get_per_page());
     $user->page($num);
     $users = $user->get();
     $total_rows = $user->get_total();
@@ -63,6 +64,7 @@ class Users extends CMS_Controller {
       $user_gals[$g['user_uniqid']][] = $g;
     }
     $this->append_data('GALLERY', $user_gals);
+    $this->append_data('active_photographers', 'current');
     
     // выведем страницу
     $this->display('page/user-list.html');

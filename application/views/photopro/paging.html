@@ -1,6 +1,9 @@
 <div class="paging">
   {% if total_rows > 0 %}
     <ul class="pages">
+      {% if total_pages != 1 %}
+        <li class="prev-page"><a href="{{ base_url }}{% if current_page > 1%}{{ current_page - 1 }}{% else %}1{% endif %}/">&nbsp;</a></li>
+      {% endif %}
       <li class="{% if current_page == 1 %}current{% endif %}"><a href="{{ base_url }}1/">1</a></li>
       
       {% if current_page > 2 + num_links %}
@@ -46,6 +49,9 @@
       {% if total_pages != 1 %}
         <li class="{% if current_page == total_pages %}current{% endif %}"><a href="{{ base_url }}{{ total_pages }}/">{{ total_pages }}</a></li>
       {% endif %}
+      {% if total_pages != 1 %}
+        <li class="next-page"><a href="{{ base_url }}{% if current_page < total_pages%}{{ current_page + 1 }}{% else %}{{ total_pages }}{% endif %}/">&nbsp;</a></li>
+      {% endif %}
     </ul>
   {% endif %}
   
@@ -60,4 +66,15 @@
     </div>
   </form>
 </div>
-<div class="cleared" style="height:10px;"></div>
+<div class="cleared"></div>
+<script type="text/javascript">
+  $(function(){
+    var h = $(window).height();
+    var w = $('body').innerWidth();
+    var t = h - 130;
+    if (t < 150 ) t = h - 30;
+    var l= (w - 1130) / 2;
+    if (l < 0 ) l = 0;
+    $('.paging').css({'top':t,'left':l});
+  });
+</script>

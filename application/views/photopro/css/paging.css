@@ -1,36 +1,53 @@
 .paging {
-  background-color:#f8f8fa;
+  background:url(../images/paging-back.png) repeat 0px 0px!important;
+  background-color:#fff;
+  display:block;
   height:30px;
-  padding:10px;
+  left:0px;
+  margin:0px auto;
+  padding:10px 30px;
+  position:fixed;
+  top:0px;
+  width:1070px;
+  z-index:100;
 }
 .pages li {
-  background:#f8f8fa;
+  background: url(../images/paging.png) -37px -66px no-repeat;
   display:block;
   float:left;
-  margin-right:5px;
   padding:0px;
   position:relative;
   z-index:100;
 }
+.pages li:hover {
+  background: url(../images/paging.png) 0px -66px no-repeat;
+}
 .pages li a, .pages li.prev  {
   border:none;
-  color:#2F4A90;
+  color:#7d7d7d;
   display:block;
-  height:20px;
+  height:21px;
   text-align:center;
   text-decoration:none;
-  padding:5px;
-  width:20px;
+  padding:6px 2px;
+  width:33px;
 }
-.pages li a:hover {
-  background-color:#fff;
+.pages li.prev-page {
+  background: url(../images/paging.png) 0px -33px no-repeat;
 }
-.pages li.current a {
-  background-color: #19558D;
-  background-image: -moz-linear-gradient(center bottom , #103657 0%, #1F5E91 100%);
-  border-color: #071A29;
-  border-radius: 2px 2px 2px 2px;
-  color:#fff;
+.pages .next-page {
+  background: url(../images/paging.png) -37px -33px no-repeat;
+}
+.pages li.prev-page:hover {
+  background: url(../images/paging.png) 0px 0px no-repeat!important;
+}
+.pages li.next-page:hover {
+  background: url(../images/paging.png) -37px 0px no-repeat!important;
+}
+
+.pages li.current {
+  background: url(../images/paging.png) 0px -66px no-repeat;
+  color:#7e7e7e;
 }
 .total-rows {
   font-size:14px;
