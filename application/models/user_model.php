@@ -100,7 +100,7 @@ Class User_model extends CI_Model {
       }   
     }
   	
-    $post['user_about'] = strip_tags($post['user_about']);
+    $post['user_about'] = strip_tags($post['user_about'], '<p></br>');
     
     if (isset($post['user_subscribe']) && $post['user_subscribe'] == 'on') {
       $post['user_subscribe'] = '1';
@@ -210,6 +210,7 @@ Class User_model extends CI_Model {
                        AS user_gallery_count", false);
     $this->db->from('user AS u');
     $this->db->join('user_admin AS ua', 'ua.user_uniqid = u.user_uniqid', 'left');
+    $this->db->having('user_gallery_count > 0'); 
     $this->db->order_by('user_date', 'desc');
     if ($this->uniqid != '') {
       $this->db->where('u.user_uniqid', $this->uniqid);

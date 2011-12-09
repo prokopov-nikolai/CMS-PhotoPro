@@ -1,0 +1,12 @@
+DROP TABLE ci_vote_log;
+DROP TABLE ci_vote_answer;
+DROP TABLE ci_vote;
+DROP TABLE ci_user_admin;
+DROP TABLE ci_tag;
+DROP TABLE ci_sessions;
+DROP TABLE ci_page;
+DROP TABLE ci_log;
+DROP TABLE ci_image;
+DROP TABLE ci_gallery;
+DROP TABLE ci_category;
+DROP TABLE ci_user;

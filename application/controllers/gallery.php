@@ -37,6 +37,7 @@ class Gallery extends CMS_Controller {
     $gals = $gallery->get();
     $total_rows = $gallery->get_total();
     $total_pages = ceil($total_rows / $this->common->get_per_page());
+    if ($total_pages == 0) $total_pages = 1;
     if ($num > $total_pages) { 
       header("Location: /gallery/");
       exit; 

@@ -1,0 +1,24 @@
+<form method="post" style="margin-left:330px;">
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="admin_email">Email</label>
+    <input type="text" style="display:block; width:400px;" size="26" value="" id="admin_email" name="admin_email">
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="user_password1">Пароль</label>
+    <input id="user_password1" type="password" name="user_password" value="" style="display:block; width:400px;" size="26" />
+    <div class="pass1"></div>
+    </br>
+    
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="encryption_key">Ключ шифрования</label>
+    <input type="text" style="display:block; width:400px;" size="26" value="" id="encryption_key" name="encryption_key">
+    
+    <input type="hidden" style="display:block; width:400px;" size="26" value="http://www.{{ host }}" id="site_url" name="site_url">
+    
+    <input type="submit" id="next" value="Следующий шаг" style="margin-left:110px;"/>
+</form>
+<script type="text/javascript">
+ $(function(){
+   $('#user_password1').showPassword('.pass1', { text: ' &nbsp;Показать пароль', name: 'user_show_password' });
+ });
+</script>

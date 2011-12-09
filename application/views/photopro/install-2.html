@@ -1,0 +1,71 @@
+<form method="post" style="margin-left:330px;">
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_hostname">Хост</label>
+    <input type="text" style="display:block; width:400px;" size="26" value="" id="db_hostname" name="db_hostname">
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_username">Пользователь</label>
+    <input type="text" style="display:block; width:400px;" size="26" value="" id="db_username" name="db_username">
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_password">Пароль</label>
+    <input type="password" style="display:block; width:400px;" size="26" value="" id="db_password" name="db_password">
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_database">Имя базы</label>
+    <input type="text" style="display:block; width:400px;" size="26" value="" id="db_database" name="db_database">
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_dbprefix">Префикс таблиц</label>
+    <input type="text" style="display:block; width:400px;" size="26" value="ci_" id="db_dbprefix" name="db_dbprefix">
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_char_set">Кодировка</label>
+    <input type="text" style="display:block; width:400px;" size="26" value="utf8" id="db_char_set" name="db_char_set">
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_dbcollat">Сопоставление</label>
+    <input type="text" style="display:block; width:400px;" size="26" value="utf8_general_ci" id="db_dbcollat" name="db_dbcollat">
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_table_type">Тип таблиц</label>
+    <select style="display:block; width:412px;" id="db_table_type" name="db_table_type">
+      <option value="INNODB">INNODB</option>
+      <option value="MYISAM">MYISAM</option>
+    </select>
+
+    <div style="margin-top:20px;" class="cleared"></div>
+    <label for="db_cache_on">Кеширование</label>
+    <input type="radio" checked="true" id="db_cache_on" value="TRUE" name="db_cache_on"><label for="db_cache_on"> Вкл.</label>
+    <input type="radio" id="db_cache_off" value="FALSE" name="db_cache_on"><label for="db_cache_off"> Откл.</label>
+    </br>
+    <input type="submit" disabled="true" id="next" value="Следующий шаг" style="margin-left:110px;"/> <div id="check_result"></div>
+</form>
+
+<script type="text/javascript">
+  $(function(){
+    $('#db_hostname, #db_username, #db_password, #db_database').keyup(function(){
+      var host = $('#db_hostname').val();
+      var user = $('#db_username').val();
+      var pass = $('#db_password').val();
+      var base = $('#db_database').val();
+      $.ajax({
+        type: 'post',
+        url: '/install/check_connection/',
+        data: {host:host, user:user, pass:pass, base:base},
+        dataType: 'json',
+        success: function(answ){
+          if (answ.success == 'true') {
+            $('#check_result').html('Соединение успешно установлено!');
+            $('#check_result').css('color', '#006600');
+            $('#next').removeAttr('disabled');
+          } else {
+            $('#check_result').html('Соединение не установлено!');            
+            $('#next').attr('disabled', 'true');
+            $('#check_result').css('color', '#ff0000');
+          }
+        }
+      });
+    });
+  });
+</script>

@@ -29,7 +29,7 @@ class CMS_Controller extends CI_Controller {
   
   public function __construct(){
     self::$instance =& $this;
-
+    
     // Подключим твиг
     include_once ROOT . '/' . SYSDIR . '/PEAR.php';
     include_once ROOT . '/' . SYSDIR . '/Twig/Autoloader.php';
@@ -37,6 +37,14 @@ class CMS_Controller extends CI_Controller {
     
     parent::__construct();
 
+    // проверим установлен ли движок
+    if (config_item('cms_installed') == '' && $this->uri->segment(1) != 'install'){
+      die('<h3>CMS PhotoPro еще не установлена!</h3><a href="/install/step/1">Установить</a>');
+    } else {
+      $file_install = ROOT . '/' . APPPATH . 'controllers/install.php';
+      if (file_exists($file_install)) unlink($file_install);
+    }
+    
     // подключим настройки для админки
     if ($this->uri->segment(1) == config_item('admin_url')){
       $menu = array();
@@ -201,19 +209,21 @@ class CMS_Controller extends CI_Controller {
    * Загрузим все переменные в шаблон
    */
   private function _load_data(){
-    $this->_data['environment'] = ENVIRONMENT;
-        
-    // урл админки
-    $this->_data['admin_url'] = config_item('admin_url');
-    
-    // показывать голосование
-    $this->_data['show_vote'] = config_item('show_vote');
-    
-    // количество на странице
-    $this->_data['per_page'] = $this->common->get_per_page();
-    
-    // добавим данные пользователя
-    $this->_data['U'] = $this->session->userdata;
+    if ($this->uri->segment(1) != 'install') {
+      $this->_data['environment'] = ENVIRONMENT;
+          
+      // урл админки
+      $this->_data['admin_url'] = config_item('admin_url');
+      
+      // показывать голосование
+      $this->_data['show_vote'] = config_item('show_vote');
+      
+      // количество на странице
+      $this->_data['per_page'] = $this->common->get_per_page();
+      
+      // добавим данные пользователя
+      $this->_data['U'] = $this->session->userdata;
+    }
     
     // удалим сообщение и ошибки
     if ($this->session->userdata('message') != '') {

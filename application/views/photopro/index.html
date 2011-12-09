@@ -6,11 +6,11 @@
   <meta content="Nikolai Prokopov" name="author" />
   <meta content="{{ keywords }}" name="keywords" />
   <meta content="{{ description }}" name="description" />
-  <link rel="shortcut icon" href="{{ path_template }}images/favicon.gif" type="image/x-icon" />
-  <link type="text/css" href="{{ path_template }}css/style.css" rel="stylesheet" />
-  <script type="text/javascript" src="{{ path_template }}js/jquery-1.6.2.min.js"></script>
-  <script type="text/javascript" src="{{ path_template }}js/jquery.showpassword.js"></script>
-  <script type="text/javascript" src="{{ path_template }}js/functions.js"></script>
+  <link rel="shortcut icon" href="{{ path_template }}/images/favicon.gif" type="image/x-icon" />
+  <link type="text/css" href="{{ path_template }}/css/style.css" rel="stylesheet" />
+  <script type="text/javascript" src="{{ path_template }}/js/jquery-1.6.2.min.js"></script>
+  <script type="text/javascript" src="{{ path_template }}/js/jquery.showpassword.js"></script>
+  <script type="text/javascript" src="{{ path_template }}/js/functions.js"></script>
   {{ plugin_headers|raw }}
   {% block head %}{% endblock %}
   <!--[if lt IE 9]>
@@ -53,9 +53,12 @@
             </script>
             {% else %}
               {% if U.user_last_name == '' and U.user_first_name == '' %}
-                <a href="/users/person_data/">Заполните личные данные!</a>
+                <a href="/users/person_data/">Заполните личные данные!</a><br/>
               {% else %}
-                <a href="/users/person_data/">{{ U.user_first_name }} {{ U.user_last_name }}</a> 
+                <a href="/users/person_data/">{{ U.user_first_name }} {{ U.user_last_name }}</a><br/>
+              {% endif %}
+              {% if U.user_admin != ''%}
+                <a href="/{{ admin_url }}/">Админка</a>
               {% endif %}
               <br /><a href="/logout/">Выход</a>
             {% endif %}

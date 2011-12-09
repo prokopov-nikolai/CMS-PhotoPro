@@ -458,6 +458,14 @@ footer {
   padding:10px 5px 10px 20px;
   width:241px;
 }
+.user .description p {
+  background-color:#e6e6e6;
+  color:#7c7c7c;
+  font-size:12px;
+  line-height:15px;
+  margin-bottom:10px;
+  width:241px;
+}
 .user .corner-bottom {
   background:url(../images/corner-bottom.jpg) 30px 0px no-repeat;
   display:block;

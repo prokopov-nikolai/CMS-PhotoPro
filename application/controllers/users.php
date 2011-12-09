@@ -35,10 +35,12 @@ class Users extends CMS_Controller {
     $users = $user->get();
     $total_rows = $user->get_total();
     $total_pages = ceil($total_rows / $this->common->get_per_page());
+    if ($total_pages == 0) $total_pages = 1;
     if ($num > $total_pages) { 
       header("Location: /users/");
       exit; 
     }
+    
     // добавим в шаблон в необходимые данные для вывода с пагинацией
     $this->append_data('USER', $users);
     $this->append_data('total_rows', $total_rows);
@@ -47,26 +49,28 @@ class Users extends CMS_Controller {
     $this->append_data('num_links', 4);
     $this->append_data('base_url', '/users/page/');
     $this->append_data('paging_name', 'Пользователей');
-    
-    // извлечем все галереи пользователей
-    $uniqids = array();
-    foreach($users as $u) {
-      $uniqids[] = $u['user_uniqid'];
-    } 
-    $this->load->model('gallery_model');
-    $gallery = $this->gallery_model;
-    $gallery->user($uniqids);
-    $gals = $gallery->get();
-    
-    // отформатируем полученные галереи в удобоваримый массив
-    $user_gals = array();
-    foreach($gals as $g){
-      $user_gals[$g['user_uniqid']][] = $g;
+      
+    if (sizeof($users) > 0) { 
+      // извлечем все галереи пользователей
+      $uniqids = array();
+      foreach($users as $u) {
+        $uniqids[] = $u['user_uniqid'];
+      } 
+      $this->load->model('gallery_model');
+      $gallery = $this->gallery_model;
+      $gallery->user($uniqids);
+      $gals = $gallery->get();
+      
+      // отформатируем полученные галереи в удобоваримый массив
+      $user_gals = array();
+      foreach($gals as $g){
+        $user_gals[$g['user_uniqid']][] = $g;
+      }
+      $this->append_data('GALLERY', $user_gals);
     }
-    $this->append_data('GALLERY', $user_gals);
-    $this->append_data('active_photographers', 'current');
-    
+        
     // выведем страницу
+    $this->append_data('active_photographers', 'current');
     $this->display('page/user-list.html');
   } 
   // ---------------------------------------------------------------------------

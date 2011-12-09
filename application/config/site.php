@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/**
- * КОНФИГА САЙТА 
- */
+//=========================
+//===== КОНФИГИ САЙТА ===== 
+//=========================
 
 /*
 |-------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ $config['site_close'] = '';
 /**
  * url 
  */
-$config['site_url'] = 'http://photopro.lh';
+$config['site_url'] = 'http://www.photopro.lh';
 
 /**
  * Admin email 
@@ -69,7 +69,7 @@ $config['admin_email'] = 'prokopov-nikolaj@yandex.ru';
 /**
  * Показывать голосовани 1 - показать, 0 - скрыть
  */
-$config['show_vote'] = 0;
+$config['show_vote'] = FALSE;
 
 /**
  * Блокировка браузеров заглушкой

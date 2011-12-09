@@ -50,12 +50,12 @@ $active_record = TRUE;
 $config['db_hostname'] = 'localhost';
 $config['db_username'] = 'root';
 $config['db_password'] = '';
-$config['db_database'] = 'photopro';
+$config['db_database'] = 'database1';
 $config['db_dbprefix'] = 'ci_';
 $config['db_char_set'] = 'utf8';
 $config['db_dbcollat'] = 'utf8_general_ci';
 $config['db_table_type'] = 'INNODB';
-$config['db_cache_on'] = TRUE;
+$config['db_cache_on'] = FALSE;
 
 
 $db['default']['hostname'] = $config['db_hostname'];
