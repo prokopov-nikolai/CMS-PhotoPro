@@ -1,0 +1,20 @@
+Options +FollowSymLinks
+Options -Indexes
+
+DirectoryIndex index.php index.html
+
+AddDefaultCharset UTF-8
+#php_value display_errors on
+#php_value allow_call_time_pass_reference On
+#php_value upload_max_filesize 30M
+ 
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+RewriteRule ^image/([0-9]+)x([0-9]+)/([a-z0-9-_\.]+)\.(jpg|gif|png)$ image/$1/$2/$3.4 [L]
+RewriteRule ^(.*).(css|js|jpg|gif|png|swf)$ $1.$2 [L]
+RewriteCond $1 !^(index\.php|images|robots\.txt)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>

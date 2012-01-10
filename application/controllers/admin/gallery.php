@@ -102,7 +102,7 @@ class Gallery extends CMS_Controller {
       // сформируем название файла на сервере
   	  $img['image_filename'] = $name . substr($img['image_id'], 6, 7) . $ext;
   	  if (file_exists(ROOT . $path)) {
-  	    $upfile = ROOT . "/images/{$img['image_filename']}";
+  	    $upfile = ROOT . "/images/source/{$img['image_filename']}";
     	  copy(ROOT . $path, $upfile);
     	  unlink(ROOT . $path);
     	  // изменим размер изображения
@@ -112,17 +112,14 @@ class Gallery extends CMS_Controller {
     	  $info = getimagesize($upfile);
     	  $img['image_width'] = $info[0];
         $img['image_height'] = $info[1];
-        $img['image_size'] = filesize(ROOT . '/images/' . $img['image_filename']);
+        $img['image_size'] = filesize(ROOT . '/images/source/' . $img['image_filename']);
         $this->gallery_model->image_add($img);
         $tag = array();
         $tag['image_id'] = $img['image_id'];
     	  $tags = explode(',', $post['tags'][$k]);
     	  foreach($tags as $t) {
     	    if (trim($t) != '') {
-            $a = trim($t);
-    	      $b = explode(' ', $a);
-            $c = implode('+', $b);
-            $tag['tag_name'] = $c;
+            $tag['tag_name'] = trim($t);
     	      $this->gallery_model->tag_add($tag);
     	    }
     	  }

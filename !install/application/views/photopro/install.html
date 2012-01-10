@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta content="SitePro" name="generator" />
+  <meta content="Nikolai Prokopov" name="author" />
+  <meta content="" name="keywords" />
+  <meta content="" name="description" />
+  <link rel="shortcut icon" href="{{ path_template }}images/logo.png" type="image/x-icon" />
+  <link type="text/css" href="{{ path_template }}css/style.css" rel="stylesheet" />
+  <link type="text/css" href="{{ path_template }}css/install.css" rel="stylesheet" />
+  <script type="text/javascript" src="{{ path_template }}js/jquery-1.6.2.min.js"></script>
+  <script type="text/javascript" src="{{ path_template }}js/jquery.showpassword.js"></script>
+  {% block head %}{% endblock %}
+  {% autoescape false %}{{ headers }}{% endautoescape %}
+  <!--[if lt IE 9]>
+   <script>
+    var e = ("article,aside,figcaption,figure,footer,header,hgroup,nav,section").split(',');
+    for (var i = 0; i < e.length; i++) {
+      document.createElement(e[i]);
+    }
+   </script>
+  <![endif]-->
+  <title>{{ META.title }}</title>
+</head>
+<body>
+  <div id="wrapper">
+    <header>
+      <a href="/{{ admin_url }}/"id="logotype" class="fl-left">CMS PhotoPro</a>
+    </header>
+    <section class="fl-left">
+      &nbsp;<br/>
+      <h2>Установка CMS PhotoPro</h2>
+      <h2 style=" margin-top:10px; color:#c63828;">{{ step_name }}</h2>
+      <ul id="steps">
+        <li class="{{ step1 }}">Шаг 1</li>
+        <li class="{{ step2 }}">Шаг 2</li>
+        <li class="{{ step3 }}">Шаг 3</li>
+      </ul>
+      {% include step %}
+    </section>
+    <div id="footer_guarantor"></div>
+  </div>
+  <footer>
+    <div class="cleared" style="border-top:#fff solid 1px;"></div>
+    <div class="copyright">
+      &copy; 2011-2012 <a href="http://www.cms-photopro.com">CMS PhotoPro</a> <br />
+      Created by <a href="http://www.prokopov-nikolai.ru" target="_blank">Николай Прокопов</a> & <a href="http://www.bitepix.ru" target="_blank">Bitepix</a></div>
+  </footer>
+</body>
+</html>

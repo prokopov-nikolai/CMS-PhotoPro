@@ -38,9 +38,9 @@ class CMS_Controller extends CI_Controller {
     parent::__construct();
 
     // проверим установлен ли движок
-    if (config_item('cms_installed') == '' && $this->uri->segment(1) != 'install'){
+    if (config_item('cms_installed') === false && $this->uri->segment(1) != 'install'){
       die('<h3>CMS PhotoPro еще не установлена!</h3><a href="/install/step/1">Установить</a>');
-    } else {
+    } elseif ($this->uri->segment(1) != 'install') {
       $file_install = ROOT . '/' . APPPATH . 'controllers/install.php';
       if (file_exists($file_install)) unlink($file_install);
     }
@@ -228,12 +228,12 @@ class CMS_Controller extends CI_Controller {
     // удалим сообщение и ошибки
     if ($this->session->userdata('message') != '') {
       $this->_data['message'] = $this->session->userdata('message');
-    	$this->session->unset_userdata('message');
+   	  $this->session->unset_userdata('message');
     } 
     if ($this->session->userdata('error') != '') {
       $this->_data['error'] = $this->session->userdata('error');
       $this->session->unset_userdata('error');
-    } 
+    }
   }
   // ---------------------------------------------------------------------------
   

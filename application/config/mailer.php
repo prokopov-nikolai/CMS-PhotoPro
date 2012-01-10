@@ -2,19 +2,19 @@
 /*
  * Хост smtp-сервера
  */
-$config['smtp_host'] = 'mail.loogo.com.ua';
+$config['smtp_host'] = '';
 
 /*
  * Порт smtp-сервера
  */
-$config['smtp_port'] = 26;
+$config['smtp_port'] = 25;
 
 /*
  * Логин для авторизации на smtp-сервере
  */
-$config['smtp_login'] = 'no-reply@loogo.com.ua';
+$config['smtp_login'] = '';
 
 /*
  * Пароль для авторизации на smtp-сервере
  */
-$config['smtp_password'] = 'H41k4tR7K9';
+$config['smtp_password'] = '';

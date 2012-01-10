@@ -132,7 +132,7 @@ Class Gallery_model extends CI_Model {
   	$this->db->where_in('image_id', $image_ids);
   	$query = $this->db->get();
   	foreach ($query->result_array() as $row) {
-  		unlink(ROOT . '/images/' . $row['image_filename']);
+  		unlink(ROOT . '/images/source/' . $row['image_filename']);
   	}
     $this->db->where_in('image_id', $image_ids);
     return $this->db->delete('image');
