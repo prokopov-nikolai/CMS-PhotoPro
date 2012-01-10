@@ -1,5 +1,9 @@
-<div class="title">{{ G.gallery_title }}</div>
-<div class="author">{{ G.user_name }}</div>
+{% if G.gallery_title != '' %}
+  <div class="title">{{ G.gallery_title }}</div>
+{% endif %}
+{% if G.user_name != '' %}
+  <div class="author">{{ G.user_name }}</div>
+{% endif %}
 <div class="content theme-default">
   <div class="ribbon"></div>
   <div id="slider" class="nivoSlider">

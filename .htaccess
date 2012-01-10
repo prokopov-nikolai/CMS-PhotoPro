@@ -9,10 +9,9 @@ AddDefaultCharset UTF-8
 php_value upload_max_filesize 30M
  
 RewriteEngine on
-
+RewriteBase /
 RewriteRule ^image/([0-9]+)x([0-9]+)/([a-z0-9-_\.]+)\.(jpg|gif|png)$ image/$1/$2/$3.4 [L]
 RewriteRule ^(.*).(css|js|jpg|gif|png|swf)$ $1.$2 [L]
-
 RewriteCond $1 !^(index\.php|images|robots\.txt)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

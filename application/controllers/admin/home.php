@@ -21,8 +21,8 @@ class Home extends CMS_Controller {
    * Главная страница сайта
    */
   public function index() {
-    $file = explode("\n", file_get_contents('http://prokopov-nikolai.ru/advertising.html'));
-    $this->append_data('advertising', $file[rand(0,sizeof($file)-1)]);
+    $advertising = file_get_contents('http://prokopov-nikolai.ru/cms-photopro-advertising.php');
+    $this->append_data('advertising', $advertising);
     $this->display('home.html');
   }
 }

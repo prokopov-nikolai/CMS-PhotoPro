@@ -21,10 +21,6 @@ class Home extends CMS_Controller {
    * Главная страница сайта
    */
   public function index() {
-    if ($this->common->get_real_ip() == '84.53.208.34') {
-      $this->append_data('govern', 1);
-    }
-    
     // извлечем главный слайдер
     $this->load->plugin('nivo_slider');
     $main = config_item('main_page');

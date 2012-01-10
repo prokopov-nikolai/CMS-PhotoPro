@@ -32,18 +32,7 @@
               <div class="corner-top"></div>
               <div class="gallery-description">
                 {{ G.gallery_image_count }} фото
-                <dl class="star-rating fl-right">
-                  <dt class="fl-left">Рейтинг: 4.3</dt>
-                  <dd class="fl-left">
-                    <ol>
-                      <li><a href="#" class="star1">Ужасно</a></li>
-                      <li><a href="#" class="star2">Плохо</a></li>
-                      <li class="current" style="width:9px;"><a href="#" class="star3">Нормально</a></liclass>
-                      <li><a href="#" class="star4">Хорошо</a></li>
-                      <li><a href="#" class="star5">Отлично</a></li>
-                    </ol>
-                  </dd>
-                </dl>
+                {# include "raiting.html" #}
               </div>
             {% endfor %}
           </div>
