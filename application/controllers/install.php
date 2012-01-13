@@ -149,7 +149,7 @@ class Install extends CMS_Controller {
       $headers .= "From: no-reply@cms-photopro.com <no-reply@cms-photopro.com>\r\n"; 
      
       /* отправим письмо */
-      mail($email, $subject, $message, $headers);
+      @mail($email, $subject, $message, $headers);
 
       // проставим что установка завершена и укажем использовать базу для сессии
       $data = array(

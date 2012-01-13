@@ -28,7 +28,7 @@ class Unpacker {
   public function initialize($file, $output_charset = 'utf-8') {
     $this->_output_charset = $output_charset;
     if (!isset($this->_xml)) {
-      $this->_xml = new \DOMDocument('1.0', 'utf-8');
+      $this->_xml = new DOMDocument('1.0', 'utf-8');
     }
     if ($file) {
       // Загружаем XML дважды, чтобы исправить

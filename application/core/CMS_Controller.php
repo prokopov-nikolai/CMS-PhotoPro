@@ -292,12 +292,8 @@ class CMS_Controller extends CI_Controller {
    */
   private function _site_close(){
     $site_close = config_item('site_close');
-    if (isset($_GET['demo']) && $_GET['demo'] != '') {
-      $this->session->set_userdata(array('demo' => $_GET['demo']));
-    }
-    if (ENVIRONMENT == 'production' && 
-        $site_close != '' && 
-        $this->session->userdata('demo') != '1' && 
+    if ($site_close != '' && 
+        $this->session->userdata('user_admin') == '' && 
         $this->uri->segment(1) != config_item('admin_url')) {
       $this->append_data('site_close', $site_close);
       header('HTTP/1.0 503 Service Unavailable');

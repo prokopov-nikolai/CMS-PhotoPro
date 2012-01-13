@@ -26,8 +26,6 @@ class Settings extends CMS_Controller {
     $post = $this->input->post();
     if (sizeof($post) > 1) {
     	foreach($post as $k => $v) {
-    	  if ($v == 'FALSE') $v = FALSE;
-        if ($v == 'TRUE') $v = TRUE;
     	  $this->config->set_item($k, $v);
     	}
       $this->config->save();

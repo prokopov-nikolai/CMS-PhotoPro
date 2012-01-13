@@ -21,6 +21,7 @@
 {% endblock %}
 
 {%  block content %}
+<form action="" method="post" id="user-data">
   <div id="tabs-pro">
     <a href="#templates" class="tab fl-left" rel="tab1">
       Шаблоны
@@ -38,7 +39,6 @@
       Главная страница
     </a>
 
-    <form action="" method="post" id="user-data">
       
     {# Первая вкладка - шаблоны #}
     <div id="tab1" class="fl-left tab-content">
@@ -205,15 +205,11 @@
     </div>
   </div>
 
-    
-    
-    
+  <input type="hidden" name="cms_installed" value="TRUE" />    
 
+  <div class="cleared" style="margin-top:20px;"></div>
+  <input type="submit" value="Обновить" id="update" />
 
-
-    <div class="cleared" style="margin-top:20px;"></div>
-    <input type="submit" value="Обновить" id="update" />
-
-  </form>
+</form>
 
 {%  endblock %}
