@@ -133,7 +133,9 @@ class Users extends CMS_Controller {
     #pr($post);
     if (isset($post['user_last_name'])) {
       $this->load->model('user_model');
-      $this->user_model->update($post, $this->session->userdata['user_uniqid']);
+      if (!$this->user_model->update($post, $this->session->userdata['user_uniqid'])){
+        $this->session->set_userdata($post); 
+      }
     }
     $this->append_data('first_visit', $this->session->userdata('first_visit'));
     $this->session->unset_userdata('first_visit');

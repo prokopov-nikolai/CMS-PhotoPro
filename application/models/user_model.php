@@ -35,7 +35,7 @@ Class User_model extends CI_Model {
   // ---------------------------------------------------------------------------
   
   /**
-   * Обновляем данне пользователя
+   * Обновляем данные пользователя
    * @return bol 
    */
   public function update($post, $uniqid){
@@ -65,7 +65,6 @@ Class User_model extends CI_Model {
     }
   	
   	// обновим данные пользователя
-  	$this->db->where('user_uniqid', $uniqid);
   	if (isset($post['user_password']) && $post['user_password'] == '') {
   	  unset($post['user_password']);
   	} else {
@@ -183,7 +182,7 @@ Class User_model extends CI_Model {
   // ---------------------------------------------------------------------------
   
   /**
-   * Удаляем  
+   * Удаляем  пользователя
    */
   public function delete($uniqid){
   	$user = $this->get($uniqid);
@@ -200,7 +199,7 @@ Class User_model extends CI_Model {
   /**
    * Извлекаем список пользователей
    */
-  public function get(){
+  public function get($all = false){
     $user = array();
     $this->db->select('SQL_CALC_FOUND_ROWS u.*', false);
     $this->db->select('ua.user_uniqid as user_admin');
@@ -210,7 +209,9 @@ Class User_model extends CI_Model {
                        AS user_gallery_count", false);
     $this->db->from('user AS u');
     $this->db->join('user_admin AS ua', 'ua.user_uniqid = u.user_uniqid', 'left');
-    $this->db->having('user_gallery_count > 0'); 
+    if (!$all) {
+      $this->db->having('user_gallery_count > 0');
+    } 
     $this->db->order_by('user_date', 'desc');
     if ($this->uniqid != '') {
       $this->db->where('u.user_uniqid', $this->uniqid);

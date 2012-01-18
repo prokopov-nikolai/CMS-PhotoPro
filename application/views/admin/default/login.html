@@ -9,8 +9,8 @@
     <div class="login">
       <input type="text" name="user_email" value="{{ user_email }}" size="26" style="display:block; width:400px; font-size:20px;" />
     </div>
-    <div class="red" style="padding:0px 0px 0px 8px; font-size:12px; line-height:14px;">
-      {% if error == 'Пользователь с таким email не найден!' %}
+    <div style="color:#C63828; padding:0px 0px 0px 8px; font-size:12px; line-height:14px;">
+      {% if error == 'Пользователь с таким email не найден!' or error == 'Введите Email!'%}
         {% autoescape false %}
           {{ error }}
         {% endautoescape %}
@@ -23,7 +23,7 @@
     <div class="login">
       <input id="user_password" class="reg-input" type="password" name="user_password" value="{{ user_password }}" size="22" />
       {% if error == 'Пароль не может быть пустым!' or error == 'Не верный пароль!' %}
-        <div class="red" style="padding:0px 0px 0px 0px; font-size:12px; line-height:14px;">
+        <div style="color:#C63828 ; padding:0px 0px 0px 0px; font-size:12px; line-height:14px;">
           {% autoescape false %}
             {{ error }}
           {% endautoescape %}

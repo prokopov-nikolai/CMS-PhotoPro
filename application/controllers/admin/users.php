@@ -19,7 +19,7 @@ class Users extends CMS_Controller {
    * Главная страница раздела пользователей
    */
   public function index() {
-    $this->append_data('USERS', $this->user_model->get());
+    $this->append_data('USERS', $this->user_model->get(true));
     $this->display('users/list.html');
   }
   // ---------------------------------------------------------------------------
@@ -49,22 +49,31 @@ class Users extends CMS_Controller {
 
     // если переданы данные то обновим их
     $post = $this->input->post();
+    $user = '';
     if (sizeof($post) > 2){
     	if (isset($post['user_password']) && $post['user_password'] != '') {
-    		$post['user_password'] = md5($post['user_password'] . config_item('encryption_key'));
-    	}
-    	$this->user_model->update($post, $uniqid);
+    		$post['user_password'] =$this->user->encrypt_password($post['user_password']);
+    	}    	
+      if (!$this->user_model->update($post, $uniqid)){
+        $user = $post; 
+      }
     }
     
     // выведем данные
-    $user = $this->user_model->get($uniqid);
-    $this->append_data('U', $user[0]);
+    if (!$user) {
+      $this->user_model->uniqid($uniqid); 
+      $user = $this->user_model->get($uniqid); 
+    }
+    #pr($user);
+    #pr($this->session->userdata);
+    
+    $this->append_data('USER', $user);
     $this->display('users/update.html');
   }
   // ---------------------------------------------------------------------------
   
   /**
-   * Обновляем данные пользователя
+   * Удаляем пользователя
    * @return unknown_type
    */
   public function delete($uniqid = ''){
@@ -75,6 +84,7 @@ class Users extends CMS_Controller {
     
     $this->user_model->delete($uniqid);
     $this->locate_referer();
+    exit;
   }
   // ---------------------------------------------------------------------------
 }

@@ -98,14 +98,14 @@
         {% endif %}
       {% endautoescape %}
     </p>
-    {% if USER.message %}
+    {% if message %}
       <div id="user-message">
-        {{ USER.message }}
+        {{ message }}
       </div>
     {% endif %}
-    {% if USER.error %}
+    {% if error and error != 'Введите Email!' and error != 'Не верный пароль!' and error != 'Пароль не может быть пустым!' and error != 'Пользователь с таким email не найден!' %}
       <div id="user-error">
-        {{ USER.error }}
+        {{ error }}
       </div>
     {% endif %}
     {% if SUBMENU[controller][0] is not empty and subsection == ''%}

@@ -95,7 +95,7 @@ CREATE TABLE {db_dbprefix}gallery (
   UNIQUE INDEX gallery_url (gallery_url),
   INDEX user_gallery (user_uniqid),
   CONSTRAINT user_gallery FOREIGN KEY (user_uniqid)
-    REFERENCES {db_dbprefix}user(user_uniqid) ON DELETE RESTRICT ON UPDATE RESTRICT
+    REFERENCES {db_dbprefix}user(user_uniqid) ON DELETE CASCADE ON UPDATE CASCADE
 )
 ENGINE = {db_table_type}
 AUTO_INCREMENT = 9
@@ -119,9 +119,9 @@ CREATE TABLE {db_dbprefix}page (
   INDEX IX_{db_dbprefix}page_category_id (category_id),
   INDEX user_page (user_id),
   CONSTRAINT category_page FOREIGN KEY (category_id)
-    REFERENCES {db_dbprefix}category(category_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    REFERENCES {db_dbprefix}category(category_id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT user_page FOREIGN KEY (user_id)
-    REFERENCES {db_dbprefix}user(user_uniqid) ON DELETE RESTRICT ON UPDATE RESTRICT
+    REFERENCES {db_dbprefix}user(user_uniqid) ON DELETE CASCADE ON UPDATE CASCADE
 )
 ENGINE = {db_table_type}
 AUTO_INCREMENT = 1
@@ -173,7 +173,7 @@ CREATE TABLE {db_dbprefix}image (
   CONSTRAINT gallery_image FOREIGN KEY (gallery_id)
     REFERENCES {db_dbprefix}gallery(gallery_id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT user_image FOREIGN KEY (user_uniqid)
-    REFERENCES {db_dbprefix}user(user_uniqid) ON DELETE RESTRICT ON UPDATE RESTRICT
+    REFERENCES {db_dbprefix}user(user_uniqid) ON DELETE CASCADE ON UPDATE CASCADE
 )
 ENGINE = {db_table_type}
 AVG_ROW_LENGTH = 1024
