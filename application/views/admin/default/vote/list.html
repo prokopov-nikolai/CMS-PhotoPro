@@ -22,11 +22,11 @@
     </div>
     <input type="submit" value="Добавить ответ" id="add-answer" />
   </form>
-  <ul id="vote-list">
+  <ul class="list">
     {% for vote_id in VOTES|keys %}
       <li>
-        <a href="#" class="vote fl-left" data-vote-id="vote-{{ vote_id }}" data-answers="{{ VOTES[vote_id].answers }}">{{ VOTES[vote_id].question }}</a>
-        <a class="delete fl-left" href="/{{ admin_url }}/vote/delete/{{ vote_id }}/"></a>
+        <a href="#" class="title vote fl-left" data-vote-id="vote-{{ vote_id }}" data-answers="{{ VOTES[vote_id].answers }}">{{ VOTES[vote_id].question }}</a>
+        <a class="delete fl-right" href="/{{ admin_url }}/vote/delete/{{ vote_id }}/"></a>
       </li>
     {% endfor%}
   </ul>

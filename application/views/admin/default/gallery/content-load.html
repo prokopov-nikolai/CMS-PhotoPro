@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-  <b>Автор:</b> {{ G.user_name }}
+  {% if G.user_name %}<b>Автор:</b> {{ G.user_name }}{% endif %}
   <div class="cleared"></div>
   {% for IMG in G.images %}
     <div class="fl-left image">
@@ -21,13 +21,15 @@
       </div>
       <div class="url">
         <input type="checkbox" data-image-id="{{ IMG.id }}" class="select-img fl-right" />
-        <input type="text" class="src" value="{{ IMG.url }}" data-image-filename="{{ IMG.filename }}" />
+        <input type="text" class="src" value="{{ IMG.url }}" data-image-filename="{{ IMG.name }}" />
       </div>
       <div class="slider"><input class="resize" type="range" min="10" max="{{ IMG.width }}" value="{{ IMG.width }}" data-max-height="{{ IMG.height }}"/></div>
     </div>
   {% endfor %}
   <div class="cleared"></div>
-  <button style="font-size:16px; padding-bottom:8px;" id="delete-all"><img src="{{ path_template }}images/delete-all.png" border="0" style="margin-bottom:-8px;"/> Удалить выбранные</button>
+  {% if G.images %}
+    <button style="font-size:16px; padding-bottom:8px;" id="delete-all"><img src="{{ path_template }}images/delete-all.png" border="0" style="margin-bottom:-8px;"/> Удалить выбранные</button>
+  {% endif %}
   <div class="cleared" style="height:10px;"></div>
   <form id="form" action="/{{ admin_url }}/gallery/images_load/" method="post" enctype="multipart/form-data">
     <div class="radius uploadifyQueue" id="custom-queue"></div>
@@ -40,6 +42,8 @@
   </form>
   <script type="text/javascript">
   $(function() {
+    $('.select-img').attr('checked', false);
+    
     $('#file_upload').uploadify({
       'uploader'  : '{{ path_template }}uploadify/uploadify.swf',
       'script'    : '{{ path_template }}uploadify/uploadify.php',
@@ -61,8 +65,11 @@
          $obj.append($img);
          $obj.append('<input type="text" name="tags[' + queueID + ']" value="'+ $h[0] +'"/>' + $h[1]);
          $s = $('.files-up').size();
-         $('#form').append('<input type="hidden" class="files-up" name="upfile[' + queueID + ']" value="' + response + '" />');
-        }
+         $('#form').append('<input type="hidden" class="files-up" id="file-' + queueID + '" name="upfile[' + queueID + ']" value="' + response + '" />');
+      },
+      'onCancel'  : function(event,queueID,fileObj,data) {
+        $('#file-' + queueID).remove();
+      }
     });
     // -------------------------------------------------------------------------
     $('.delete, #delete-all').click(function(){
@@ -71,20 +78,22 @@
       }
       message = 'картинку';
       image_ids = new Array();
-      if($('.remove').size() > 1) {
-        message = 'выбранные картинки';
+      if($('.remove').size() > 0) {
+        if($('.remove').size() > 1) 
+          message = 'выбранные картинки';
         $('.remove').each(function(){
           image_ids.push($(this).find('.delete').attr('data-image-id'));
         });
-      }
-      if (confirm('Вы дейсвительно хотите удалить ' + message + '?')) {
-        if ($(this).attr('data-image-id') != 'undefined') {
-          image_ids.push($(this).attr('data-image-id'));          
+        if (confirm('Вы дейсвительно хотите удалить ' + message + '?')) {
+          images_delete(image_ids);
+        } else {
+          $('.remove').removeClass('remove');
+          $('.select-img').attr('checked', false); 
         }
-        images_delete(image_ids);
       } else {
-        $(this).removeClass('remove');
+        alert("Выберите картинки!");
       }
+
     });
     // -------------------------------------------------------------------------
     $('.select-img').click(function(){

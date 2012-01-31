@@ -113,10 +113,17 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
 }
 .delete {
   background:url(../images/delete.png) no-repeat;
-  display:block;
   height:22px;
-  left:20px;
   width:22px;
+  top:4px;
+}
+.view {
+  background:url(../images/view.png) no-repeat;
+  display:block;
+  height:28px;
+  margin-right:10px;
+  top:0px;
+  width:28px;
 }
 .list li {
   clear:both;
@@ -157,10 +164,10 @@ nav {
 footer {
   background-color:#e3e3e3;
   display:block;
-  height:70px;
+  height:50px;
   margin:-71px auto;
   overflow:hidden;
-  padding:1px 0px 0px;
+  padding:10px 40px;
 }
 .copyright {
   display:block;
@@ -224,6 +231,7 @@ menu#main a:hover {
 }
 #exit, .exit {
   border:#b0281a solid 1px;
+  background:rgb(221,76,57);
   background-image: linear-gradient(bottom, rgb(197,54,39) 50%, rgb(221,76,57) 100%);
   background-image: -o-linear-gradient(bottom, rgb(197,54,39) 50%, rgb(221,76,57) 100%);
   background-image: -moz-linear-gradient(bottom, rgb(197,54,39) 50%, rgb(221,76,57) 100%);
@@ -374,8 +382,27 @@ footer {
 .slider input[type=range]{
   width:100%;
 }
-#gallery-list li {
-  clear:both;
+.list {
+  list-style:circle;
+  margin:0px;
+  padding:0px;
+}
+.list a.title{
+  display:block;
+  padding:5px;
+  width:526px;
+}
+.list li {
+  display:inline-block; 
+  *display:inline; 
+  zoom:1;
+  margin-right:40px;
+  overflow:hidden;
+  padding:0px;
+  width:600px;
+}
+.list li:hover {
+  background:#f9f9f9;
 }
 .cover {
   background: url(../images/star.png) no-repeat;
@@ -390,6 +417,13 @@ footer {
 }
 .cover-current {
   display:block!important;
+}
+.show_cat {
+  border-bottom:#dedede solid 1px;
+  display:block;
+  font-size:16px;
+  margin-top:5px;
+  padding:5px 0px;
 }
 /*** end галереи ***/
 

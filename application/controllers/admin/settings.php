@@ -44,7 +44,9 @@ class Settings extends CMS_Controller {
    * Удаляем кеш системы
    */
   public function cache_delete() {
-  	$dir = ROOT . '/application/cache/';
+  	$dir = ROOT . '/application/cache/db/';
+    $this->_delete_cache($dir);
+  	$dir = ROOT . '/application/cache/twig/';
     $this->_delete_cache($dir);
     $this->session->set_userdata(array('message' => 'Кэш успешно сброшен!'));
     header('Location: /' . config_item('admin_url') . '/'); exit;
@@ -67,7 +69,7 @@ class Settings extends CMS_Controller {
 	  			}
                
 	      }
-	      if ($file != '.' && $file != '..' && $file != '.svn'){
+	      if ($file != '.' && $file != '..' && $file != '.svn' && $file != ''){
           closedir($dir);
           opendir($dir.'.');
 	      	rmdir($dir);

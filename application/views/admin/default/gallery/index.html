@@ -14,9 +14,13 @@
     </div>
     <input type="submit" value="Добавить галерею" onclick="show_form($(this)); return false;" />
   </form>
-  <ul id="gallery-list">
+  <ul class="list">
     {% for G in GALLERY %}
-      <li><a href="/{{ admin_url }}/gallery/load/{{ G.gallery_url }}/" class="fl-left">{{ G.gallery_title }}</a><a class="delete fl-left" href="/{{ admin_url }}/gallery/delete/{{ G.gallery_url }}/"></a></li>
+      <li>
+        <a  class="fl-left title" href="/{{ admin_url }}/gallery/load/{{ G.gallery_url }}/">• &nbsp;{{ G.gallery_title }}</a>
+        <a class="delete fl-right" href="/{{ admin_url }}/gallery/delete/{{ G.gallery_url }}/"></a>
+        <a class="view fl-right" href="/gallery/{{ G.gallery_url }}/" target="_blank"></a>
+      </li>
     {% endfor%}
   </ul>
   <script type="text/javascript">

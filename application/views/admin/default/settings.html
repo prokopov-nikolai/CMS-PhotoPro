@@ -1,8 +1,8 @@
 {% extends "index.html" %}
 
 {% block head %}
-  <script type="text/javascript" src="{{ path_template }}js/jquery.tabsPro-0.3.min.js"></script>
-  <link type="text/css" href="{{ path_template }}css/jquery.tabsPro-0.3.css" rel="stylesheet" />
+  <script type="text/javascript" src="{{ path_template }}/js/jquery.tabsPro-0.3.min.js"></script>
+  <link type="text/css" href="{{ path_template }}/css/jquery.tabsPro-0.3.css" rel="stylesheet" />
   <script type="text/javascript">
     $(function(){
       $('.template').click(function(){
@@ -143,10 +143,6 @@
       <input type="text" name="admin_email" id="admin_email" value="{{ CONFIG.admin_email }}" size="26" style="display:block; width:400px;" />
   
       <div class="cleared" style="margin-top:20px;"></div>
-      <label for="site_url">URL сайта</label>
-      <input type="text" name="site_url" id="site_url" value="{{ CONFIG.site_url }}" size="26" style="display:block; width:400px;" />
-  
-      <div class="cleared" style="margin-top:20px;"></div>
       <label for="show_vote">Разрешить показывать голосования</label>
       <select name="show_vote" id="show_vote" style="display:block; width:410px;">
         <option value="1" {% if CONFIG.show_vote == 1%}selected{% endif %}>Да</option>
@@ -181,6 +177,10 @@
       <label for="sess_expiration">Время жизни сессии <i style="color:#ababab;">(сек.)</i></label>
       <input type="text" name="sess_expiration" id="sess_expiration" value="{{ CONFIG.sess_expiration }}" size="26" style="display:block; width:400px;" />
 
+      <div class="cleared" style="margin-top:20px;"></div>
+      <label for="site_close">nginx<br /><i style="color:#ababab;">(если у Вас не отображаются картинки в галереях<br/>попробуйте установить значение ".nginx")</i></label>
+      <input type="text" name="nginx" id="nginx" value="{{ CONFIG.nginx }}" size="26" style="display:block; width:400px;" />
+
     </div>
     
     {# Пятая вкладка - настройки главной страницы #}
@@ -205,7 +205,7 @@
     </div>
   </div>
 
-  <input type="hidden" name="cms_installed" value="TRUE" />    
+  <!--input type="hidden" name="cms_installed" value="TRUE" /-->    
 
   <div class="cleared" style="margin-top:20px;"></div>
   <input type="submit" value="Обновить" id="update" />

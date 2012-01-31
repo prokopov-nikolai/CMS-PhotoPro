@@ -42,9 +42,18 @@ Class Gallery_model extends CI_Model {
    * Удаляет галерею
    */
   public function delete($gallery_url){
+    $this->url($gallery_url);
     $gallery = $this->get($gallery_url);
+
+    // удалим исходники картинок
+    foreach($gallery['images'] as $img) {
+      if (file_exists(ROOT . "/images/source/{$img['filename']}"))
+        unlink(ROOT . "/images/source/{$img['filename']}");
+    }
+    
+    // удалим картинки и саму галерею из базы 
     if ($this->db->delete('gallery', array('gallery_url' => $gallery_url))) {
-      $this->session->set_userdata(array('message' => 'Галерея "'.$gallery[0]['gallery_title'].'" успешно удалена!'));
+      $this->session->set_userdata(array('message' => 'Галерея "'.$gallery['gallery_title'].'" успешно удалена!'));
     } else {
       $this->session->set_userdata(array('error' => 'Ошибка удаления галереи из базы!'));
     }
@@ -86,8 +95,8 @@ Class Gallery_model extends CI_Model {
       }
       $images[$row['image_id']] = array(
         'id'       => $row['image_id'],
-        'url'      => '/image/' . $width . 'x' . $height . '/' . $row['image_name'],
-        'name' => $row['image_name'],
+        'url'      => '/image/' . $width . 'x' . $height . '/' . $row['image_name'] . config_item('nginx'),
+        'name'     => $row['image_name'] . config_item('nginx'),
         'filename' => $row['image_filename'],
         'width'    => $width,
         'height'   => $height
@@ -132,7 +141,8 @@ Class Gallery_model extends CI_Model {
   	$this->db->where_in('image_id', $image_ids);
   	$query = $this->db->get();
   	foreach ($query->result_array() as $row) {
-  		unlink(ROOT . '/images/source/' . $row['image_filename']);
+  	  if (file_exists(ROOT . '/images/source/' . $row['image_filename']))
+  		  unlink(ROOT . '/images/source/' . $row['image_filename']);
   	}
     $this->db->where_in('image_id', $image_ids);
     return $this->db->delete('image');
@@ -221,8 +231,10 @@ Class Gallery_model extends CI_Model {
     if ($this->url != '') {
       $gallery = $query->row_array();
       $gallery['images'] = $this->image_get();
+      $gallery['image_name'] = $gallery['image_name'] . config_item('nginx'); 
     } else {
       foreach ($query->result_array() as $row){
+        $row['image_name'] = $row['image_name'] . config_item('nginx'); 
         $gallery[] = $row;
       }
     }

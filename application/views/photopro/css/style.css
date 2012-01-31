@@ -70,6 +70,7 @@ header {
 section {
   display:block;
   margin:0px auto;
+  padding: 20px 0px;
   width:1130px;
 }
 #logotype{
@@ -552,3 +553,50 @@ dl.star-rating li.current {
   background: url(../images/raiting.gif) 0px 0px;
 }
 /*** end пользователи ***/
+
+/*** рубрика голосование ***/
+.cat-description, .page {
+  margin:10px 0px;
+}
+.page h2 {
+  font-weight:100;
+}
+.page a:hover {
+  text-decoration:none;
+}
+.vote-content .vote-question {
+  font-weight:bold;
+  margin-bottom:20px;
+}
+.vote-content .answers {
+  margin-bottom:20px;
+}
+.vote-content .vote-answer {
+  //border-bottom:#efefef solid 1px;
+  cursor:pointer;
+  padding:0px 0px 0px 10px;
+  margin-bottom:5px;
+}
+.vote-content .radiobut {
+  background:url(../images/radiobutton.png) no-repeat 0px -17px;
+  display:inline-block;
+  *display:inline;
+  zoom:1;
+  height:15px;
+  width:15px;
+}
+.vote-content .my-selection  .radiobut {
+  background:url(../images/radiobutton.png) no-repeat 1px 0px!important;
+}
+.vote-content .answer-votes {
+  background-color:#000;
+}
+.vote-content span {
+  color:#fff;
+  font-size:12px;
+  padding:5px;
+}
+.page-content {
+  margin:10px 0px 0px 0px;
+}
+/*** end голосование ***/

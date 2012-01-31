@@ -2,17 +2,24 @@
 
 {% block content %}
   {% set cat_name = '' %}
+  {% if PAGES[0].category_title == '' %}
+    <a href="#cat-none" class="show_cat">Без рубрики</a>
+  {% endif %}
+    <ul id="cat-none" style="display:none;" class="list">
+ 
   {% for P in PAGES%}
     {% if cat_name != P.category_title %}
-      {% if cat_name != '' %}</ul>{% endif %}   
+      {% if cat_name != '' %}{% endif %}   
       {% set cat_name = P.category_title %}
+      </ul>
       <div class="cleared"></div>
-      <a href="#{{ P.category_url }}_{{ P.category_id }}" class="show_cat">{{ P.category_title }}</a><br />
+      <a href="#{{ P.category_url }}_{{ P.category_id }}" class="show_cat">{{ P.category_title }}</a>
       <ul id="{{ P.category_url }}_{{ P.category_id }}" style="display:none;" class="list">
     {% endif %}
     <li>
-      <a href="/{{ admin_url }}/page/edit/{{ P.page_url }}/" class="fl-left">{{ P.page_title }}</a>
-      <a href="/{{ admin_url }}/page/delete/{{ P.page_url }}/" class="delete fl-left"></a>
+      <a class="title fl-left" href="/{{ admin_url }}/page/edit/{{ P.page_url }}/">• &nbsp;{{ P.page_title }}</a>
+      <a class="delete fl-right" href="/{{ admin_url }}/page/delete/{{ P.page_url }}/"></a>
+      <a class="view fl-right" href="/{{ P.page_url }}/" target="_blank"></a>
     </li>
   {% endfor %}
   </ul>

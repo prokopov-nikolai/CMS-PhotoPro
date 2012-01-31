@@ -49,21 +49,26 @@ Class User_model extends CI_Model {
       $query = $this->db->get();
       $user = $query->row_array();
       if (isset($user['user_admin']) && $user['user_admin'] != '') {
-        // проверка пройдена добавим или удалим нового админа
+        // проверка пройдена добавим или удалим нового админа кроме себя
         if (isset($post['user_admin']) && $post['user_admin'] == 'on'){
           $this->db->query("INSERT INTO {$this->db->dbprefix}user_admin
                             SET
                               user_uniqid = '{$uniqid}'
                             ON DUPLICATE KEY UPDATE
                               user_uniqid = '$uniqid'");
-          unset($post['user_admin']);
         } else {
-          $this->db->where('user_uniqid', $uniqid);
-          $this->db->delete('user_admin');
+          if ($this->session->userdata('user_admin') != $uniqid) {
+            $this->db->where('user_uniqid', $uniqid);
+            $this->db->delete('user_admin');
+          } else {
+            $this->session->set_userdata(array('error' => 'Вы не можете лишить себя админских прав!'));
+          }
         }
+        
       }
     }
-  	
+    unset($post['user_admin']);
+    
   	// обновим данные пользователя
   	if (isset($post['user_password']) && $post['user_password'] == '') {
   	  unset($post['user_password']);

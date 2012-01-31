@@ -54,7 +54,16 @@ class Gallery extends CMS_Controller {
    */
   public function delete($gallery_url){
     $this->gallery_model->delete($gallery_url);
-
+    
+    // почистим буффер
+    if ($handledir = opendir(ROOT . '/images/buffer/')) {
+      while (false !== ($file = readdir($handledir))) {
+        if (file_exists(ROOT . '/images/buffer/' .$file))
+          unlink(ROOT . '/images/buffer/' .$file);
+      }
+      closedir($handledir);
+    }
+    
     // вернем обратно на страницу добавления
     $this->locate_referer();
   }

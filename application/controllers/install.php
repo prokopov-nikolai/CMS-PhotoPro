@@ -9,19 +9,20 @@
  */
 class Install extends CMS_Controller {
   
-  private $step_count;
+  private $_step_count;
   
   /**
    * Конструктор 
    */
   public function __construct(){
+	$this->_check_permissions();
     parent::__construct();
     $host = str_replace('www.', '', $_SERVER['HTTP_HOST']);
     ini_set('session.cookie_domain', ".{$host}");
     session_start();
     define('SITE_PATH', ROOT . '/' . APPPATH);
     $step = $this->uri->segment(3);
-    $this->step_count = 3;
+    $this->_step_count = 3;
     if ($step) {
       $this->append_data('step', 'install-'.$step.'.html');
       $this->append_data('step'.$step, 'current');
@@ -46,50 +47,6 @@ class Install extends CMS_Controller {
   // ---------------------------------------------------------------------------
   
   /**
-   * Шаги установки
-   */
-  public function step($num = 1){
-    switch ($num) {
-      case 1:
-        $this->admin_settings();
-      break;
-      case 2:
-        $this->database_settings();
-        break;
-      case 3:
-        $this->install();
-        break;
-      case 4:
-        $this->delete_files();
-        break;
-      default:
-      break;
-    }
-  }
-  // ---------------------------------------------------------------------------
-  
-  /**
-   * Общие настройки
-   */
-  public function admin_settings(){
-    $host = str_replace('www.', '', $_SERVER['HTTP_HOST']);
-    $this->append_data('host', $host);
-    $this->append_data('step_name', "Шаг 1 из {$this->step_count}. Администратор сайта.");
-    $this->display('install.html');
-  }
-  // ---------------------------------------------------------------------------
-  
-  /**
-   * Настройки базы данных
-   */
-  public function database_settings(){
-    // Отправим сообщение об успешной установке
-    $this->append_data('step_name', "Шаг 2 из {$this->step_count}. Настройки базы данных.");
-    $this->display('install.html');
-  }
-  // ---------------------------------------------------------------------------
-  
-  /**
    * Проверка соединения с базой данных
    */
   public function check_connection(){
@@ -106,14 +63,158 @@ class Install extends CMS_Controller {
   // ---------------------------------------------------------------------------
   
   /**
+   * Шаги установки
+   */
+  public function step($num = 1){
+    switch ($num) {
+      case 1:
+        $this->_admin_settings();
+      break;
+      case 2:
+        $this->_database_settings();
+        break;
+      case 3:
+        $this->_install();
+        break;
+      case 4:
+        $this->_delete_files();
+        break;
+      default:
+      break;
+    }
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Общие настройки
+   */
+  private function _admin_settings(){
+    $host = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+    $this->append_data('host', $host);
+    $this->append_data('step_name', "Шаг 1 из {$this->_step_count}. Администратор сайта.");
+    $this->display('install.html');
+  }
+  // ---------------------------------------------------------------------------
+  
+  /*
+   * Проверим права на файлы и папки
+   */
+  private function _check_permissions(){  
+    $path = ROOT . '/' . APPPATH;
+    $error = '';
+      
+    if (file_exists("{$path}config/autoload.php-install") &&
+        substr(decoct(fileperms("{$path}config/autoload.php-install")), -3) != 777){
+      if (!@chmod("{$path}config/autoload.php-install", 0777))
+        $error .= "<br>- {$path}config/autoload.php-install";
+    }
+
+    $file_list = array(
+        "{$path}config/autoload.php"
+      , "{$path}config/config.php"
+      , "{$path}config/database.php"
+      , "{$path}config/site.php"
+      , "{$path}controllers/install.php"
+    );
+    foreach($file_list as $file){
+      if (substr(decoct(fileperms($file)), -3) != 777){
+        if (!@chmod($file, 0777))
+          $error .= "<br>- {$file}";
+      }
+    }
+    if ($error) show_error("Файлы:{$error}", 500, "Установите права на запись (777) в файлах");
+
+    
+    $dir_list = array(
+        ROOT . '/images/buffer/'
+      , ROOT . '/images/resize/'
+      , ROOT . '/images/source/'
+      , ROOT . '/' . APPPATH . 'cache/db/'
+      , ROOT . '/' . APPPATH . 'cache/twig/'
+      );
+    foreach($dir_list as $dir){
+      if (substr(decoct(fileperms($dir)), -3) != 777){
+        if (!@chmod($dir, 0777))
+          $error .= "<br>- {$dir}";
+      }
+    }
+    if ($error) show_error("Папки:{$error}", 500, "Установите права на запись (777) в папках");
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Настройки базы данных
+   */
+  private function _database_settings(){
+    // Отправим сообщение об успешной установке
+    $this->append_data('step_name', "Шаг 2 из {$this->_step_count}. Настройки базы данных.");
+    $this->display('install.html');
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Удалим файлы 
+   */
+  private function _delete_files(){
+    // если установка прошла успешно  
+
+    // удалим сессию
+    $this->session->sess_destroy();
+    session_destroy();
+
+    // подменим автолод
+    if (file_exists(SITE_PATH . 'config/autoload.php-install')) {
+      @unlink(SITE_PATH . 'config/autoload.php');
+      if (!@copy(SITE_PATH . 'config/autoload.php-install', SITE_PATH . 'config/autoload.php'))
+        show_error("Переименуйте файл<br>" . SITE_PATH . 'config/autoload.php-install<br>' . 'в файл<br>' . SITE_PATH . 'config/autoload.php', 500, 'Переименуйте файл');
+      @unlink(SITE_PATH . 'config/autoload.php-install');
+    }
+    
+    // удалим шаблоны
+    $error = '';
+    $dir_tpl =  ROOT . '/' . APPPATH . 'views/photopro/';
+    $file_list = array(
+          "{$dir_tpl}css/install.css"
+        , "{$dir_tpl}install.html"
+        , "{$dir_tpl}install-1.html"
+        , "{$dir_tpl}install-2.html"
+        , "{$dir_tpl}install-3.html"
+      );
+    foreach($file_list as $file){
+      if (!@unlink($file))
+        $error .= "<br>- {$file}";
+    }
+    /*if ($error) {
+      show_error("Файлы:{$error}", 500, 'Удалите файлы и <a href="">обновите страницу</a>');
+    }*/
+    
+    // переадресуем на главную, чтобы удалился контроллер установки
+    header("Location: /"); exit;
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Извлечем схему
+   */
+  private function _get_scheme(){
+    $sql = file_get_contents(SITE_PATH . 'dbobjects/photopro-0.1_scheme.sql');
+    $sql = str_replace('{db_dbprefix}', $_SESSION['db_dbprefix'],$sql);
+    $sql = str_replace('{db_char_set}', $_SESSION['db_char_set'],$sql);
+    $sql = str_replace('{db_dbcollat}', $_SESSION['db_dbcollat'],$sql);
+    $sql = str_replace('{db_table_type}', $_SESSION['db_table_type'],$sql);
+    return $sql;
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
    * Установка 
    */
-  public function install(){
+  private function _install(){
     // извлечем схему
-    $sql = $this->get_scheme();
+    $sql = $this->_get_scheme();
     
     // восстановим дамп
-    if (!$error = $this->restore_dump($sql)){   
+    if (!$error = $this->_restore_dump($sql)){   
       
       // зарегистрируем админа
       $user_email = $_SESSION['admin_email'];
@@ -155,12 +256,13 @@ class Install extends CMS_Controller {
       $data = array(
         'sess_use_database' => 'TRUE',
         'cms_installed'     => 'TRUE',
-        'sess_cookie_name'  => 'session'
+        'sess_cookie_name'  => 'session',
+        'cookie_domain' => ".{$_SERVER['HTTP_HOST']}",
       );
-      $this->save($data);
+      $this->_save($data);
       
       // сохраним все настройки
-      $this->save($_SESSION);      
+      $this->_save($_SESSION);      
           
       $this->display('install.html');
     } else {
@@ -170,50 +272,9 @@ class Install extends CMS_Controller {
   // ---------------------------------------------------------------------------
   
   /**
-   * Удалим файлы 
-   */
-  public function delete_files(){
-    // если установка прошла успешно  
-
-    // удалим сессию
-    $this->session->sess_destroy();
-    session_destroy();
-
-    // подменим автолод
-    unlink(SITE_PATH . 'config/autoload.php');
-    copy(SITE_PATH . 'config/autoload.php-install', SITE_PATH . 'config/autoload.php');
-    unlink(SITE_PATH . 'config/autoload.php-install');
-    
-    // удалим шаблоны
-    $dir_tpl =  ROOT . '/' . APPPATH . 'views/photopro/';
-    unlink("{$dir_tpl}css/install.css");
-    unlink("{$dir_tpl}install.html");
-    unlink("{$dir_tpl}install-1.html");
-    unlink("{$dir_tpl}install-2.html");
-    unlink("{$dir_tpl}install-3.html");
-    
-    // переадресуем на главную, чтобы удалился контроллер установки
-    header("Location: /"); exit;
-  }
-  // ---------------------------------------------------------------------------
-
-  /**
-   * Извлечем схему
-   */
-  private function get_scheme(){
-    $sql = file_get_contents(SITE_PATH . 'dbobjects/photopro-0.1_scheme.sql');
-    $sql = str_replace('{db_dbprefix}', $_SESSION['db_dbprefix'],$sql);
-    $sql = str_replace('{db_char_set}', $_SESSION['db_char_set'],$sql);
-    $sql = str_replace('{db_dbcollat}', $_SESSION['db_dbcollat'],$sql);
-    $sql = str_replace('{db_table_type}', $_SESSION['db_table_type'],$sql);
-    return $sql;
-  }
-  // ---------------------------------------------------------------------------
-  
-  /**
    * Восстанавливаем схему 
    */
-  private function restore_dump($sql) {
+  private function _restore_dump($sql) {
     $host = $_SESSION['db_hostname'];
     $user = $_SESSION['db_username'];
     $pass = $_SESSION['db_password'];
@@ -242,7 +303,7 @@ class Install extends CMS_Controller {
   /**
    * Сохраняем настройки
    */
-  public function save($data){
+  private function _save($data){
     $this->config->load('config');
     $this->config->load('database');
     
@@ -256,6 +317,7 @@ class Install extends CMS_Controller {
     }
   }
   // ---------------------------------------------------------------------------
+
 }
 
 /* End of file page.php */

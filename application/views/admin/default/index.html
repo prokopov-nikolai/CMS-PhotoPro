@@ -2,15 +2,15 @@
 <html lang="ru">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta content="SitePro" name="generator" />
+  <meta content="CMS PhotoPro" name="generator" />
   <meta content="Nikolai Prokopov" name="author" />
   <meta content="" name="keywords" />
   <meta content="" name="description" />
-  <link rel="shortcut icon" href="{{ path_template }}images/logo.png" type="image/x-icon" />
-  <link type="text/css" href="{{ path_template }}css/style.css" rel="stylesheet" />
-  <script type="text/javascript" src="{{ path_template }}js/jquery-1.6.2.min.js"></script>
-  <script type="text/javascript" src="{{ path_template }}js/jquery.showpassword.js"></script>
-  <script type="text/javascript" src="{{ path_template }}js/functions.js"></script>
+  <link rel="shortcut icon" href="{{ path_template }}/images/logo.png" type="image/x-icon" />
+  <link type="text/css" href="{{ path_template }}/css/style.css" rel="stylesheet" />
+  <script type="text/javascript" src="{{ path_template }}/js/jquery-1.6.2.min.js"></script>
+  <script type="text/javascript" src="{{ path_template }}/js/jquery.showpassword.js"></script>
+  <script type="text/javascript" src="{{ path_template }}/js/functions.js"></script>
   {% block head %}{% endblock %}
   {% autoescape false %}{{ headers }}{% endautoescape %}
   <!--[if lt IE 9]>
@@ -24,10 +24,10 @@
   <title>{{ META.title }}</title>
 </head>
 <body>
+<div id="wrapper">
   <header>
-    <a href="/{{ admin_url }}/"id="logotype" class="fl-left">CMS PhotoPro</a>
+    <a href="/"id="logotype" class="fl-left">CMS PhotoPro</a>
   </header>
-  <div id="wrapper">
   <aside class="fl-left">
     {% if MENU != '' %}
     {% set section  = '' %}
@@ -36,7 +36,7 @@
     {% endif %}
     {% set description = '' %}
     {% set description_main = '' %}
-      <a href="/admin/settings/cache_delete/" id="cache-del">Сбросить кеш</a>
+      <a href="/{{ admin_url }}/settings/cache_delete/" id="cache-del">Сбросить кеш</a>
       <menu id="main">
         {% for key in MENU|keys %}
           <li >
@@ -121,7 +121,10 @@
     {% endif %}
     {% block content %}{% endblock %}
   </section>
-  </div>
-  <footer></footer>
+  <div id="footer_guarantor"></div>
+</div>
+<footer>
+  <a href="http://www.prokopov-nikolai.ru">Создание сайтов</a>
+</footer>
 </body>
 </html>

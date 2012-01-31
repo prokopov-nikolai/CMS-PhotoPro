@@ -28,7 +28,7 @@ $config['admin_template'] = 'default';
 /**
  * Качество изображения картинок 
  */
-$config['image_quality'] = 80;
+$config['image_quality'] = 100;
 
 /**
  * Выравнивание водяного знака
@@ -44,7 +44,11 @@ $config['image_source']['quality'] = 100;
 $config['image_source']['max_width'] = 1140;
 $config['image_source']['max_height'] = 790;
 
-
+/**
+ * Если урл разбирает nginx
+ * $config['nginx'] = '.nginx';
+ */
+$config['nginx'] = '';
 
 /*
 |-------------------------------------------------------------------------------
@@ -55,11 +59,6 @@ $config['image_source']['max_height'] = 790;
  * Текс для вывода когда сайт закрыт 
  */
 $config['site_close'] = '';
-
-/**
- * url 
- */
-$config['site_url'] = '';
 
 /**
  * Admin email 

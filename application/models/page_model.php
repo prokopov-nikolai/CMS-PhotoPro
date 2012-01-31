@@ -18,6 +18,7 @@ Class Page_model extends CI_Model {
    * Добавляет новую страницу
    */
   public function insert($post){
+    if (!intval($post['category_id'])) unset($post['category_id']);
     if ($this->db->set($post)->set('page_date_modified', 'NOW()', false)->insert('page')) {
       $this->session->set_userdata(array('message' => 'Страница "'.$post['page_title'].'" успешно добавлена!'));
     } else {
@@ -77,14 +78,16 @@ Class Page_model extends CI_Model {
    * Извлекаем страницу
    */
   public function get_one($page_url){
-    $this->db->select('*');
-    $this->db->from('page');
+    $this->db->select('p.*, c.category_url, c.category_title');
+    $this->db->from('page p');
+    $this->db->join('category c', 'c.category_id = p.category_id', 'left');
     $this->db->where('page_url', $page_url);
     $this->db->limit(1);
     $query = $this->db->get();
     $row = $query->row_array();
     if ($row != null) {
-    	$cut = explode('[cut]', $row['page_content']);
+      $row['page_content_raw'] =$row['page_content'];
+      $cut = explode('[cut]', $row['page_content']);
       $row['page_content_cut'] = $cut[0];
       $row['page_content'] = str_replace('[cut]', '', $row['page_content']);
     }

@@ -124,7 +124,7 @@ function cms_core_autoload($class_name){
 }
 spl_autoload_register('cms_core_autoload');
 
-function Pr($array, $return = false) {
+function pr($array, $return = false) {
 	if ($return === false) {
 	  ob_start();
 	  echo '<pre>';
@@ -138,8 +138,12 @@ function Pr($array, $return = false) {
 	  echo '</pre>';
 	  return ob_get_clean();
 	}
-}
+} 
 
+function prex($array) {
+  pr($array);
+  exit;
+}
 
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */

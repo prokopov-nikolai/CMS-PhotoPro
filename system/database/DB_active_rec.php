@@ -959,8 +959,48 @@ class CI_DB_active_record extends CI_DB_driver {
 		$result = $this->query($sql);
 		$this->_reset_select();
 		return $result;
+	} 
+	// --------------------------------------------------------------------
+	
+	/**
+	 * Get Array
+	 * 
+	 * Compiles the select statement based on the other functions called
+	 * and runs the query. After return the result in assoс array
+	 *
+	 * @param string the table
+	 * @param string the limit clause
+	 * @param string the offset clause
+	 * @return	array
+	 */
+	public function get_array($table = '', $limit = null, $offset = null)
+	{
+		$result = array();
+		$res = $this->get($table, $limit, $offset);
+		while($row = $res->_fetch_assoc()) {
+			$result[] = $row;
+		}
+		return $result;
 	}
+	// --------------------------------------------------------------------
 
+	/**
+	 * Get One
+	 * Compiles the select statement based on the other functions called
+	 * and runs the query. After return the first value in first row
+	 *
+	 * @param string the table
+	 * @param string the limit clause
+	 * @param string the offset clause
+	 * @return  value
+	 */
+	public function get_one($table = '', $limit = null, $offset = null)
+	{
+		$res = $this->get($table, $limit, $offset);
+		return array_shift($res->first_row('array'));
+	}
+	// --------------------------------------------------------------------
+	
 	/**
 	 * "Count All Results" query
 	 *

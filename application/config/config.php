@@ -7,7 +7,7 @@
 $config['admin_url'] = 'admin';
 
 /**
- * 
+ * Флаг установки движка
  */
 $config['cms_installed'] = FALSE;
 

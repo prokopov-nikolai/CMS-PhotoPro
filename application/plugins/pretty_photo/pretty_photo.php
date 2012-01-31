@@ -7,7 +7,7 @@ class Pretty_photo extends CMS_Plugin {
   public function __construct(){
     parent::__construct();
     $dir =  str_replace(basename(__FILE__), '', str_replace('\\', '/', __FILE__));
-    $this->plugin_dir = trim(config_item('site_url'), '/') . str_replace(ROOT, '', $dir);        
+    $this->plugin_dir = "http://{$_SERVER['HTTP_HOST']}" . str_replace(ROOT, '', $dir);        
     $this->_get_head();
   }
   // ---------------------------------------------------------------------------

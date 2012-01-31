@@ -26,9 +26,9 @@ class CMS_Config extends CI_config {
                       $this->config[$matches[0][1]][$matches[0][2]] == 'TRUE'  || 
                       $this->config[$matches[0][1]][$matches[0][2]] == '1') {
               $file[$key] = $matches[0][0] . " = TRUE;\n";
-            } elseif(is_numeric($this->config[$matches[0][1]][$matches[0][2]])) {
+            } /*elseif(is_numeric($this->config[$matches[0][1]][$matches[0][2]])) {
               $file[$key] = $matches[0][0] . " = {$this->config[$matches[0][1]][$matches[0][2]]};\n";
-            } else {
+            } */else {
              $file[$key] = $matches[0][0] . " = '{$this->config[$matches[0][1]][$matches[0][2]]}';\n";
             }
           }
@@ -42,9 +42,9 @@ class CMS_Config extends CI_config {
                       $this->config[$matches[0][1]] == 'TRUE' ||
                       $this->config[$matches[0][1]] == '1') {
               $file[$key] = $matches[0][0] . " = TRUE;\n";
-            } elseif(is_numeric($this->config[$matches[0][1]])) {
+            } /*elseif(is_numeric($this->config[$matches[0][1]])) {
               $file[$key] = $matches[0][0] . " = {$this->config[$matches[0][1]]};\n";
-            } else {
+            } */else {
              $file[$key] = $matches[0][0] . " = '{$this->config[$matches[0][1]]}';\n";
             }
           }

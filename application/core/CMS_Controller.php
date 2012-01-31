@@ -39,10 +39,15 @@ class CMS_Controller extends CI_Controller {
 
     // проверим установлен ли движок
     if (config_item('cms_installed') === false && $this->uri->segment(1) != 'install'){
+      header("Content-type: text/html; charset=utf-8");
       die('<h3>CMS PhotoPro еще не установлена!</h3><a href="/install/step/1">Установить</a>');
     } elseif ($this->uri->segment(1) != 'install') {
       $file_install = ROOT . '/' . APPPATH . 'controllers/install.php';
-      if (file_exists($file_install)) unlink($file_install);
+      if (file_exists($file_install)) { 
+        if (!@unlink($file_install)) {
+            show_error("- {$file_install}", 500, "Удалите файл установки");
+        }
+      }
     }
     
     // подключим настройки для админки
@@ -181,13 +186,13 @@ class CMS_Controller extends CI_Controller {
   private function _set_template_path () {
     $template_dir = array();   
     if ($this->uri->segment(1) == config_item('admin_url')){
-      $template_dir[] = ROOT . '/'. APPPATH . 'views/' . config_item('admin_url') . '/' . config_item('admin_template') . '/';
+      $template_dir[] = ROOT . '/'. APPPATH . 'views/' . config_item('admin_url') . '/' . config_item('admin_template');
     } else {
-      $template_dir[] = ROOT . '/'. APPPATH . 'views/' . config_item('site_template') . '/';
+      $template_dir[] = ROOT . '/'. APPPATH . 'views/' . config_item('site_template');
     }
     
     // добавим путь к папке шаблона
-    $this->_data['path_template'] = str_replace(ROOT, config_item('site_url'), $template_dir[0]);
+    $this->_data['path_template'] = str_replace(ROOT, "http://{$_SERVER['HTTP_HOST']}", $template_dir[0]);
     $template_dir[] =  ROOT . '/'. APPPATH . 'plugins';
     $loader = new Twig_Loader_Filesystem($template_dir);
     $config = array( 
@@ -195,7 +200,7 @@ class CMS_Controller extends CI_Controller {
        'autoescape' => true
     );
     if (ENVIRONMENT == 'production') {
-      $config['cache'] = ROOT . '/' . APPPATH . 'cache';
+      $config['cache'] = ROOT . '/' . APPPATH . 'cache/twig';
     }
     $this->_twig = new Twig_Environment($loader, $config);
 
@@ -223,6 +228,9 @@ class CMS_Controller extends CI_Controller {
       
       // добавим данные пользователя
       $this->_data['U'] = $this->session->userdata;
+      
+      // nginx
+      $this->_data['nginx'] = config_item('nginx');
     }
     
     // удалим сообщение и ошибки

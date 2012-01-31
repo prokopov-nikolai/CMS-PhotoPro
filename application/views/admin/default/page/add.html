@@ -12,7 +12,7 @@
     
     <div class="cleared"></div>
     <select name="category_id">
-      <option value="0">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</option>
+      <option value="">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</option>
       {% for category_id in CATS|keys %}
         <option value="{{ category_id }}" {% if P.category_id == category_id%}selected{% endif %}>{{ CATS[category_id] }}</option>
       {% endfor %}
@@ -21,7 +21,7 @@
     <div class="cleared" style="margin-top:20px;"></div>
     <label for="page_content">Содержание страницы <i style="color:#ababab;">(разделитель [cut])</i></label>
     <div class="cleared"></div>
-    <textarea name="page_content" id="page_content">{{ P.page_content }}</textarea>
+    <textarea name="page_content" id="page_content">{{ P.page_content_raw }}</textarea>
 
     <div class="cleared" style="margin-top:20px;"></div>
     <label for="page_keywords">Ключевые слова <i style="color:#ababab;">(keywords)</i></label>

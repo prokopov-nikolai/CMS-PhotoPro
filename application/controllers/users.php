@@ -48,7 +48,7 @@ class Users extends CMS_Controller {
     $this->append_data('current_page', $num);
     $this->append_data('num_links', 4);
     $this->append_data('base_url', '/users/page/');
-    $this->append_data('paging_name', 'Пользователей');
+    $this->append_data('paging_name', 'пользователей');
       
     if (sizeof($users) > 0) { 
       // извлечем все галереи пользователей
@@ -91,7 +91,7 @@ class Users extends CMS_Controller {
    * Выведем форму регистрации
    */
   public function registration() {
-    if ($this->session->userdata('user_id') > 0) {
+    if ($this->session->userdata('user_uniqid')) {
       header('Location: /');
     }
     $result = $this->user->registrate();    	

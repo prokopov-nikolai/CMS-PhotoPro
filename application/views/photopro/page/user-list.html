@@ -18,7 +18,7 @@
         <div class="user">
           <a class="user-avatar" href="/gallery/user/{{ U.user_uniqid }}/" style="background:url(/application/views/photopro/images/avatar-{{ U.user_sex }}.jpg) center center no-repeat;">
             <span class="author" href="/gallery/user/{{ U.user_uniqid }}/" class="author">{{ U.user_first_name }} {{ U.user_last_name }}</span>
-            <img src="/image/266x500/avatar_{{ U.user_uniqid }}.jpg" border="0" />
+            <img src="/image/266x500/avatar_{{ U.user_uniqid }}.jpg{{ nginx }}" border="0" />
           </a>
           <div class="description">
             {{ U.user_about|raw }}
@@ -44,29 +44,5 @@
       Пока  нет не одной выставки
     {% endif %}
   </div>
-  <div class="cleared"></div>
+  <div class="cleared" style="height:50px;"></div>
 {% endblock %}
-
-
-{#% extends "index.html" %}
-
-{% block content %}
-  <div class="users-page">
-    {% for U in USER %}
-      <div class="gallery">
-        <a class="gal" href="/gallery/user/{{ U.user_uniqid }}/">
-          <img src="/image/100x100/avatar_{{ U.user_uniqid }}.jpg" border="0" />
-        </a>
-        <div class="description">
-          <a class="author" href="/gallery/user/{{ G.user_uniqid }}/">{{ G.user_name }}</a><br />
-          <a href="/gallery/{{ G.gallery_url }}/" class="title">{{ G.gallery_title }}</a><br />
-          <span class="count">({{ G.gallery_image_num }} фото)</span>
-          <div class="text">{{ G.gallery_description|raw }}</div>
-        </div>
-      </div>
-      {% set i = i + 1 %}
-    {% endfor %}
-  </div>
-  <div class="cleared"></div>
-  {% include "paging.html" %}
-{% endblock %#}

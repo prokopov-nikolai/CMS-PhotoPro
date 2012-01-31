@@ -1,0 +1,6 @@
+{% extends "index.html" %}
+
+{% block content %}
+  <h1>{% if P.category_url and P.category_title %}<a href="/category/{{ P.category_url }}/">{{ P.category_title }}</a> / {% endif %}{{ P.page_title }}</h1>
+  <div class="page-content">{% autoescape false %}{{ P.page_content }}{% endautoescape %}</div>
+{% endblock %}

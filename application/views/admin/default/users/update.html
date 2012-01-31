@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block content %}
-  <form action="" method="post" id="user-data">
+  <form action="" method="post" id="user-data"  enctype="multipart/form-data">
     <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_email">Email</label>
     <div class="cleared"></div>
@@ -32,6 +32,11 @@
     <div class="cleared"></div>
     <textarea name="user_about" style="display:block; width:400px;" >{{ USER.user_about }}</textarea>
 
+    <div class="cleared" style="margin-top:20px;"></div>
+    <label for="user_about">ФОТО (максимум 500x500)</label><br/>
+    <img src="/image/100x100/avatar_{{ U.user_uniqid }}.jpg{{ nginx }}?{{ ''|mktime }} " alt="" /><br />
+    <input type="file" name="user_photo" />
+    
     <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_sex">Пол</label>
     <div class="cleared"></div>

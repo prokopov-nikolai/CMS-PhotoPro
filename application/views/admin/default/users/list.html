@@ -4,8 +4,11 @@
   <ul id="users-list" class="list">
     {% for U in USERS %}
       <li>
-        <a href="/{{ admin_url }}/users/update/{{ U.user_uniqid }}/" class="fl-left">{{ U.user_email }}</a>
-        <a href="/{{ admin_url }}/users/delete/{{ U.user_uniqid }}/" class="delete fl-left"></a>
+        <a class="title fl-left" href="/{{ admin_url }}/users/update/{{ U.user_uniqid }}/">• &nbsp;{{ U.user_email }}</a>
+        <a class="delete fl-right" href="/{{ admin_url }}/users/delete/{{ U.user_uniqid }}/"></a>
+        {% if U.user_gallery_count %}
+          <a class="view fl-right" href="/gallery/user/{{ U.user_uniqid }}/"></a>
+        {% endif %}
       </li>
     {% endfor %}
   </ul>

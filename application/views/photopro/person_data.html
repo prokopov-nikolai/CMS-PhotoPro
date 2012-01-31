@@ -34,13 +34,14 @@
   <input class="reg-input" type="text" name="user_password" value="" size="22" />
     
   <div class="label">ФОТО (максимум 500x500):</div>
-  <img src="/image/100x100/avatar_{{ U.user_uniqid }}.jpg?{{ ''|mktime }} " alt="" /><br />
+  <img src="/image/100x100/avatar_{{ U.user_uniqid }}.jpg{{ nginx }}?{{ ''|mktime }} " alt="" /><br />
   <input type="file" name="user_photo" />
   
   <div class="label">Пол:</div>
   <input type="radio" name="user_sex" value="1" {% if U.user_sex == 1 %}checked{% endif %}/>муж. &nbsp;&nbsp;&nbsp;
   <input type="radio" name="user_sex" value="0" {% if U.user_sex != 1 and U.user_sex != '' %}checked{% endif %}/> жен. 
-
+  <input type="checkbox" name="user_admin" {% if U.user_admin != '' %}checked{% endif %} style="display:none;"/>
+  
   <div class="label"><input class="reg-input" {% if U.user_subscribe == 1 or U.user_subscribe == 'on' %}checked{% endif %} type="checkbox" name="user_subscribe" /> Подписаться на новости CMS PhotoPro</div>
   
 

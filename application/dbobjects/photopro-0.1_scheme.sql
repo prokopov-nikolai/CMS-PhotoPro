@@ -113,7 +113,7 @@ CREATE TABLE {db_dbprefix}page (
   page_description VARCHAR(255) DEFAULT NULL COMMENT 'Описание для страницы',
   page_date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата создания страницы',
   page_date_modified DATETIME DEFAULT NULL COMMENT 'Время обновления записи',
-  category_id INT(11) UNSIGNED NOT NULL COMMENT 'Идетнификатор категории',
+  category_id INT(11) UNSIGNED DEFAULT NULL COMMENT 'Идетнификатор категории',
   user_id CHAR(22) NOT NULL COMMENT 'Идентификатор пользователя',
   PRIMARY KEY (page_id, page_url),
   INDEX IX_{db_dbprefix}page_category_id (category_id),

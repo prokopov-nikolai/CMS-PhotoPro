@@ -4,8 +4,9 @@
   <ul class="list">
   {% for category_url in CATS|keys %}
     <li>
-      <a href="/{{ admin_url }}/page/category/{{ category_url }}/" class="fl-left">{{ CATS[category_url] }}</a>
-      <a href="/{{ admin_url }}/page/category_delete/{{ category_url }}/" class="delete fl-left"></a>
+      <a class="title fl-left" href="/{{ admin_url }}/page/category/{{ category_url }}/">• &nbsp;{{ CATS[category_url] }}</a>
+      <a class="view fl-left" href="/category/{{ category_url }}/" target="_blank"></a>
+      <a class="delete fl-left" href="/{{ admin_url }}/page/category_delete/{{ category_url }}/"></a>
     </li>
   {% endfor %}
   </ul>

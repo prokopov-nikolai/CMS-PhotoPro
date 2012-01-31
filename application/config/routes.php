@@ -58,7 +58,7 @@ $route['registration'] = 'users/registration';
 $route['logout'] = 'users/logout';
 $route['category/([a-z0-9-_]+)'] = 'category/show/$1';
 $route['gallery/([a-z0-9-_]+)'] = 'gallery/show/$1';
-$route['image/([0-9]+)x([0-9]+)/([a-z0-9-_\.]+)\.(jpg|gif|png)'] = 'images/resize/$1/$2/$3.$4';
+$route['image/([0-9]+)x([0-9]+)/([a-z0-9-_\.]+)\.(jpg|gif|png|nginx)'] = 'images/resize/$1/$2/$3.$4';
 $route['([a-z0-9-_]+)'] = 'page/show/$1';
 
 // подключим правила роутинга из плагинов

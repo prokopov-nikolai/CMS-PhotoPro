@@ -17,6 +17,15 @@ class Images extends CMS_Controller {
     parent::__construct();
     $this->load->model('gallery_model');
     $this->load->library('image');
+    $name = $this->uri->segment(3);
+    if (substr($name, strlen($name) - 6, strlen($name)) == '.nginx'){
+      $size = explode('x', $this->uri->segment(2));
+      $width = $size[0];
+      $height = $size[1];
+      $name = substr($name, 0, strlen($name) - 6);
+      $this->resize($width, $height, $name);
+      exit;
+    }
   }
   // ---------------------------------------------------------------------------
   

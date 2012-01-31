@@ -60,8 +60,8 @@
   </div>
   <form action="" method="post">  
     <div class="per-page fl-right">
-      количество {{ paging_name }} на странице 
-      <input type="image" class="per-page-button" src="{{ path_template }}images/per-page.jpg" />
+      на странице 
+      <input type="image" class="per-page-button" src="{{ path_template }}/images/per-page.jpg" />
       <input type="text" class="per-page-input" name="per_page" value="{{ per_page }}" size="3"/>
     </div>
   </form>
@@ -69,12 +69,18 @@
 <div class="cleared"></div>
 <script type="text/javascript">
   $(function(){
-    var h = $(window).height();
-    var w = $('body').innerWidth();
-    var t = h - 130;
-    if (t < 150 ) t = h - 30;
-    var l= (w - 1130) / 2;
-    if (l < 0 ) l = 0;
-    $('.paging').css({'top':t,'left':l});
+    function place_paging() {
+      var h = $(window).height();
+      var w = $('body').innerWidth();
+      var t = h - 130;
+      if (t < 150 ) t = h - 30;
+      var l= (w - 1130) / 2;
+      if (l < 0 ) l = 0;
+      $('.paging').css({'top':t,'left':l});
+    }
+    place_paging();
+    $(window).resize(function(){
+      place_paging();
+    });
   });
 </script>

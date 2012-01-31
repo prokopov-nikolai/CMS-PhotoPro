@@ -1,0 +1,29 @@
+{% set keywords = C.category_keywords %}
+{% set description = C.category_descr %}
+{% set title = C.category_title %}
+{% extends "index.html" %}
+
+{% block content %}
+  <h1>{{ C.category_title }}</h1>
+  
+  {% if show_vote == 1 %}
+  <div class="fl-left" style="width:650px;">
+  {% endif %}
+  
+      <div class="cat-description">
+        {% autoescape false %}{{ C.category_description }}{% endautoescape %}
+      </div>
+      {% for P in PAGES %}
+        <div class="page">
+          <h2><a href="/{{ P.page_url }}/">{{ P.page_title }}</a></h2>
+          {% autoescape false %}{{ P.page_content_cut }}{% endautoescape %}
+        </div>
+      {% endfor %}
+  
+  {% if show_vote == 1 %}
+  </div>
+  <div class="fl-left" style="width:300px; padding-top:10px;">
+    {% include "vote.html" %}
+  </div>
+  {% endif %}
+{% endblock %}

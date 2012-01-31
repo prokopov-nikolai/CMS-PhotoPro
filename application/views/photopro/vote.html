@@ -1,0 +1,91 @@
+{# Шаблон голосовани #}
+<script type="text/javascript" src="{{ path_template }}/js/jquery.cookie.js"></script>
+{% for V in VOTE %}
+  <div class="vote">
+    <!--div class="vote-head">ОПРОС</div-->
+    <div class="vote-content">
+        <div class="vote-question" data-view="" data-answers="{{ V.answers }}">{{ V.question }}</div>    
+    </div>
+    <input type="submit" class="voted vote-{{ V.vote_id }}" value="Голосовать" />
+  </div>
+{% endfor %}
+
+<script type="text/javascript">
+  $(function(){
+    $('.vote-question').each(function(){
+      $results = render($(this).attr('data-answers'));
+      $(this).removeAttr('data-answers');
+      $(this).parents('.vote-content').append($results);
+    });
+    $('.voted').click(function(){
+      $my = $(this).parents('.vote').find('.my-selection');
+      vid = parseInt($my.attr('data-vote-id'));
+      aid = parseInt($my.attr('data-answer-id'));
+      $.ajax({
+        type: 'post',
+        url: '/ajax/voted/',
+        data: {vid:vid, aid:aid},
+        context: $(this),
+        success: function(answ){
+          $q = $(this).parents('.vote').find('.vote-question');
+          $content = $(this).parents('.vote').find('.vote-content').html('');
+          $content.append($q).append(render_results(answ));
+          $('.voted').hide();
+        }
+      })
+    });
+  });
+  
+  // отрендери то что нужно
+  function render(jdata) {
+    answers = $.parseJSON(jdata);
+    if (parseInt($.cookie('vote-' + answers[0]['vote_id'])) > 0) {
+      return render_results(jdata);
+    }
+    return render_answers(jdata);
+  }
+  
+  // рендерим варианты ответов
+  function render_answers(jdata) {
+    answers = $.parseJSON(jdata);
+    $r = $('<div/>').addClass('answers');
+    for(aid in answers) {
+      a = answers[aid];
+      $ans = $('<div/>').addClass('vote-answer').append('<span class="radiobut"></span>').append(' ' + a.answer_text);
+      $ans.attr('data-vote-id', a.vote_id);
+      $ans.attr('data-answer-id', a.answer_id);
+      $ans.bind('click', function(){ 
+        $('.my-selection').removeClass('my-selection');
+        $(this).addClass('my-selection');
+      });
+      $r.append($ans);
+    }
+    return $r;
+  }
+  
+  // рендерим результаты
+  function render_results(jdata){
+    answers = $.parseJSON(jdata);
+    $r = $('<div/>').addClass('answers');
+    sum = get_vote_sum(answers);
+    for(aid in answers) {
+      a = answers[aid];
+      w = a.count / sum * 100 + '%';
+      $r.append($('<div/>').addClass('answer-text').html(a.answer_text));
+      $r.append($('<div/>').addClass('answer-votes').css({width: w}).html(
+        $('<span/>').html(a.count).addClass('answer-count')
+      )); 
+    }
+    $('.vote-' + a.vote_id).hide();
+    return $r;
+  }
+  
+  // Подсчитываем сумму голосов
+  function get_vote_sum(answers){
+    sum = 0;
+    for (aid in answers) {
+      sum += parseInt(answers[aid]['count']);
+    }
+    return sum;
+  }
+</script>
