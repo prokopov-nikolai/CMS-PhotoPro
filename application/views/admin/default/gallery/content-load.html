@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block head %}
   {% if browser_name %}
-    <script type="text/javascript" src="{{ path_template }}js/html5slider.js"></script>
+    <script type="text/javascript" src="{{ path_template }}/js/html5slider.js"></script>
   {% endif %}
 {% endblock %}
 
@@ -28,7 +28,7 @@
   {% endfor %}
   <div class="cleared"></div>
   {% if G.images %}
-    <button style="font-size:16px; padding-bottom:8px;" id="delete-all"><img src="{{ path_template }}images/delete-all.png" border="0" style="margin-bottom:-8px;"/> Удалить выбранные</button>
+    <button style="font-size:16px; padding-bottom:8px;" id="delete-all"><img src="{{ path_template }}/images/delete-all.png" border="0" style="margin-bottom:-8px;"/> Удалить выбранные</button>
   {% endif %}
   <div class="cleared" style="height:10px;"></div>
   <form id="form" action="/{{ admin_url }}/gallery/images_load/" method="post" enctype="multipart/form-data">
@@ -45,9 +45,9 @@
     $('.select-img').attr('checked', false);
     
     $('#file_upload').uploadify({
-      'uploader'  : '{{ path_template }}uploadify/uploadify.swf',
-      'script'    : '{{ path_template }}uploadify/uploadify.php',
-      'cancelImg' : '{{ path_template }}uploadify/cancel.png',
+      'uploader'  : '{{ path_template }}/uploadify/uploadify.swf',
+      'script'    : '{{ path_template }}/uploadify/uploadify.php',
+      'cancelImg' : '{{ path_template }}/uploadify/cancel.png',
       'folder'    : '/images/buffer',
       'multi'     : true,
       'fileExt'   : '*.jpg;*.gif;*.png',

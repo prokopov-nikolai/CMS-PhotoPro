@@ -21,7 +21,6 @@ class Settings extends CMS_Controller {
    * Основые настройки 
    */
   public function index(){
-    $this->config->load('config');
     $this->config->load('database');
     $post = $this->input->post();
     if (sizeof($post) > 1) {

@@ -68,7 +68,7 @@ $config['admin_email'] = '';
 /**
  * Показывать голосовани 1 - показать, 0 - скрыть
  */
-$config['show_vote'] = FALSE;
+$config['show_vote'] = TRUE;
 
 /**
  * Блокировка браузеров заглушкой

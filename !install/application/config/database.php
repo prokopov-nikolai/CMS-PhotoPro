@@ -47,10 +47,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$config['db_hostname'] = 'localhost';
-$config['db_username'] = 'root';
+$config['db_hostname'] = '';
+$config['db_username'] = '';
 $config['db_password'] = '';
-$config['db_database'] = 'database1';
+$config['db_database'] = '';
 $config['db_dbprefix'] = 'ci_';
 $config['db_char_set'] = 'utf8';
 $config['db_dbcollat'] = 'utf8_general_ci';

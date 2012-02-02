@@ -188,11 +188,16 @@ footer {
   display:block;
   font-size:12px;
   margin:0px auto;
-  padding:10px;
+  overflow: hidden;
+  padding: 11px;
   width:1110px;
 }
 .copyright a {
   font-size:12px;
+}
+.block1, .block {
+  font-size:12px;
+  width:500px;
 }
 /*** end футер ***/
 
@@ -560,6 +565,7 @@ dl.star-rating li.current {
 }
 .page h2 {
   font-weight:100;
+  margin:10px 0px;
 }
 .page a:hover {
   text-decoration:none;
@@ -583,6 +589,7 @@ dl.star-rating li.current {
   *display:inline;
   zoom:1;
   height:15px;
+  padding:0px!important;
   width:15px;
 }
 .vote-content .my-selection  .radiobut {

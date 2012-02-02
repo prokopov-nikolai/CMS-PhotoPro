@@ -163,11 +163,13 @@ nav {
 }
 footer {
   background-color:#e3e3e3;
+  color:#727272;
   display:block;
-  height:50px;
+  font-size:15px;
+  height:30px;
   margin:-71px auto;
   overflow:hidden;
-  padding:10px 40px;
+  padding:20px 40px 20px;
 }
 .copyright {
   display:block;

@@ -11,6 +11,7 @@ $config['admin_url'] = 'admin';
  */
 $config['cms_installed'] = FALSE;
 
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL

@@ -197,7 +197,7 @@ class Install extends CMS_Controller {
    * Извлечем схему
    */
   private function _get_scheme(){
-    $sql = file_get_contents(SITE_PATH . 'dbobjects/photopro-0.1_scheme.sql');
+    $sql = file_get_contents(SITE_PATH . 'dbobjects/photopro-0.1.4_scheme.sql');
     $sql = str_replace('{db_dbprefix}', $_SESSION['db_dbprefix'],$sql);
     $sql = str_replace('{db_char_set}', $_SESSION['db_char_set'],$sql);
     $sql = str_replace('{db_dbcollat}', $_SESSION['db_dbcollat'],$sql);
@@ -212,7 +212,6 @@ class Install extends CMS_Controller {
   private function _install(){
     // извлечем схему
     $sql = $this->_get_scheme();
-    
     // восстановим дамп
     if (!$error = $this->_restore_dump($sql)){   
       
@@ -258,11 +257,12 @@ class Install extends CMS_Controller {
         'cms_installed'     => 'TRUE',
         'sess_cookie_name'  => 'session',
         'cookie_domain' => ".{$_SERVER['HTTP_HOST']}",
+        'show_vote' => 'TRUE'
       );
       $this->_save($data);
       
       // сохраним все настройки
-      $this->_save($_SESSION);      
+      $this->_save($_SESSION);
           
       $this->display('install.html');
     } else {
@@ -293,7 +293,7 @@ class Install extends CMS_Controller {
       }
     }
     $glue = '';
-    if (sizeof($error) > 1) {
+    if (sizeof($error) > 0) {
       $glue = '<br/>';
     }
     return implode('<br/>', $error);

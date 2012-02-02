@@ -126,10 +126,12 @@
       <label for="db_table_type">Тип таблиц</label>
       <input type="text" name="db_table_type" disabled="true" id="db_table_type" value="{{ CONFIG.db_table_type }}" size="26" style="display:block; width:400px;" />
   
-      <div class="cleared" style="margin-top:20px;"></div>
+      <div class="cleared" style="display:none; margin-top:20px;">
+      <div class="cleared" style=" margin-top:20px;"></div>
       <label for="db_cache_on">Кеширование</label>
       <input type="radio" name="db_cache_on" value="TRUE" id="db_cache_on" {% if CONFIG.db_cache_on == true %}checked="true"{% endif %} /><label for="db_cache_on"> Вкл.</label>
       <input type="radio" name="db_cache_on" value="FALSE" id="db_cache_off" {% if CONFIG.db_cache_on == false %}checked="true"{% endif %} /><label for="db_cache_off"> Откл.</label>
+      </div>
     </div>
 
     {# Четвертая вкладка - общие #}
@@ -204,8 +206,6 @@
       
     </div>
   </div>
-
-  <!--input type="hidden" name="cms_installed" value="TRUE" /-->    
 
   <div class="cleared" style="margin-top:20px;"></div>
   <input type="submit" value="Обновить" id="update" />

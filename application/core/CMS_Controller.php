@@ -223,14 +223,17 @@ class CMS_Controller extends CI_Controller {
       // показывать голосование
       $this->_data['show_vote'] = config_item('show_vote');
       
+      // версия движка
+      $this->_data['cms_version'] = config_item('cms_version');
+      
+      // nginx
+      $this->_data['nginx'] = config_item('nginx');
+      
       // количество на странице
       $this->_data['per_page'] = $this->common->get_per_page();
       
       // добавим данные пользователя
-      $this->_data['U'] = $this->session->userdata;
-      
-      // nginx
-      $this->_data['nginx'] = config_item('nginx');
+      $this->_data['U'] = $this->session->userdata;      
     }
     
     // удалим сообщение и ошибки
