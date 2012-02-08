@@ -7,6 +7,11 @@
 $config['admin_url'] = 'admin';
 
 /**
+ * Версия движка
+ */
+$config['cms_version'] = '0.1.4';
+
+/**
  * Флаг установки движка
  */
 $config['cms_installed'] = FALSE;

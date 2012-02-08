@@ -1,5 +1,124 @@
 {% extends "index.html" %}
 
+{% block head %}
+  <script type="text/javascript">
+    $(function(){
+      $('.deactivated').click(function(){
+        var plugin_name = $(this).attr('data-name');
+        activate_plugins('deactivated', new Array(plugin_name));
+        return false;
+      });
+      // -----------------------------------------------------------------------
+      $('.activated').click(function(){
+        var plugin_name = $(this).attr('data-name');
+        activate_plugins('activated', new Array(plugin_name));
+        return false;
+      });
+      // -----------------------------------------------------------------------
+    });
+    
+    function activate_plugins(action, plugin_list){
+      $.ajax({
+        type: 'post',
+        url: '/{{ admin_url}}/plugin/activate/',
+        data: {action:action, plugin_list:plugin_list},
+        dataType: 'json',
+        success: function(answ){
+          if (answ && answ.success == 'true') {
+            for(var i in plugin_list) {
+              var pl_name = plugin_list[i];
+              $('.' + action).each(function(){
+                if ($(this).attr('data-name') == pl_name) {
+                  $(this).css('display', 'none');
+                  if (action == 'deactivated') {
+                    $(this).parent().find('.activated').css('display', 'block');
+                  } else if (action == 'activated') {
+                     $(this).parent().find('.deactivated').css('display', 'block'); 
+                  }
+                }
+              });
+            }              
+          }
+        }
+      });
+    }
+  </script>
+{% endblock %}
+
 {%  block content %}
-555
+  <div class="content-box"><!-- Start Content Box -->
+    <div class="content-box-header">
+      <h3 style="cursor: s-resize;">Подключите или отключите необходимые плагины</h3>
+    </div> <!-- End .content-box-header -->
+    <div class="cleared" style="margin-bottom:-1px;"></div>
+    <div class="content-box-content">
+      <div id="tab1" class="tab-content default-tab" style="display: block;"> <!-- This is the target div. id must match the href of this div's tab -->
+        <table>
+          <thead>
+            <tr>
+               <th><input type="checkbox" class="check-all"></th>
+               <th>Название плагина</th>
+               <th>Автор</th>
+               <th>Версия</th>
+               <th width="500">Описание</th>
+               <th>Управление</th>
+            </tr>
+          </thead>
+         
+          <tfoot>
+            <tr>
+              <td colspan="6">
+                <div class="bulk-actions align-left">
+                  <select name="dropdown">
+                    <option value="option1">Choose an action...</option>
+                    <option value="option2">Edit</option>
+                    <option value="option3">Delete</option>
+                  </select>
+                  <a href="#" class="button">Apply to selected</a>
+                </div>
+                
+                <div class="pagination">
+                  <a title="First Page" href="#">« First</a><a title="Previous Page" href="#">« Previous</a>
+                  <a title="1" class="number" href="#">1</a>
+                  <a title="2" class="number" href="#">2</a>
+                  <a title="3" class="number current" href="#">3</a>
+                  <a title="4" class="number" href="#">4</a>
+                  <a title="Next Page" href="#">Next »</a><a title="Last Page" href="#">Last »</a>
+                </div> <!-- End .pagination -->
+                <div class="cleared"></div>
+              </td>
+            </tr>
+          </tfoot>
+         
+          <tbody>
+            {% for plugin in P%}
+              <tr class="{% if loop.index is odd %}alt-row{% endif %}">
+                <td><input type="checkbox"></td>
+                <td>
+                  {% if plugin.site %}
+                    <a href="{{ plugin.site }}" target="_blank">{{ plugin.title }}</a>
+                  {% else %}
+                    {{ plugin.title }}
+                  {% endif %}</td>
+                <td>
+                  {% if plugin.author_site %}
+                    <a href="{{ plugin.author_site }}" target="_blank">{{ plugin.author }}</a>
+                  {% else %}
+                    {{ plugin.author }}
+                  {% endif %}
+                </td>
+                <td>{{ plugin.version }}</td>
+                <td>{{ plugin.description }}</td>
+                <td>
+                  <a href="#" data-name="{{ plugin.name }}" class="activated" {% if plugin.activate == 'activated' %}{% else %}style="display:none;"{% endif %}>Активировать</a>
+                  <a href="#" data-name="{{ plugin.name }}" class="deactivated" {% if plugin.activate == 'activated' %}style="display:none;"{% else %}{% endif %}>Деактивировать</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div> <!-- End #tab1 -->
+    </div> <!-- End .content-box-content -->
+  </div>
+
 {%  endblock %}

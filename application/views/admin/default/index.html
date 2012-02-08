@@ -108,7 +108,7 @@
         {{ error }}
       </div>
     {% endif %}
-    {% if SUBMENU[controller][0] is not empty and subsection == ''%}
+    {% if SUBMENU[controller][0] is not empty and subsection == '' and controller != 'plugin'%}
       <menu>
         {% for key in SUBMENU[controller]|keys %}
           {% if SUBMENU[controller][key]['display'] != 'none' %}

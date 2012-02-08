@@ -14,7 +14,7 @@ class CMS_Plugin  {
   // ---------------------------------------------------------------------------
   
   /**
-   * Склеиваем заголовки  
+   * Склеиваем   
    * @return unknown_type
    */
   protected function merge_data($key, $value){

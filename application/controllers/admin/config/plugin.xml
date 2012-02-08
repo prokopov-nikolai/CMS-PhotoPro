@@ -2,6 +2,6 @@
 <controller>
   <title>Плагины</title>
   <name>plugin</name>
-  <description>Подключите и отключите необходимые плагины</description>
+  <description></description>
   <sort>7</sort>      
 </controller>

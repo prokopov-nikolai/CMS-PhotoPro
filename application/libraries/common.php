@@ -104,6 +104,16 @@ class Common {
    */
   public function success_true(){
   	echo $this->array_to_json(array('success' => "true"));
+  	exit;
+  }
+  // ---------------------------------------------------------------------------
+  
+  /*
+   * Вернем саксес фолс
+   */
+  public function success_false(){
+    echo $this->array_to_json(array('success' => "false"));
+    exit;
   }
   // ---------------------------------------------------------------------------
   

@@ -470,3 +470,103 @@ footer {
   cursor:default;
 }
 /*** end настройки ***/
+
+
+
+/*** плагины ***/
+.content-box, .content-box-header, ul.content-box-tabs li a.current, .deactivated, .activated {
+    border-radius: 6px 6px 6px 6px;
+    -moz-border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
+}
+.content-box {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #CCCCCC;
+    margin: 0 0 20px;
+    overflow:hidden;
+    padding:0px;
+}
+.content-box-header {
+    border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    background: url("../images/bg-content-box.gif") repeat-x scroll left top #E5E5E5;
+    height: 40px;
+    margin-top: 1px;
+}
+.content-box-content {
+    border-top: 1px solid #CCCCCC;
+    font-size: 13px;
+    padding: 20px;
+}
+.content-box-header h3 {
+    color:#505050;
+    font-size: 17px;
+    font-weight: 100;
+    float: left;
+    margin:0px!important;
+    padding: 12px 15px 10px;
+}
+.content-box-content table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.content-box-content table thead th {
+    border-bottom: 1px solid #DDDDDD;
+    font-size: 15px;
+    font-weight: bold;
+}
+.content-box-content tbody {
+    border-bottom: 1px solid #DDDDDD;
+}
+.content-box-content tbody tr {
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+.content-box-content tbody tr.alt-row {
+    background: none repeat scroll 0 0 #F3F3F3;
+}
+.content-box-content table td, .content-box-content table th {
+    line-height: 1.3em;
+    padding: 10px;
+    text-align: left;
+}
+.content-box-content table tfoot td .bulk-actions {
+    padding: 15px 0 5px;
+}
+.content-box-content table tfoot td .bulk-actions select {
+    border: 1px solid #CCCCCC;
+    padding: 4px;
+}
+.content-box-content table td a {
+  color:#57A000;
+}
+.activated {
+    background: -moz-linear-gradient(center bottom , #57a000 50%, #62b400 100%) repeat scroll 0 0 #62b400;
+    border: 1px solid #57a000;
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF!important;
+    cursor: pointer;
+    display: block;
+    font-size:13px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 100px;
+}
+.deactivated {
+    background: -moz-linear-gradient(center bottom , #C53627 50%, #DD4C39 100%) repeat scroll 0 0 #C53627;
+    border: 1px solid #B0281A;
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF!important;
+    cursor: pointer;
+    display: block;
+    font-size:13px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 100px;
+}
+/*** end плагины ***/

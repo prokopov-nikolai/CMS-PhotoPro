@@ -62,7 +62,12 @@ $route['image/([0-9]+)x([0-9]+)/([a-z0-9-_\.]+)\.(jpg|gif|png|nginx)'] = 'images
 $route['([a-z0-9-_]+)'] = 'page/show/$1';
 
 // подключим правила роутинга из плагинов
-$plugins = file(ROOT . '/' . APPPATH .'plugins/plugins.dat');
+$file = ROOT . '/' . APPPATH .'plugins/plugins.dat';
+if(!file_exists($file)){
+  $fn = fopen($file,"w");
+  fclose($fn); 
+}
+$plugins = file($file);
 foreach($plugins as $name) {
   $file = ROOT . '/' . APPPATH . "plugins/{$name}/routes.php";
   if (file_exists($file)){
