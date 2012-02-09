@@ -127,7 +127,6 @@ class CI_Exceptions {
 		{
 			ob_end_flush();
 		}
-		header("Content-type: text/html; charset=uf-8");
 		ob_start();
 		include(APPPATH.'errors/'.$template.'.php');
 		$buffer = ob_get_contents();

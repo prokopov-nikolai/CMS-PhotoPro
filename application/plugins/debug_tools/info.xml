@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <author>Прокопов Николай</author>
+  <author_site>http://www.prokopov-nikolai.ru</author_site>
+  <site>http://plugin-site.ru</site>
+  <title>Debug Tools</title>
+  <name>debug_tools</name>
+  <version>0.1</version>
+  <description>Плагин предназначен для оптимизации кода и увеличения скорости работы сайта</description>
+  <script>{{ path_plugin }}/js/jquery.debug-tools.js</script>
+  <style>{{ path_plugin }}/css/uploadify.css </style>
+</plugin>
