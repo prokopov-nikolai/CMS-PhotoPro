@@ -37,8 +37,8 @@ class CMS_Plugin  {
    * Выводим шаблон  
    * @return unknown_type
    */
-  protected function fetch($template){
-    return $this->ci->fetch($template);
+  protected function render($template){
+    return $this->ci->render($template);
   }
   // ---------------------------------------------------------------------------
 }

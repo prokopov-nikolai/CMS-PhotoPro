@@ -24,6 +24,7 @@
   <title>{{ title }}</title>
 </head>
 <body>
+  {{ plugin_content_top|raw }}
   <div id="wrapper">
     <header>
       <a href="/" id="logotype" class="fl-left">CMS PhotoPro</a>
@@ -92,5 +93,6 @@
   {% if environment == 'production' %}
     <!-- Yandex.Metrika counter -->
   {% endif %}
+  {{ plugin_content_footer|raw }}
 </body>
 </html>

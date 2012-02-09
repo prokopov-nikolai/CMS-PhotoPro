@@ -2,7 +2,7 @@
 
 /**
  * CMS PhotoPro
- * Контроллер укстановки движка
+ * Контроллер установки движка
  * 
  * @author ProkopovNI
  * @site http://www.prokopov-nikolai.ru
@@ -36,7 +36,7 @@ class Install extends CMS_Controller {
     }
   }
   // ---------------------------------------------------------------------------
-  
+
   /**
    * Переадресуем на первый шаг
    */
@@ -131,7 +131,15 @@ class Install extends CMS_Controller {
       , ROOT . '/images/source/'
       , ROOT . '/' . APPPATH . 'cache/db/'
       , ROOT . '/' . APPPATH . 'cache/twig/'
-      );
+    );
+
+    foreach($dir_list as $dir){
+      if (!is_dir($dir)){
+        $error .= "<br>- {$dir}";
+      } 
+    }
+    if ($error) show_error("Папки:{$error}", 500, "Создайте папки");
+
     foreach($dir_list as $dir){
       if (substr(decoct(fileperms($dir)), -3) != 777){
         if (!@chmod($dir, 0777))

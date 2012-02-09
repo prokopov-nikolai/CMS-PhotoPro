@@ -19,7 +19,7 @@ class Nivo_slider extends CMS_Plugin {
   public function get_gallery($gallery, $pause_time){
   	$this->append_data('G', $gallery);
   	$this->append_data('pauseTime', $pause_time);
-    return $this->fetch('nivo_slider/views/gallery.html');
+    return $this->render('nivo_slider/views/gallery.html');
   }
   // ---------------------------------------------------------------------------
 

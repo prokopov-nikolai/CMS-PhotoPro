@@ -29,6 +29,7 @@ class CMS_Controller extends CI_Controller {
   
   public function __construct(){
     self::$instance =& $this;
+    header("Content-type: text/html; charset=utf-8");
     
     // Подключим твиг
     include_once ROOT . '/' . SYSDIR . '/PEAR.php';
@@ -39,7 +40,6 @@ class CMS_Controller extends CI_Controller {
 
     // проверим установлен ли движок
     if (config_item('cms_installed') === false && $this->uri->segment(1) != 'install'){
-      header("Content-type: text/html; charset=utf-8");
       die('<h3>CMS PhotoPro еще не установлена!</h3><a href="/install/step/1">Установить</a>');
     } elseif ($this->uri->segment(1) != 'install') {
       $file_install = ROOT . '/' . APPPATH . 'controllers/install.php';
@@ -94,6 +94,7 @@ class CMS_Controller extends CI_Controller {
     // закроем сайт если нужно
     $this->_site_close();
     
+    //
   }
   // ---------------------------------------------------------------------------
   
@@ -131,7 +132,7 @@ class CMS_Controller extends CI_Controller {
             $this->_data[$key][$k] = $v;
           }
         }
-      } else { 
+      } else {
         $this->_data[$key] .= $value;
       }
     } else {
@@ -145,11 +146,13 @@ class CMS_Controller extends CI_Controller {
    * @param unknown_type $template
    * @return unknown_type
    */
-  public function display($template) {
+  public function display($template, $render = false) {
     $this->_set_template_path();
     $this->_load_data();
     $this->_load_template($template);
-    $this->_template->display($this->_data);    
+    $html = $this->_template->render($this->_data);
+    if ($render) return $html;
+    echo $html; 
   }
   // ---------------------------------------------------------------------------
     
@@ -158,10 +161,8 @@ class CMS_Controller extends CI_Controller {
    * @param unknown_type $template
    * @return unknown_type
    */
-  public function fetch($template) {
-    ob_start();
-    $this->display($template);
-    return ob_get_clean();    
+  public function render($template) {
+    return $this->display($template, true);
   }
   // ---------------------------------------------------------------------------
   
