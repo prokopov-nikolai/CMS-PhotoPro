@@ -58,12 +58,12 @@ $config['nginx'] = '';
 /**
  * Текс для вывода когда сайт закрыт 
  */
-$config['site_close'] = '<h1>Сайт временно закрыт</h1>';
+$config['site_close'] = '';
 
 /**
  * Admin email 
  */
-$config['admin_email'] = 'prokopov-nikolaj@yandex.ru';
+$config['admin_email'] = '';
 
 /**
  * Показывать голосовани 1 - показать, 0 - скрыть
