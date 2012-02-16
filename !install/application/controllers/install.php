@@ -115,6 +115,7 @@ class Install extends CMS_Controller {
       , "{$path}config/database.php"
       , "{$path}config/site.php"
       , "{$path}controllers/install.php"
+      , "{$path}plugins/plugins.dat"
     );
     foreach($file_list as $file){
       if (substr(decoct(fileperms($file)), -3) != 777){
