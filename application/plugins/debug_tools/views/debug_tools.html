@@ -1,0 +1,35 @@
+<script type="text/javascript">
+  $(function(){
+    $('#debug-tools').debugTools();
+  });
+  {% if query_highlighting %}
+    SyntaxHighlighter.all();
+  {% endif %}
+</script>
+<div id="debug-tools">
+  <div class="total-info">
+    <div class="panel">
+      <div class="debblock fl-left logo">CMS PhotoPro v {{ cms_version }}</div>
+      <div class="debblock fl-left database" title="Показать запросы с БД">{{ query_count }} ({{ query_time }} s)<div class="vertical-line"></div></div>
+      <div class="debblock fl-left benchmark-time" title="Время геренирование страницы сервером">{{ benchmark_time }} s<div class="vertical-line"></div></div>
+      <div class="debblock fl-left benchmark-memory" title="Память потребляемая PHP">{{ benchmark_memory }} (Peak: {{ benchmark_memory_peak }})<div class="vertical-line"></div></div>
+      <div class="debblock fl-left router" title="Контроллер / метод"><span title="Контроллер">{{ cms_controller }}</span>  / <span title="Метод">{{ cms_method }}</span><div class="vertical-line"></div></div>
+      <div class="fl-right collapse"></div>
+    </div>
+    
+    <div class="query-list" style="height:{{ debug_tools_height }}px;">
+      {% for key in QUERY|keys %}
+        <div class="query {{ QSPEED[key] }}" style="padding-left:{{ 20 + decimals * 12}}px;">
+          <div class="query-time">
+            {{ QTIME[key] }}
+          </div>
+          <pre class="brush: sql;">{{ QUERY[key] }}</pre>
+          <!--div class="query-text">
+            {{ QUERY[key]|raw }}
+          </div-->
+        </div>
+      {% endfor%}
+    </div>    
+  </div>    
+  <div class="debug-tools-bug"></div>
+</div>

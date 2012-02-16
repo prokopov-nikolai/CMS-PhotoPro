@@ -2,13 +2,29 @@
 
 class Nivo_slider extends CMS_Plugin {
   
-  public $plugin_dir;
+  /**
+   * Тип плагина. Когда выполняется
+   * before | after | anytime
+   */  
+  public $type = 'anytime';
   
-  public function __construct($CI){
+  /**
+   * Стили плагина
+   */
+  public $style = array(
+      '{{ path_plugin }}/nivo_slider/css/nivo-slider.css'
+    , '{{ path_plugin }}/nivo_slider/themes/default/default.css'
+  );
+  
+  /**
+   * Стили плагина
+   */
+  public $script = array(
+    '{{ path_plugin }}/nivo_slider/js/jquery.nivo.slider.pack.js'
+  );
+  
+  public function __construct(){
     parent::__construct();
-    $dir =  str_replace(basename(__FILE__), '', str_replace('\\', '/', __FILE__));
-    $this->plugin_dir = "http://{$_SERVER['HTTP_HOST']}" . str_replace(ROOT, '', $dir);        
-    $this->_get_head();
   }
   // ---------------------------------------------------------------------------
   
@@ -23,14 +39,4 @@ class Nivo_slider extends CMS_Plugin {
   }
   // ---------------------------------------------------------------------------
 
-  /*
-   * Сформируем заголовки плагина ля страницы и добавим их к остальным
-   */
-  private function _get_head(){
-    $headers = '<link type="text/css" href="' . $this->plugin_dir . 'css/nivo-slider.css" rel="stylesheet" />' . "\n";
-    $headers .= '<link type="text/css" href="' . $this->plugin_dir . 'themes/default/default.css " rel="stylesheet" />' . "\n";
-    $headers .= '  <script type="text/javascript" src="' . $this->plugin_dir . 'js/jquery.nivo.slider.pack.js"></script>' . "\n";
-    $this->merge_data('plugin_headers', $headers);
-  }
-  // ---------------------------------------------------------------------------
 }

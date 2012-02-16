@@ -8,12 +8,52 @@
  * @site http://www.prokopov-nikolai.ru
  */
 class CMS_Controller extends CI_Controller {
+  /**
+   * Список подключенных плагинов
+   * @var array
+   */
+  protected $plugin_list = array();
+  
+  /**
+   * Код для вставки в шаблон до вывода основного контента
+   * @var string
+   */
+  public $plugin_content_top = '';
+  
+  /**
+   * РКод для вставки в шаблон после вывода основного контента
+   * @var string
+   */
+  public $plugin_content_bottom = '';
+  
+  /**
+   * Подключаемые стили и скрипты для плагинов
+   */
+  private $_plugin_head = array(
+      'script' => array()
+    , 'style'  => array()
+  );
+  
+  /**
+   * Объект синглтона
+   */
 	private static $instance;
- /**
+  
+  /**
   * Массив передаваемых данных в шаблон
   * @var array
   */
   private $_data = array();
+
+  /**
+   * Путь до шаблона (front/back)
+   */
+  private $_path_template = '';
+  
+  /**
+   * Путь до плагинов
+   */
+  private $_path_plugin = '';
 
   /**
   * Шаблонизатор
@@ -29,14 +69,20 @@ class CMS_Controller extends CI_Controller {
   
   public function __construct(){
     self::$instance =& $this;
-    header("Content-type: text/html; charset=utf-8");
-    
-    // Подключим твиг
+    parent::__construct();
+
+    // Подключим твиг вначала иначе не сможем вывести форму авторизации
     include_once ROOT . '/' . SYSDIR . '/PEAR.php';
     include_once ROOT . '/' . SYSDIR . '/Twig/Autoloader.php';
     Twig_Autoloader::register();
-    
-    parent::__construct();
+
+    // определим основые пути
+    $this->_set_path();
+
+    // создадим объект шаблонизатора
+    $this->_set_twig();    
+
+    header("Content-type: text/html; charset=utf-8");
 
     // проверим установлен ли движок
     if (config_item('cms_installed') === false && $this->uri->segment(1) != 'install'){
@@ -48,7 +94,19 @@ class CMS_Controller extends CI_Controller {
             show_error("- {$file_install}", 500, "Удалите файл установки");
         }
       }
+    }    
+    
+    // авторизуем пользователя
+    $this->user_login();
+    if ($this->uri->segment(1) == config_item('admin_url') && $this->session->userdata('user_uniqid') == '') {
+      $this->display("login.html");
     }
+
+    // загрузим список плагинов
+    $this->_load_plugin_list();
+    
+    // выполним плагины before
+    $this->_run_plugin('before');
     
     // подключим настройки для админки
     if ($this->uri->segment(1) == config_item('admin_url')){
@@ -87,14 +145,16 @@ class CMS_Controller extends CI_Controller {
       $this->_add_headers($menu, $sub_menu);
     }
     
-    
     // проверим браузер
     $this->_check_browser();
     
     // закроем сайт если нужно
     $this->_site_close();
     
-    //
+    // не будем выполнять плагины after
+    // выполним их в функции display 
+    // $this->_run_plugin('after');
+    
   }
   // ---------------------------------------------------------------------------
   
@@ -146,13 +206,16 @@ class CMS_Controller extends CI_Controller {
    * @param unknown_type $template
    * @return unknown_type
    */
-  public function display($template, $render = false) {
-    $this->_set_template_path();
+  public function display($template) {
+    // выполним плагины after
+    $this->_run_plugin('after');
+    
     $this->_load_data();
     $this->_load_template($template);
-    $html = $this->_template->render($this->_data);
-    if ($render) return $html;
-    echo $html; 
+    
+    
+    echo $this->_template->render($this->_data);
+    exit;
   }
   // ---------------------------------------------------------------------------
     
@@ -162,7 +225,9 @@ class CMS_Controller extends CI_Controller {
    * @return unknown_type
    */
   public function render($template) {
-    return $this->display($template, true);
+    $this->_load_data();
+    $this->_load_template($template);
+    return $this->_template->render($this->_data);
   }
   // ---------------------------------------------------------------------------
   
@@ -181,20 +246,110 @@ class CMS_Controller extends CI_Controller {
   // ---------------------------------------------------------------------------
   
   /**
+   * Логиним пользователя
+   */
+  public function user_login(){
+    // проверим авторизован ли пользователь
+    if ($this->session->userdata('user_uniqid') != '') {
+      return true;
+    }
+    
+    // авторизуем пользователя по переданным его данным 
+    // и не получилось автоматически залогинить
+    $post = $this->input->post();
+    $error = '';
+    if (!$this->_auto_login() && 
+        isset($post['user_email']) && 
+        isset($post['user_password'])){
+      if ($post['user_email'] == null) {
+        $error = 'Введите Email!';
+      } else if (!$this->common->check_email(trim($post['user_email']))){
+        $error = 'Не корректный email!';
+      } else if ($post['user_password'] == null) {
+        $error = 'Пароль не может быть пустым!';
+      }
+      if ($error) {
+        // если возникли ошибки при проверке данных
+        $this->append_data('user_email', $post['user_email']);
+        $this->append_data('error', $error);   
+        return false;
+      } else {
+        $user = $this->user_model->user_login($post['user_email'], $post['user_password']);
+        if (!is_array($user)) {
+          // если возникли ошибки при авторизации
+          $this->append_data('user_email', $post['user_email']);
+          $this->append_data('error', $user);   
+          return false;
+        }
+        if ($post['remember']) {
+          set_cookie(array(
+              'name'   => 'user_email'
+            , 'value'  => $post['user_email']
+            , 'expire' => '31104000'
+          ));
+          set_cookie(array(
+              'name'   => 'user_password'
+            , 'value'  => $this->user_model->encrypt_password($post['user_password'])
+            , 'expire' => '31104000'
+          ));
+        }
+        // если нашелся пользователь, то сохнарим его в сессию
+        $this->session->set_userdata($user);
+        return true;
+      }      
+    }
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Пробуем автологинить пользователя по кукам 
+   */
+  private function _auto_login(){    
+    // если не авторизован и есть куки, то попробуем найти пользователя
+    $user_email = get_cookie('user_email', true);
+    $user_password = get_cookie('user_password', true);
+    if ($user_email != '' && $user_email != '') {
+      $auth = $this->user_model->search_user($user_email, $user_password);
+      if (isset($auth['error'])) {
+        // если возникли ошибки при авторизации
+        $this->append_data('error', $auth['error']);
+        $this->display("login.html");
+      } else {
+        // если нашелся пользователь, то сохнарим его в сессию
+        $this->session->set_userdata($auth);
+        return true;
+      }      
+    }
+    return false;
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Устанавливает пути для шаблонов и плагинов 
+   */
+  private function _set_path () {
+    // путь до шаблонов
+    if ($this->uri->segment(1) == config_item('admin_url')){
+      $this->_path_template = ROOT . '/'. APPPATH . 'views/' . config_item('admin_url') . '/' . config_item('admin_template');
+    } else {
+      $this->_path_template = ROOT . '/'. APPPATH . 'views/' . config_item('site_template');
+    }
+    
+    // путь до плагинов
+    $this->_path_plugin =  ROOT . '/'. APPPATH . 'plugins';
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
    * Устанавливает шаблон
    * @return unknown_type
    */
-  private function _set_template_path () {
-    $template_dir = array();   
-    if ($this->uri->segment(1) == config_item('admin_url')){
-      $template_dir[] = ROOT . '/'. APPPATH . 'views/' . config_item('admin_url') . '/' . config_item('admin_template');
-    } else {
-      $template_dir[] = ROOT . '/'. APPPATH . 'views/' . config_item('site_template');
-    }
+  private function _set_twig () {
+    $template_dir = array(
+        $this->_path_template
+      , $this->_path_plugin
+    );   
     
-    // добавим путь к папке шаблона
-    $this->_data['path_template'] = str_replace(ROOT, "http://{$_SERVER['HTTP_HOST']}", $template_dir[0]);
-    $template_dir[] =  ROOT . '/'. APPPATH . 'plugins';
     $loader = new Twig_Loader_Filesystem($template_dir);
     $config = array( 
        'charset'    => 'utf-8',
@@ -216,8 +371,15 @@ class CMS_Controller extends CI_Controller {
    */
   private function _load_data(){
     if ($this->uri->segment(1) != 'install') {
+      // режим в котором работает сайт
       $this->_data['environment'] = ENVIRONMENT;
-          
+      
+      // код для вставки в начало шаблона
+      $this->_data['plugin_content_top'] = $this->plugin_content_top;
+      
+      // код для вставки в конец шаблона
+      $this->_data['plugin_content_bottom'] = $this->plugin_content_bottom;
+      
       // урл админки
       $this->_data['admin_url'] = config_item('admin_url');
       
@@ -235,8 +397,33 @@ class CMS_Controller extends CI_Controller {
       
       // добавим данные пользователя
       $this->_data['U'] = $this->session->userdata;      
+      
+      // загрузим скрипты и стили плагинов
+      $this->_data['PLUGIN_HEAD'] = $this->_plugin_head; 
+      
+      // время выполнения скрипта
+      $this->benchmark->mark('total_execution_time_end');
+      $this->_data['benchmark_time'] = substr(current(explode(' ', end($this->benchmark->marker))), 0, 4);
+      
+      // память занимаемая скриптом
+      $this->_data['benchmark_memory'] = round(memory_get_usage(true)/1048576,2)." mb";
+      
+      // память занимаемая скриптом (пик)
+      $this->_data['benchmark_memory_peak'] = round(memory_get_peak_usage(true)/1048576,2)." mb";
+      
+      // вызываемый контроллер
+      $this->_data['cms_controller'] = $this->router->class; 
+      
+      // вызываемая функция
+      $this->_data['cms_method'] = $this->router->method;
     }
+
+    // путь до шаблона с учетом домена
+    $this->_data['path_template'] = str_replace(ROOT, "http://{$_SERVER['HTTP_HOST']}", $this->_path_template);
     
+    // путь до плагинов с учетом домена
+    $this->_data['path_plugin'] = str_replace(ROOT, "http://{$_SERVER['HTTP_HOST']}", $this->_path_plugin);
+      
     // удалим сообщение и ошибки
     if ($this->session->userdata('message') != '') {
       $this->_data['message'] = $this->session->userdata('message');
@@ -255,6 +442,7 @@ class CMS_Controller extends CI_Controller {
    * @return unknown_type
    */
   private function _load_template ($template_name) {
+    #prex($this->_twig);
     $this->_template = $this->_twig->loadTemplate($template_name);   
   }  
   // ---------------------------------------------------------------------------
@@ -317,7 +505,7 @@ class CMS_Controller extends CI_Controller {
   // ---------------------------------------------------------------------------
   
   /**
-   * Подготавливает информацию для меню
+   * Подготавливает информацию для меню в админке
    * $menu arr
    * $info arr 
    */
@@ -457,6 +645,38 @@ class CMS_Controller extends CI_Controller {
       }
     }
     $this->append_data('headers', $headers);
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Загружаем плагины по списку
+   */
+  private function _load_plugin_list(){
+    $this->plugin_list = file("{$this->_path_plugin}/plugins.dat");
+    $plugin_path = str_replace(ROOT, "http://{$_SERVER['HTTP_HOST']}", $this->_path_plugin);
+    foreach($this->plugin_list as $k => $plugin_name) {
+      $plugin_name = trim($plugin_name);
+      $this->plugin_list[$k] = $plugin_name;
+      $this->load->plugin($plugin_name);
+      foreach($this->$plugin_name->script as $src) {
+        $this->_plugin_head['script'][] = str_replace('{{ path_plugin }}', $plugin_path, $src);
+      }
+      foreach($this->$plugin_name->style as $stl) {
+        $this->_plugin_head['style'][] = str_replace('{{ path_plugin }}', $plugin_path, $stl);
+      }
+    }
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Выполняем плагины
+   */
+  private function _run_plugin($type){
+    foreach($this->plugin_list as $plugin_name){
+      if ($this->$plugin_name->type == $type) {
+        $this->plugin_content_bottom .= $this->$plugin_name->index();
+      }
+    }
   }
   // ---------------------------------------------------------------------------
   

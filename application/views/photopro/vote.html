@@ -36,10 +36,10 @@
     });
   });
   
-  // отрендери то что нужно
+  // отрендерим то что нужно
   function render(jdata) {
     answers = $.parseJSON(jdata);
-    if (parseInt($.cookie('vote-' + answers[0]['vote_id'])) > 0) {
+    if (typeof(answers[0]) != 'undefined' && parseInt($.cookie('vote-' + answers[0]['vote_id'])) > 0) {
       return render_results(jdata);
     }
     return render_answers(jdata);

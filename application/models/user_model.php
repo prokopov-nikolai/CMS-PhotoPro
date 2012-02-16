@@ -73,7 +73,7 @@ Class User_model extends CI_Model {
   	if (isset($post['user_password']) && $post['user_password'] == '') {
   	  unset($post['user_password']);
   	} else {
-  	  $post['user_password'] = $this->user->encrypt_password($post['user_password']);
+  	  $post['user_password'] = $this->encrypt_password($post['user_password']);
   	}
   	
     if (isset($post['user_last_name']) && $post['user_last_name'] == ''){
@@ -283,7 +283,98 @@ Class User_model extends CI_Model {
     return $this;
   }
   // ---------------------------------------------------------------------------
+  
+  /**
+   * Ищем пользователя по базе
+   * @param str $userEmail
+   * @param str $userPassword
+   * @return mixed
+   */
+  public function search_user($user_email, $user_password){
+    $this->db->select('user.*, user_admin.user_uniqid AS user_admin');
+    $this->db->from('user');
+    $this->db->join('user_admin', 'user.user_uniqid = user_admin.user_uniqid', 'left');
+    $this->db->where('user_email', $user_email);
+    $this->db->where('user_password', $user_password);
+    $this->db->limit(1);
+    $query = $this->db->get();
+    if ($query->num_rows() == 1) {
+      $user = $query->row_array();      
+      // запомним пользователя если попросили
+      $post = $this->input->post();
+      if (isset($post['remind']) && $post['remind'] != null) {
+        set_cookie('user_email', $user['user_email'], 60*60*24*30);
+        set_cookie('user_password', $user['user_password'], 60*60*24*30);
+      }
+      return $user;
+    } else {
+      $this->db->select('user_email');
+      $this->db->from('user');
+      $this->db->where('user_email', $user_email);
+      $this->db->limit(1);
+      $query = $this->db->get();
+      if ($query->num_rows() == 1) {
+        return 'Не верный пароль!';
+      } else {
+        return 'Пользователь с таким email не найден!';
+      }
+    }
+  } 
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Проверяем переданные данные и авторизуем пользователя
+   */
+  public function user_login($user_email, $user_password){
+    // пробуем найти пользователя
+    $user_password = $this->encrypt_password($user_password);
+    return $this->search_user($user_email, $user_password);
+  } 
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Регистрируем нового пользователя
+   */
+  public function registrate($post){
+    if (sizeof($post) < 2) {
+      return ' '; // есть ошибки
+    }
+    if (isset($post['user_email']) && $post['user_email'] == null){
+      return 'Укажите email';
+    } else if (!$this->common->check_email(trim($post['user_email']))) {
+      return 'Некорректрый email';
+    } else if(isset($post['user_password']) && $post['user_password'] == null){
+      return 'Пароль не может быть пустым';
+    }
     
+    // ищем без пароля поскольку если бы совпала мыло и пароль, то сработал автологин
+    $this->db->select('user_email');
+    $this->db->from('user');
+    $this->db->where(array('user_email' => $post['user_email']));
+    $this->db->limit(1);
+    $query = $this->db->get();
+    if ($query->num_rows() > 0) {
+      return 'Пользователь с таким email уже существует <a href="/fogot_password/?email='.$post['user_email'].'">Забыли пароль?</a>';
+    }
+    
+    $post['user_password'] = $this->encrypt_password($post['user_password']);
+    unset($post['user_show_password']);
+    unset($post['remember']);
+    
+    $post['user_uniqid'] = str_replace('.', '', uniqid('', 1));
+    $this->db->insert('user', $post);
+    return false;
+  }
+  // ---------------------------------------------------------------------------
+  
+  /*
+   * Шифруем пароль
+   */
+  public function encrypt_password($password){
+    return md5($password . config_item('encryption_key'));
+  }
+  // ---------------------------------------------------------------------------
+  
   /**
    * Сбросим значения переменных
    */

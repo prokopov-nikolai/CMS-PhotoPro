@@ -8,10 +8,16 @@
   <meta content="{{ description }}" name="description" />
   <link rel="shortcut icon" href="{{ path_template }}/images/favicon.gif" type="image/x-icon" />
   <link type="text/css" href="{{ path_template }}/css/style.css" rel="stylesheet" />
+  {% for stl in PLUGIN_HEAD.style %}
+    <link type="text/css" href="{{ stl }}" rel="stylesheet" />
+  {% endfor %}
   <script type="text/javascript" src="{{ path_template }}/js/jquery-1.6.2.min.js"></script>
   <script type="text/javascript" src="{{ path_template }}/js/jquery.showpassword.js"></script>
   <script type="text/javascript" src="{{ path_template }}/js/functions.js"></script>
-  {{ plugin_headers|raw }}
+  {% for src in PLUGIN_HEAD.script %}
+    <script type="text/javascript" src="{{ src }}"></script>
+  {% endfor %}
+  
   {% block head %}{% endblock %}
   <!--[if lt IE 9]>
    <script>
@@ -45,6 +51,7 @@
               </div>
               <a href="/registration/" id="registration">Регистрация</a><br />
               <a href="/remind_password/" id="remind-password">Забыли пароль</a>
+              <input type="hidden" name="remember" value="1" />
               <input type="submit" value ="Войти" style="font-size:20px;"/>
             </form>
             <script type="text/javascript">
@@ -59,9 +66,9 @@
                 <a href="/users/person_data/">{{ U.user_first_name }} {{ U.user_last_name }}</a><br/>
               {% endif %}
               {% if U.user_admin != ''%}
-                <a href="/{{ admin_url }}/">Админка</a>
+                <a href="/{{ admin_url }}/">Админка</a><br />
               {% endif %}
-              <br /><a href="/logout/">Выход</a>
+              <a href="/logout/">Выход</a>
             {% endif %}
         </li>
       </menu>
@@ -93,6 +100,6 @@
   {% if environment == 'production' %}
     <!-- Yandex.Metrika counter -->
   {% endif %}
-  {{ plugin_content_footer|raw }}
+  {{ plugin_content_bottom|raw }}
 </body>
 </html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <author>Прокопов Николай</author>
+  <author_site>http://www.prokopov-nikolai.ru</author_site>
+  <site></site>
+  <title>Nivo Slider</title>
+  <name>nivo_slider</name>
+  <version>0.1</version>
+  <description>Плагин предназначен для создание слайдена на главной</description>
+</plugin>

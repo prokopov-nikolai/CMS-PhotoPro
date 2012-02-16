@@ -5,11 +5,16 @@ class CMS_Plugin  {
   private $ci;
   
   protected $db;
+  
+  protected $session;
 
   public function __construct(){
     $CI = & get_instance();
     $this->ci = $CI;  
-    $this->db = $CI->db; 
+    if(isset($CI->db))
+      $this->db = $CI->db;
+    if(isset($CI->session))
+      $this->session = $CI->session;
   }
   // ---------------------------------------------------------------------------
   
@@ -24,9 +29,9 @@ class CMS_Plugin  {
 
   /**
    * Добавляем данные в шаблон
-   * @param unknown_type $key
-   * @param unknown_type $value
-   * @return unknown_type
+   * @param string $key
+   * @param mixed $value
+   * @return nothing
    */
   protected function append_data($key, $value) {
   	$this->ci->append_data($key, $value);
@@ -35,10 +40,31 @@ class CMS_Plugin  {
   
   /**
    * Выводим шаблон  
-   * @return unknown_type
+   * @return string
    */
   protected function render($template){
     return $this->ci->render($template);
   }
   // ---------------------------------------------------------------------------
+  
+  
+  /**
+   * Загружаем конфиги плагина
+   * @return  boolean if the file was loaded correctly
+   */
+  function load_config($name = ''){
+    $file_path = ROOT . '/' . APPPATH . 'plugins/' . $name . '/config.php';
+    if (!file_exists($file_path)){
+      show_error($file_path, 500, 'Не найден файл');
+    }
+    if (!isset($this->ci->config->config[$name])) {
+      include($file_path);
+      if (!isset($config)) {
+        show_error('Файл ' . $file_path . ' не содержит массив $config' , 500, 'Ошибка конфигурационного файла');
+      }
+      $this->ci->config->set_item($name, $config);
+      $this->ci->config->is_loaded[] = APPPATH . 'plugins/' . $name . '/config.php';
+    }
+    return $this->ci->config->item($name);
+  }
 }

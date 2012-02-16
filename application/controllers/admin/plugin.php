@@ -47,15 +47,15 @@ class Plugin extends CMS_Controller {
   public function activate(){
     $post = $this->input->post();
     if (count($post) > 0) {
-      $activated = array_flip($this->_get_plugins_active());
+      $activated = array_flip($this->plugin_list);
       foreach($post['plugin_list'] as $plugin_name) {
         if ($post['action'] == 'deactivated') {
           unset($activated[$plugin_name]);
         } else if ($post['action'] == 'activated') {
-          $activated[] = $plugin_name;
+          $activated[$plugin_name] = count($activated);
         }
       }
-      $this->_set_plugins_active($activated);
+      $this->_set_plugins_active(array_flip($activated));
       $this->common->success_true();
     } else {
       show_404();
@@ -67,7 +67,7 @@ class Plugin extends CMS_Controller {
    * Извлекаем описание плагинов
    */
   private function _get_plugins_info(){
-    $activated = $this->_get_plugins_active();
+    $activated = $this->plugin_list;
     $info =  array();
     $plugins_dir = ROOT . '/' . APPPATH . 'plugins/';
     if ($handledir = opendir($plugins_dir)) {
@@ -85,16 +85,8 @@ class Plugin extends CMS_Controller {
       }
     }
     closedir($handledir);
+    ksort($info);
     return $info;
-  }
-  // ---------------------------------------------------------------------------
-
-  /**
-   * Извлечем список активных плагинов 
-   */
-  private function _get_plugins_active(){
-    $file = ROOT . '/' . APPPATH . 'plugins/plugins.dat';
-    return file($file);
   }
   // ---------------------------------------------------------------------------
   
@@ -102,6 +94,7 @@ class Plugin extends CMS_Controller {
    * Сохраняем список активных плагинов 
    */
   private function _set_plugins_active($list){
+    sort($list);
     $file = ROOT . '/' . APPPATH . 'plugins/plugins.dat';
     $fn = fopen($file,"w");
     fwrite($fn, implode("\n", $list));

@@ -147,6 +147,9 @@ header {
   overflow:hidden;
   padding:71px 0px 0px 278px;
 }
+.user-name {
+  top:10px;
+}
 nav {
 }
 .controller, .method {

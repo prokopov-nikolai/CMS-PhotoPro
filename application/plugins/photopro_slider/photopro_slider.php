@@ -2,13 +2,28 @@
 
 class Photopro_slider extends CMS_Plugin {
   
-  public $plugin_dir;
+  /**
+   * Тип плагина. Когда выполняется
+   * before | after | anytime
+   */  
+  public $type = 'anytime';
+  
+  /**
+   * Стили плагина
+   */
+  public $style = array(
+    '{{ path_plugin }}/photopro_slider/css/photopro-slider.css'
+  );
+  
+  /**
+   * Стили плагина
+   */
+  public $script = array(
+    '{{ path_plugin }}/photopro_slider/js/jquery.photopro.slider.js'
+  );
   
   public function __construct($CI){
     parent::__construct();
-    $dir =  str_replace(basename(__FILE__), '', str_replace('\\', '/', __FILE__));
-    $this->plugin_dir = "http://{$_SERVER['HTTP_HOST']}" . str_replace(ROOT, '', $dir);        
-    $this->_get_head();
   }
   // ---------------------------------------------------------------------------
   
@@ -19,17 +34,7 @@ class Photopro_slider extends CMS_Plugin {
   public function get_gallery($gallery, $pause_time){
   	$this->append_data('G', $gallery);
   	$this->append_data('pauseTime', $pause_time);
-    return $this->fetch('photopro_slider/views/gallery.html');
-  }
-  // ---------------------------------------------------------------------------
-
-  /*
-   * Сформируем заголовки плагина ля страницы и добавим их к остальным
-   */
-  private function _get_head(){
-    $headers = '<link type="text/css" href="' . $this->plugin_dir . 'css/photopro-slider.css" rel="stylesheet" />' . "\n";
-    $headers .= '  <script type="text/javascript" src="' . $this->plugin_dir . 'js/jquery.photopro.slider.js"></script>' . "\n";
-    $this->merge_data('plugin_headers', $headers);
+    return $this->render('photopro_slider/views/gallery.html');
   }
   // ---------------------------------------------------------------------------
 }

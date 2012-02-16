@@ -57,4 +57,6 @@ class CMS_Config extends CI_config {
     $CI = &get_instance();
     $CI->session->set_userdata(array('message' => 'Настройки успешно сохранены!'));
   }
+  // ---------------------------------------------------------------------------
+  
 }

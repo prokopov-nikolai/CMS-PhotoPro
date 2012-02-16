@@ -1,89 +1,117 @@
-/*
- * jQuery Nivo Slider v2.6
- * http://nivo.dev7studios.com
- *
- * Copyright 2011, Gilbert Pellegrom
- * Free to use and abuse under the MIT license.
- * http://www.opensource.org/licenses/mit-license.php
- * 
- * March 2010
+/* 
+ * @name   Plugin for CMS PhotoPro "Debug tools" 
+ * @author Николай Прокопов
+ * @site   http://prokopov-nikolai.ru
+ * @version v 0.1
+ * @date 10.02.2012
  */
+
+
  
  
-/* The Nivo Slider styles */
-.nivoSlider {
-	position:relative;
+#debug-tools {
+  background:#fff;
+  bottom:0;
+  display:block;
+  overflow:hidden;
+  position:fixed;
+  width:100%;
+  z-index:1000;
 }
-.nivoSlider img {
-	position:absolute;
-	top:0px;
-	left:0px;
+#debug-tools .fl-left {
+  display:block;
+  float:left;
+  position:relative
 }
-/* If an image is wrapped in a link */
-.nivoSlider a.nivo-imageLink {
-	position:absolute;
-	top:0px;
-	left:0px;
-	width:100%;
-	height:100%;
-	border:0;
-	padding:0;
-	margin:0;
-	z-index:6;
-	display:none;
+#debug-tools .fl-right {
+  display:block;
+  float:right;
+  position:relative
 }
-/* The slices and boxes in the Slider */
-.nivo-slice {
-	display:block;
-	position:absolute;
-	z-index:5;
-	height:100%;
+#debug-tools .total-info {
+  background:#fff;
+  border-bottom:#000 solid 1px;
+  border-top:#000 solid 1px;
+  overflow: hidden;
 }
-.nivo-box {
-	display:block;
-	position:absolute;
-	z-index:5;
+#debug-tools .collapse {
+  background:url(/application/plugins/debug_tools/images/collapse.png) 0px 0px no-repeat;
+  cursor:pointer;
+  height:24px;
+  right:7px;
+  top:7px;
+  width:24px;
 }
-/* Caption styles */
-.nivo-caption {
-	position:absolute;
-	left:0px;
-	bottom:0px;
-	background:#000;
-	color:#fff;
-	opacity:0.8; /* Overridden by captionOpacity setting */
-	width:100%;
-	z-index:8;
+#debug-tools .debblock {
+  padding:9px 0px 9px 42px;  
 }
-.nivo-caption p {
-	padding:5px;
-	margin:0;
+#debug-tools .vertical-line {
+  border-right:#999 solid 1px;
+  display:block;
+  float:right;
+  height:20px;
+  margin-left:10px;
+  position:relative;
+  width:1px;
 }
-.nivo-caption a {
-	display:inline !important;
+#debug-tools .logo {
+  background:#000;
+  color:#fff;
+  font-family: Arial,Verdana,Geneva,Helvetica,sans-serif;
+  font-size:16px;
+  font-style:italic;
+  font-weight:bold;
+  padding:10px 20px 10px 20px;
 }
-.nivo-html-caption {
-    display:none;
+#debug-tools .database {
+  background:url(/application/plugins/debug_tools/images/database.png) 10px 7px no-repeat;
+  cursor:pointer;
 }
-/* Direction nav styles (e.g. Next & Prev) */
-.nivo-directionNav a {
-	position:absolute;
-	top:45%;
-	z-index:9;
-	cursor:pointer;
+#debug-tools .benchmark-time {
+  background:url(/application/plugins/debug_tools/images/time.png) 10px 7px no-repeat;
 }
-.nivo-prevNav {
-	left:0px;
+#debug-tools .benchmark-memory {
+  background:url(/application/plugins/debug_tools/images/memory.png) 10px 7px no-repeat;
 }
-.nivo-nextNav {
-	right:0px;
+#debug-tools .router {
+  background:url(/application/plugins/debug_tools/images/router.png) 10px 9px no-repeat;
 }
-/* Control nav styles (e.g. 1,2,3...) */
-.nivo-controlNav a {
-	position:relative;
-	z-index:9;
-	cursor:pointer;
+#debug-tools .query-list {
+  background:#f6f6f6;
+  clear:both;
+  display:none;
+  padding:10px;
+  overflow-y:scroll;
 }
-.nivo-controlNav a.active {
-	font-weight:bold;
+#debug-tools .query {
+  padding:5px 5px 5px 60px;
+  position:relative;
+}
+#debug-tools .query.slow { background:#ffc1c1;}
+#debug-tools .query.middle { background:#ffebd3;}
+#debug-tools .query.fast { }
+#debug-tools .query-time {
+  display:block;
+  left:5px;
+  position:absolute;
+  width:50px;
+}
+#debug-tools .toolbar {
+  display:none;
+}
+#debug-tools .debug-tools-bug {
+  background:url(/application/plugins/debug_tools/images/bug.png) 12px 10px no-repeat #fff;
+  border-top:#000 solid 1px;
+  border-right:none;
+  border-bottom:#000 solid 1px;
+  border-left:#000 solid 1px;
+  bottom:0px;
+  cursor:pointer;
+  display:none;
+  height:24px;
+  padding:7px;
+  position:fixed;
+  right:0px;
+  width:24px;
+  z-index: 1000000;
 }

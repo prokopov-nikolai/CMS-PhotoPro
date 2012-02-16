@@ -26,6 +26,9 @@ class Users extends CMS_Controller {
   }
   // ---------------------------------------------------------------------------
   
+  /**
+   * Выводим определеную страницу с пользователями
+   */
   public function page($num = 1){
     // извлечем всех пользователй
     $this->load->model('user_model');
@@ -94,23 +97,16 @@ class Users extends CMS_Controller {
     if ($this->session->userdata('user_uniqid')) {
       header('Location: /');
     }
-    $result = $this->user->registrate();    	
-    if ($result !== true ) {
-      if (isset($result['error'])) {
-        $this->append_data('error', $result['error']);
-      }
-      if (isset($result['user_email'])) {
-        $this->append_data('user_email', $result['user_email']);
-      }
-      if (isset($result['user_password'])) {
-        $this->append_data('user_password', $result['user_password']);
-      }
+    $post = $this->input->post();
+    if ($error = $this->user_model->registrate($post)) {
+      $this->append_data('error', $error);
+      $this->append_data('user_email', $post['user_email']);
       $this->display('registration.html');
     } else {
       $this->session->set_userdata(array('first_visit' => 1));
+      $this->user_login();
       header("Location: /users/person_data/");
     }
-    
   }
   // ---------------------------------------------------------------------------
   
@@ -118,7 +114,11 @@ class Users extends CMS_Controller {
    * Выйдем из сервиса
    */
   public function logout() {
-    $this->user->logout();
+    $this->session->sess_destroy();
+    delete_cookie('user_email');
+    delete_cookie('user_password');
+    // вернем пользователя обратно
+    $this->locate_referer();
   }
   // ---------------------------------------------------------------------------
   
