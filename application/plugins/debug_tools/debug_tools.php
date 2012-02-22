@@ -52,6 +52,7 @@ class Debug_tools extends CMS_Plugin {
       $this->append_data('decimals', $this->config['query_time_decimals']);
       $this->append_data('debug_tools_height', $this->config['debug_tools_height']);
       $qtime = array();
+      $qspeed = array();
       foreach($this->db->query_times as $t) {
         $qtime[] = number_format($t, $this->config['query_time_decimals']);
         $qspeed[] = $t < $this->config['query_speed'][0] 
