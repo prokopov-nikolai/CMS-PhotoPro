@@ -308,7 +308,7 @@ class CMS_Controller extends CI_Controller {
     // если не авторизован и есть куки, то попробуем найти пользователя
     $user_email = get_cookie('user_email', true);
     $user_password = get_cookie('user_password', true);
-    if ($user_email != '' && $user_email != '') {
+    if ($user_email != '' && $user_email != '' && config_item('cms_installed') === true) {
       $auth = $this->user_model->search_user($user_email, $user_password);
       if (isset($auth['error'])) {
         // если возникли ошибки при авторизации
