@@ -98,7 +98,7 @@ class CMS_Controller extends CI_Controller {
     
     // авторизуем пользователя
     $this->user_login();
-    if ($this->uri->segment(1) == config_item('admin_url') && $this->session->userdata('user_uniqid') == '') {
+    if ($this->uri->segment(1) == config_item('admin_url') && $this->session->userdata('user_admin') == '') {
       $this->display("login.html");
     }
 
