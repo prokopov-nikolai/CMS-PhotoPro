@@ -86,7 +86,7 @@ class Settings extends CMS_Controller {
   	$view_path = ROOT . '/' . APPPATH . 'views/';
   	if ($dh = opendir($view_path)) {
   		while(($f = readdir($dh)) !== false){
-  			if (filetype($view_path . $f) == 'dir' && $f != 'admin' && $f != '.' && $f != '..'){
+  			if (filetype($view_path . $f) == 'dir' && $f != config_item('admin_url') && $f != '.' && $f != '..'){
   				$screen = $view_path . $f . '/screenshot.jpg';
   				if (file_exists($screen)) {
   					$screen = '/' . APPPATH . 'views/' . $f . '/screenshot.jpg';
