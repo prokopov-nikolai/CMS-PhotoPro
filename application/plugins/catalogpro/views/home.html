@@ -1,0 +1,338 @@
+{% extends "index.html" %}
+
+{% block head %}
+<link type="text/css" href="{{ path_template }}/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="{{ path_template }}/js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript">
+  $(function(){
+    var make_id = $('#make_id').val();
+    update_cats(make_id);
+    
+    $('#make_id').change(function(){
+      make_id = $(this).val();
+      update_cats(make_id);
+    });
+    
+    $( "#slider-price_range" ).slider({
+      range: true,
+      min: {{ SEARCH_CHAR.min_price }},
+      max: {{ SEARCH_CHAR.max_price }},
+      values: [ {{ SEARCH_CHAR.min_price }}, {{ SEARCH_CHAR.max_price }} ],
+      step: 1000,
+      slide: function( event, ui ) {
+        var min = ui.values[ 0 ].toString().replace(/(\d{1,3}(?=(\d{3})+(?:\.\d|\b)))/g,"\$1"+' ');
+        var max = ui.values[ 1 ].toString().replace(/(\d{1,3}(?=(\d{3})+(?:\.\d|\b)))/g,"\$1"+' ');
+        $( "#price_range" ).val( min + " - " + max + ' руб.');
+      }
+    });
+    $( "#price_range" ).val('');
+      
+      
+    $( "#slider-mileage_range" ).slider({
+      range: true,
+      min: {{ SEARCH_CHAR.min_mileage }},
+      max: {{ SEARCH_CHAR.max_mileage }},
+      values: [ {{ SEARCH_CHAR.min_mileage }}, {{ SEARCH_CHAR.max_mileage }} ],
+      step: 10000,
+      slide: function( event, ui ) {
+        var min = ui.values[ 0 ].toString().replace(/(\d{1,3}(?=(\d{3})+(?:\.\d|\b)))/g,"\$1"+' ');
+        var max = ui.values[ 1 ].toString().replace(/(\d{1,3}(?=(\d{3})+(?:\.\d|\b)))/g,"\$1"+' ');
+        $( "#mileage_range" ).val( min + " - " + max + ' км');
+      }
+    });
+    $( "#mileage_range" ).val('');
+
+
+    $( "#slider-year_range" ).slider({
+      range: true,
+      min: {{ SEARCH_CHAR.min_year }},
+      max: {{ SEARCH_CHAR.max_year }},
+      values: [ {{ SEARCH_CHAR.min_year }}, {{ SEARCH_CHAR.max_year }} ],
+      slide: function( event, ui ) {
+        $( "#year_range" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + ' гг.');
+      }
+    });
+    $( "#year_range" ).val('');
+    
+    
+    $('#car-form').submit(function(){
+      if ($('#price_range').val() == '') $('#price_range').removeAttr('name');
+      if ($('#mileage_range').val() == '') $('#mileage_range').removeAttr('name');
+      if ($('#year_range').val() == '') $('#year_range').removeAttr('name');
+      if ($('#dvig').val() == 0) $('#dvig').removeAttr('name');
+      if ($('#kuzov').val() == 0) $('#kuzov').removeAttr('name');
+    });
+    
+    
+    $('#clear_params').click(function(){
+      $('#make_id').val(0);
+      $('#category_id').val(0);
+      $('#kuzov').val(0);
+      $('#dvig').val(0);
+      $( "#slider-price_range" ).slider({values: [ {{ SEARCH_CHAR.min_price }}, {{ SEARCH_CHAR.max_price }} ]});
+      $('#price_range').val('');
+      $( "#slider-mileage_range" ).slider({values: [ {{ SEARCH_CHAR.min_mileage }}, {{ SEARCH_CHAR.max_mileage }} ]});
+      $('#mileage_range').val('');
+      $( "#slider-year_range" ).slider({values: [ {{ SEARCH_CHAR.min_year }}, {{ SEARCH_CHAR.max_year }} ]});
+      $('#year_range').val('');
+      return false;
+    });
+    
+    
+    $.fn.loopedSlider.defaults.addPagination = true;
+    $('#loopedSlider').loopedSlider();
+  });
+  // ---------------------------------------------------------------------------
+  function update_cats(make_id){
+    $.ajax({
+      type: 'get',
+      url: '/make/get_category/' + make_id,
+      dataType: 'json',
+      success: function(a){
+        var cats = $('#category_id');
+        var cat_id = parseInt(cats.attr('data-id'));
+        var selected = '';
+        cats.html('<option value="0">Любая</option>');
+        for (k in a) {
+          selected = '';
+          if (cat_id == a[k].category_id) selected = 'selected';
+          cats.append('<option value="' + a[k].category_id + '" ' + selected +'>' + a[k].category_title + '</option>')
+        }
+      }
+    });
+  }
+</script>
+{% endblock %}
+
+{% block header %}
+      <div id="search-box">
+        <div class="inner">
+          <div class="wrapper"> <img src="{{ path_template }}/images/search-title.gif" alt="" />
+            <form action="/search/" id="car-form">
+              <div class="wrapper">
+                <div id="right">
+                  <label><strong>Модель</strong>
+                    <select name="category_id" id="category_id">
+                      <option value="0">Любая</option>
+                      {% for C in CATS %}
+                      <option value="{{ C.category_id }}">{{ C.category_title }}</option>
+                      {% endfor %}
+                    </select>
+                  </label>
+                  
+                  <label><strong></strong></label>
+                  
+                  <label><strong></strong></label>
+                  
+                  <label><strong></strong></label>
+  
+                  <label><strong>Тип двигателя</strong>
+                  <select name="dvig" id="dvig">
+                    <option value="0">Любой</option>
+                    {% for DV in SEARCH_CHAR.dvig %}
+                    <option value="{{ DV.char_value }}">{{ DV.char_value }}</option>
+                    {% endfor %}
+                  </select>
+                  </label>
+                <label><a href="#" style="color:#fff;position:relative; top:5px;" id="clear_params">Сбросить<br>параметры</a></label>
+              </div>
+                
+                <label><strong>Производитель</strong>
+                  <select name="make_id" id="make_id">
+                    <option value="0">Любой</option>
+                    {% for M in MAKES %}
+                    <option value="{{ M.make_id }}">{{ M.make_title }}</option>
+                    {% endfor %}
+                  </select>
+                </label>
+                
+                
+                <label>
+                  <div style="position: absolute;">
+                    <strong>Цена <input type="text" readonly="true" id="price_range" name="price_range" style="border:0; color:#f6931f; font-weight:bold;" /></strong>
+                    <div id="slider-price_range" style="width:310px;"></div>
+                  </div>
+                </label>
+                
+                <label>
+                  <div style="position: absolute;">
+                    <strong>Пробег <input type="text" readonly="true" id="mileage_range" name="mileage_range" style="border:0; color:#f6931f; font-weight:bold;" /></strong>
+                    <div id="slider-mileage_range" style="width:310px;"></div>
+                  </div>
+                </label>
+                                
+                <label>
+                  <div style="position: absolute;">
+                    <strong>Год выпуска <input type="text" readonly="true" id="year_range" name="year_range" style="border:0; color:#f6931f; font-weight:bold;" /></strong>
+                    <div id="slider-year_range" style="width:310px;"></div>
+                  </div>
+                </label>
+
+                  <label><strong>Тип кузова</strong>
+                    <select name="kuzov" id="kuzov">
+                      <option value="0">Любой</option>
+                      {% for DV in SEARCH_CHAR.kuzov %}
+                      <option value="{{ DV.char_value }}">{{ DV.char_value }}</option>
+                      {% endfor %}
+                    </select>
+                  </label>
+                <input type="hidden" name="page" value="1"/>
+                <input type="submit" id="search-car" value="" />
+              </div>
+            </form>
+</div>
+
+        </div>
+      </div>
+      <div id="loopedSlider">
+        <div class="container">
+          <div class="slides">
+            {% for S in SLIDER %}
+              <div> <img src="/image/nw/566x450/{{ S.image_name }}" alt="" />
+                <p> <big> 
+                  <strong><a href="/car/{{ S.product_url }}">{{ S.product_title }}</a></strong> 
+                  <b>{{ S.product_price }} руб.</b> </big> 
+                  <small> 
+                    <em>
+                      <img src="{{ path_template }}/images/icon-1.gif" alt="" />
+                      <br/>{{ S.product_kuzov }}
+                    </em> 
+                    <i>
+                      <img src="{{ path_template }}/images/icon-2.gif" alt="" />
+                      <br/>{{ S.product_kpp }}
+                    </i> 
+                    <span><img src="{{ path_template }}/images/icon-3.gif" alt="" />
+                      <br/>{{ S.product_dvig }}
+                    </span>
+                  </small> </p>
+  
+              </div>            
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+{% endblock %}
+      
+{% block content %}
+      <div class="wrapper-1">
+        <div class="clear" style="height:454px;"></div>
+        <div id="column-left">
+
+          <div class="indent">
+            <div class="wrapper">
+              <h2>Популярные <span>Предложения</span></h2>
+              <ul class="list-1">
+                {% for P in POPULAR %}
+                  <li>
+                    <a href="/car/{{ P.product_url }}">
+                      <img alt="" src="/image/141x141/{{ P.image_name }}" border="0">
+                    </a>
+                    <strong><a href="/car/{{ P.product_url }}">{{ P.product_title }}</a></strong>
+                    {{ P.product_price }} руб.
+                  </li>
+                {% endfor %}
+                <li> <img src="{{ path_template }}/images/1page-img1.jpg" alt="" /> 
+                  <strong><a href="#">Nissan<br />
+                  Patrol</a></strong> $25800 </li>
+
+                <li> <img src="{{ path_template }}/images/1page-img2.jpg" alt="" /> <strong><a href="#">Toyota<br />
+                  Avalon 2011</a></strong> $55800 </li>
+                <li> <img src="{{ path_template }}/images/1page-img3.jpg" alt="" /> <strong><a href="#">Mercedes Benz<br />
+                  S63 AMG</a></strong> $85800 </li>
+
+                <li> <img src="{{ path_template }}/images/1page-img4.jpg" alt="" /> <strong><a href="#">2011 BMW<br />
+                  5 Series</a></strong> $125800 </li>
+                <li> <img src="{{ path_template }}/images/1page-img5.jpg" alt="" /> <strong><a href="#">Honda<br />
+                  S2000</a></strong> $25800 </li>
+              </ul>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div id="column-right" class="column-indent">
+          <div class="indent">
+
+            <div class="wrapper">
+              <ul class="list-2">
+                {% for P in SPECIAL %}
+                  <li{% if loop.index == 4%} class="extra"{% endif %}>
+                    <a href="/car/{{ P.product_url }}">
+                      <img alt="" src="/image/141x141/{{ P.image_name }}" border="0">
+                    </a>
+                    <strong><a href="/car/{{ P.product_url }}">{{ P.product_title }}</a></strong>
+                    <b>{{ P.product_price }} руб.</b>
+                  </li>
+                {% endfor %}
+              </ul>
+              <div class="info-box">
+                <div class="wrapper">
+                  <div class="col-1">
+                    <ul class="list-3">
+                      {% for i in 0..next1 %}
+                        {% set M = MAKES[i] %}
+                        <li><a href="/make/{{ M.make_url }}/">{{ M.make_title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-2">
+                    <ul class="list-3">
+                      {% set next1 = next1 + 1%}
+                      {% for i in next1..next2 %}
+                        {% set M = MAKES[i] %}
+                        <li><a href="/make/{{ M.make_url }}/">{{ M.make_title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-3">
+                    <ul class="list-3">
+                      {% set next2 = next2 + 1%}
+                      {% for i in next2..next3 %}
+                        {% set M = MAKES[i] %}
+                        <li><a href="/make/{{ M.make_url }}/">{{ M.make_title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-4">
+                    <ul class="list-3">
+                      {% set next3 = next3 + 1%}
+                      {% for i in next4..next4 %}
+                        {% set M = MAKES[i] %}
+                        <li><a href="/make/{{ M.make_url }}/">{{ M.make_title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              {% if show_vote == 1 %}
+                    {% include "vote.html" %}
+                {% endif %}
+              <div class="line-hor"></div>
+              <div class="lists">
+                <div>
+                  <ul>
+                    <li><a href="#">Buying</a></li>
+                    <li><a href="#">Selling</a></li>
+                    <li><a href="#">Finance</a></li>
+
+                    <li><a href="#">Insurance</a></li>
+                    <li><a href="#">News and Reviews</a></li>
+                  </ul>
+                </div>
+                <ul>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="#">Find a car</a></li>
+
+                  <li><span><a href="#">Used  car</a></span></li>
+                  <li><span><a href="#">New  car</a></span></li>
+                  <li><a href="index-1.html">Car dealers</a></li>
+                  <li><a href="#">Parts</a></li>
+                  <li><a href="#">Contacts</a></li>
+                </ul>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+{% endblock %}

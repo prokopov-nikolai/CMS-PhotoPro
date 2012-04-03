@@ -1,0 +1,29 @@
+@CHARSET "UTF-8";
+* {
+  font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+  padding:0px;
+  margin:0px;
+  font-size:16px;
+  color:#393939;
+}
+body {
+  background: url(../images/logotype.gif) center 10px no-repeat;
+}
+a {
+  text-decoration:underline;
+  outline:none;
+}
+a:hover {
+  text-decoration:none;
+}
+h1 {
+  font-size:20px;
+  font-weight:100;
+}
+#page {
+  display:block;
+  margin:0px auto;
+  padding:40px 0px 0px 0px;
+  text-align:center;
+  width:990px;
+}

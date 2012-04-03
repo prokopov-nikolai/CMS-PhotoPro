@@ -1,0 +1,233 @@
+<!--form method="post">
+  <input type="checkbox" checked="true" name="xxx" />
+  <input type="checkbox" checked="true" name="yyy" />
+  <input type="submit" />
+</form-->
+{% if P %}
+<div style="width:300px;">
+  Посмотреть на новой вкладке <a class="view fl-right" href="/car/{{ P.product_url }}/" target="_blank"></a>
+  <div class="clear"></div>
+</div>
+{% endif %}
+
+<form action="/{{ admin_url}}/catalogpro/add_product/{{ P.product_id }}" method="post">
+   
+    {% if P %}
+      <input type="hidden" name="product_id" value="{{ P.product_id }}" id="product_id" />
+    {% endif %}    
+
+    {% if P is empty %}
+      <div id="form-make">
+    {% endif %}
+
+    <label>Название автомобиля <i style="color:#ababab;">(title)</i></label>
+    <input type="text" name="product_title" value="{{ P.product_title }}" />
+    
+    <label>Производитель</label>
+    <select name="make_id" id="make_id">
+      <option value="0">---</option>
+      {% for M in MAKE %}
+        <option value="{{ M.make_id }}"{% if P.make_id == M.make_id %} selected{% endif %}>{{ M.make_title }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Модель</label>
+    <select name="category_id" id="category_id" data-id="{{ P.category_id }}">
+      {% for C in CATEGORY %}
+        <option value="{{ C.category_id }}">{{ C.category_title }}</option>
+      {% endfor %}
+    </select>
+
+    {% if P %}
+      <label>Ссылка <i style="color:#ababab;">(url)</i></label>
+      <input type="text" name="product_url" value="{{ P.product_url }}" readonly="true"/>
+    {% endif %}
+
+    <label>Ключевые слова  <i style="color:#ababab;">(keywords)</i></label>
+    <input type="text" name="product_keywords" value="{{ P.product_keywords }}" />
+
+    <label>Описание <i style="color:#ababab;">(description)</i></label>
+    <textarea name="product_description" style="width:800px; height:300px;">{{ P.product_description }}</textarea>
+    
+    <!--label>Цена <i style="color:#ababab;">(рублей)</i></label>
+    <input type="text" name="product_price" value="{% if P.product_price %}{{ P.product_price }}{% else %}0{% endif %}" /-->
+    
+    <label>Количество просмотров</label>
+    <input type="text" name="product_views" value="{% if P.product_views %}{{ P.product_views }}{% else %}0{% endif %}" /-->
+
+    {% set VALUES = P.char_values %}
+
+    <label>Характеристики</label>
+    <div style="padding-left:20px;">
+      {% for CH in CHAR %}
+        <label style="font-style:italic;">{{ CH.char_title }}</label>
+        {% if CH.char_type == 'select' %}
+          <select name="char_values[{{ CH.char_id }}]">
+            {% for V in CH.char_values %}
+              <option value="{{ V.char_value }}"{% if V.char_value == P.char_values[CH.char_id]%} selected{% endif %}>{{ V.char_value }}</option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input type="text" name="char_values[{{ CH.char_id }}]" value="{{ P.char_values[CH.char_id] }}" />
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    {% if P %}
+    <div id="photos">
+      <label>Фотографии</label>
+      <div style="width:600px; background: #f6f6f6; padding: 10px;">
+        <input type="file" name="images" multiple="true" id="upload-image" />
+        <br><input type="text" id="inet-url" style="width:400px; background:#fff; display: inline-block;" value="URL"/>
+        <input type="submit" id="upload" value="Загрузить" />
+        <div id="images-list">
+          {% for pname in P.photo %}
+            <div class="product-photo">
+              <img src="/image/200x200/{{ pname }}" border="0">
+              <a href="#del" class="delete fl-right" data-pname="{{ pname }}"></a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+     </div>
+    {% endif %}
+      
+    
+    <label><input type="checkbox" name="product_pod_zakaz" value="{{ P.product_pod_zakaz }}" {% if P.product_pod_zakaz %}checked="true"{% endif %}/> Под заказ</label>
+    
+    <label><input type="checkbox" name="product_special" value="{{ P.product_special }}" {% if P.product_special %}checked="true"{% endif %}/> Специальное предложение</label>
+
+    <label><input type="checkbox" name="product_in_slider" value="{{ P.product_in_slider }}" {% if P.product_in_slider %}checked="true"{% endif %}/> Показывать в слайдере</label>
+
+    <label><input type="checkbox" name="product_hide" value="{{ P.product_hide }}" {% if P.product_hide %}checked="true"{% endif %} /> Скрыть</label>
+
+    {% if P is empty %}
+      </div>
+    {% endif %}
+    <br>
+    <input type="submit" multiple="true" value="{% if P %}Обновить{% else %}Добавить{% endif %}">
+</form>
+
+<script type="text/javascript">
+  $(function(){
+    {% if P is empty %}
+      $('input[type=submit]').click(function(){
+        $('#form-make').fadeIn();
+        $(this).unbind('click');
+        return false;
+      });
+    {% else %}
+      $('input[type=submit]').click(function(){
+        $('#upload-image').removeAttr('name');
+      });
+    {% endif %}
+    
+    var make_id = $('#make_id').val();
+    update_cats(make_id);
+    $('#make_id').change(function(){
+      make_id = $(this).val();
+      update_cats(make_id);
+    });
+
+    new AjaxUpload('upload-image', {
+        action: '/{{ admin_url }}/catalogpro/upload_image/',
+        name: 'photo[]',
+        multiple: true,
+        data: {product_id:$('#product_id').val()},
+        responseType: 'json',
+        onSubmit: function(){
+          window.start = true;
+          setTimeout(function(){ 
+            if (window.start)
+              $('#ajax-loader').fadeIn();
+          }, 500);
+        },
+        onComplete: function(file, response){   
+            for(k in response){
+              $('#images-list').append('<div class="product-photo">' +
+                '<img src="/image/200x200/' + response[k] + '" border="0">' +
+                '<a href="#del" class="delete fl-right" data-pname="' + response[k] + '"></a></div>');
+            }
+            bind_delete_photo();
+            window.start = false;
+            $('#ajax-loader').fadeOut();
+        }
+    });
+    
+    // заливаем картинку из нета
+    $('#inet-url').focus(function(){
+      if ($(this).val() == 'URL') $(this).val('');
+    });
+    /********/
+    $('#inet-url').blur(function(){
+      if ($(this).val() == '') $(this).val('URL');
+    });
+    /********/
+    $('#upload').click(function (){
+      var url = $('#inet-url').val();
+      var product_id = $('#product_id').val();
+      window.start = true;
+      setTimeout(function(){ 
+        if (window.start)
+          $('#ajax-loader').fadeIn();
+      }, 500);
+      $.ajax({
+        type: 'post',
+        url: '/{{ admin_url }}/catalogpro/upload_image/inet',
+        data: {url:url,product_id:product_id},
+        success: function(answ){
+          $('#images-list').append('<div class="product-photo">' +
+            '<img src="/image/200x200/' + answ + '" border="0">' +
+            '<a href="#del" class="delete fl-right" data-pname="' + answ + '"></a></div>');
+          bind_delete_photo();
+          $('#inet-url').val('');
+        }
+      });
+      return false;
+    });
+    /********/
+    bind_delete_photo();
+    /********/
+   $('input[type="checkbox"]').click(function(){
+     if ($(this).val() == 0) $(this).val(1);
+       else $(this).val(0);
+   });
+  });
+
+  // ---------------------------------------------------------------------------
+  function update_cats(make_id){
+    $.ajax({
+      type: 'get',
+      url: '/{{ admin_url }}/catalogpro/get_make_category/' + make_id,
+      dataType: 'json',
+      success: function(a){
+        var cats = $('#category_id');
+        var cat_id = parseInt(cats.attr('data-id'));
+        var selected = '';
+        cats.html('');
+        for (k in a) {
+          selected = '';
+          if (cat_id == a[k].category_id) selected = 'selected';
+          cats.append('<option value="' + a[k].category_id + '" ' + selected +'>' + a[k].category_title + '</option>')
+        }
+      }
+    });
+  }
+  // ---------------------------------------------------------------------------
+  function bind_delete_photo(){
+    $('.product-photo .delete').bind('click', function(){
+      var $this = $(this);
+      var product_id = $('')
+      $.ajax({
+        type: 'post',
+        url : '/{{ admin_url }}/catalogpro/delete_image/',
+        data: {product_id:$('#product_id').val(), image_name: $this.attr('data-pname')},
+        success: function (){
+          $this.parent().fadeOut('normal', function (){ $this.parent().remove(); });
+        }
+      });
+      return false;
+    });
+  }
+  // ---------------------------------------------------------------------------
+</script>

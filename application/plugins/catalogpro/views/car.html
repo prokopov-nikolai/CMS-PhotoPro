@@ -1,0 +1,110 @@
+{% extends "index.html" %}
+
+{% block head %}
+  <script type="text/javascript">
+    $(function(){
+      $('.cbox').colorbox({rel:'gal'});
+      $('#big').click(function(){
+        var filename = $('#slider-img').attr('data-filename');
+        $('a[data-filename="' + filename + '"]').click();
+        return false;
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+      <div class="wrapper-1">
+        <div id="column-left">
+          {% include "catalogpro/views/catalog.html" %}
+        </div>
+        <div id="column-right">
+          <div class="indent-1">
+            <div class="wrapper car">
+              <h1>{{ CAR.product_title }} {{ CAR.char_values[1] }} г.</h1>
+              <div id="conteiner"></div>
+              <div class="slider-box fl-left">
+                <a href="#" id="big">
+                  <img src="/image/400x550/{{ CAR.photo[0] }}" border="0" id="slider-img" data-filename="{{ CAR.photo[0] }}" />
+                </a>
+                <span id="zoom-in"></span>
+              </div>
+              <div class="slider-list fl-right">
+                {% set count = CAR.photo|length - 1 %}
+                  <a href="/image/800x600/{{ CAR.photo[0] }}" class="preview current" data-filename="{{ CAR.photo[0] }}" rel="gal">
+                    <img src="/image/140x200/{{ CAR.photo[0] }}" border="0"/>
+                    <span class="loader"></span>
+                  </a>
+                  <a href="/image/800x600/{{ CAR.photo[0] }}" class="cbox" data-filename="{{ CAR.photo[0] }}"></a>
+
+                {% if count > 0 %}
+                  {% for i in 1..count  %}
+                    <a href="/image/800x600/{{ CAR.photo[i] }}" class="preview" data-filename="{{ CAR.photo[i] }}" rel="gal">
+                      <img src="/image/140x200/{{ CAR.photo[i] }}" border="0" />
+                      <span class="loader"></span>
+                    </a>
+                    <a href="/image/800x600/{{ CAR.photo[i] }}" class="cbox" data-filename="{{ CAR.photo[i] }}"></a>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="price{{ CAR.product_pod_zakaz }} fl-left">
+                {% set unit = ''%}
+                {% for CH1 in CHAR %}
+                  {% if CH1.char_id == 5 %}
+                    <strong>{{ CH1.char_title }}: </strong>
+                    {% set unit = CH1.char_unit %}
+                  {% endif %}
+                  
+                {% endfor%}
+                {{ CAR.char_values[5] }}
+                {{ unit }}
+                {% if CAR.product_pod_zakaz == 1%}
+                  <div class="fl-right pod-zakaz"><a href="#order">Заказать</a></div>
+                {% else %}
+                  <div class="fl-right buy"><a href="#pod-zakaz">Купить</a></div>
+                {% endif %}
+              </div>
+              <ul class="list chars fl-left">
+                {% for char_id in CAR.char_values|keys %}
+                  {% if char_id != 5 %} {# выводим все характеристики кроме цены #}
+                  <li>
+                    {% set unit = ''%}
+                    {% for CH1 in CHAR %}
+                      {% if CH1.char_id == char_id %}
+                        <strong>{{ CH1.char_title }}: </strong>
+                        {% set unit = CH1.char_unit %}
+                      {% endif %}
+                      
+                    {% endfor%}
+                    {{ CAR.char_values[char_id] }}
+                    {{ unit }}
+                  </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+              <div class="clear"></div>
+
+              <div class="description">{{ CAR.product_description|raw }}</div>
+              <div class="clear"></div>
+              
+              {% if SIMILAR|length > 0 %}
+                <h2 style="font-size:2em;">Похожие автомобили</h2>
+                <ul class="list-2">
+                {% for P in SIMILAR %}
+                  <li{% if loop.index % 4 == 0 %} class="extra"{% endif %}>
+                    <a href="/car/{{ P.product_url }}">
+                      <img alt="" src="/image/141x141/{{ P.image_name }}" border="0">
+                    </a>
+                    <strong><a href="/car/{{ P.product_url }}">{{ P.product_title }}</a></strong>
+                    <b>{{ P.product_price }} руб.</b>
+                  </li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+          {% include "catalogpro/views/dop_info.html" %}
+        </div>
+        <div class="clear"></div>
+      </div>
+{% endblock %}

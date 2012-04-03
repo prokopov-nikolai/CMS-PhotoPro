@@ -1,0 +1,126 @@
+<form action="/{{ admin_url}}/catalogpro/add_char/{{ CH.char_id }}" method="post">
+  {% if CH %}
+    <input type="hidden" name="char_id" class="char_id" value="{{ CH.char_id }}" />
+  {% endif %}
+      
+  {% if CH is empty %}
+    <div id="form-char">
+  {% endif %}
+  
+  <label>Название</label>
+  <input type="text" name="char_title" value="{{ CH.char_title }}" />
+  
+  <label>Тип</label>
+  <select name="char_type" class="char_type">
+    <option value="text" {% if CH.char_type == 'text'%}selected{% endif %}>Текст</option>
+    <option value="select" {% if CH.char_type == 'select'%}selected{% endif %}>Список</option>
+  </select>
+  
+  <div class="char-select">
+    <ul class="list" style="padding-left:20px;">
+      {% for V in CH.char_values %}
+        <li>
+          &nbsp;•&nbsp;<span>{{ V.char_value }}</span>
+          <a href="#del" class="delete fl-right"></a>
+        </li>
+      {% endfor %}
+    </ul>
+    <input type="text" name="char_value" class="char_value fl-left" style="width:330px; left:20px;" />
+    <input type="submit" class="add_char_value" value="Добавить значение" style="margin-left:30px; margin-top:3px; font-size:12px;"/>
+  </div>
+
+  <label>Единица измерения</label>
+  <input type="text" name="char_unit" value="{{ CH.char_unit }}" />
+  
+  <label>Сортировка</label>
+  <input type="text" name="char_sort" value="{% if CH.char_sort %}{{ CH.char_sort }}{% else %}0{% endif %}" />
+  
+  {% if CH is empty %}
+    </div>
+  {% endif %}
+  
+  <input type="submit" value="{% if CH %}Обновить{% else %}Добавить{% endif %}">
+</form>
+
+<script type="text/javascript">
+  $(function(){
+    {% if CH is empty %}
+      $('input[type=submit]').click(function(){
+        $('#form-char').fadeIn();
+        $(this).unbind('click');
+        return false;
+      });
+    {% endif %}
+    //--------------------------------------------------------------------------
+    slideSelect($('.char_type').val());
+    //--------------------------------------------------------------------------
+    $('.char_type').click(function(){
+      slideSelect($(this).val());
+    });
+    //--------------------------------------------------------------------------
+    $('.char-select .add_char_value').click(function(){
+      var char_id = parseInt($('.char_id').val());
+      var char_value = $('.char_value').val().replace(/^[ ]+|[ ]+$/g, '');
+      var exist = false;
+      $('.char-select li').each(function(){
+        if($(this).find('span').html() == char_value){
+          alert('Такое значение уже имеется'); 
+          exist = true;
+          $('.char_value').val('');
+        }
+      });
+      if (exist) return false;
+      $.ajax({
+        type: 'post',
+        url : '/{{ admin_url }}/catalogpro/add_char_select_value/' + char_id,
+        data: { char_value:char_value },
+        dataType: 'json',
+        success: function(answ){
+          if (answ.success == 'true') {
+            var li = '<li>&nbsp;•&nbsp;<span>' + char_value + '</span>' +
+                '<a href="#del" class="delete fl-right"></a></li>';
+            $('.char-select').find('ul').append(li);
+            $('.char-select .delete').bind('click', function(){
+              deleteValue($(this));
+              return false;
+            });
+          }
+        }
+      });
+      $('.char_value').val('');
+      return false;
+    });
+    //--------------------------------------------------------------------------
+    $('.char-select .delete').click(function(){
+      deleteValue($(this));
+      return false;
+    });
+    $('.char_value').val('');
+  });
+  
+  
+  function slideSelect(val){
+    if (val == 'select' && parseInt($('.char_id').val()) > 0) {
+      $('.char-select').show();
+    } else {
+      $('.char-select').hide();
+    }
+  }
+  function deleteValue(obj){
+    var char_id = parseInt($('.char_id').val());
+    var char_value = obj.parents('li').find('span').html();
+    $.ajax({
+      type: 'post',
+      url : '/{{ admin_url }}/catalogpro/delete_char_select_value/' + char_id,
+      data: { char_value:char_value },
+      dataType: 'json',
+      success: function(answ){
+        if (answ.success == 'true') {
+          obj.parents('li').remove();
+          $('.char_value').val('');
+        }
+      }
+    });
+    return false;
+  }
+</script>

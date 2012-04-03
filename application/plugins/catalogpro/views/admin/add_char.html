@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+
+{% block content %}
+  {% include "catalogpro/views/admin/form_char.html"%}
+
+  <ul class="list char-list">
+  {% for CH in CHARS %}
+    <li>
+      &nbsp;•&nbsp;<a href="/{{ admin_url}}/catalogpro/add_char/{{ CH.char_id }}">{{ CH.char_title }}</a>
+      <!--a href="/{{ admin_url}}/catalogpro/delete_char/{{ CH.char_id }}" class="delete fl-right"></a-->
+    </li>
+  {% endfor %}
+  </ul>    
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends "index.html" %}
+
+{% block content %}
+      <div class="wrapper-2">
+        <div id="column-left">
+          {% include "catalogpro/views/catalog.html" %}
+        </div>
+        <div id="column-right">
+          <div class="wrapper make">
+          {% if M %}
+            <h1 class="title">{{ M.make_title }} {% if CAT %}{{ CAT.category_title }}{% endif %}</h1>
+          {% else %}
+            <h1 class="title">Поиск автомобиля</h1>
+          {% endif %} 
+          {% if SUBCATS %}         
+            <div class="info-box">
+                <div class="wrapper">
+                  <div class="col-1">
+                    <ul class="list-3">
+                      {% for i in 0..next1 %}
+                        {% set SC = SUBCATS[i] %}
+                        <li><a href="/make/{{ M.make_url }}/{{ SC.category_url}}/" {% if SC.category_id == CAT.category_id%} class="active"{% endif %}>{{ SC.category_title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-2">
+                    <ul class="list-3">
+                      {% set next1 = next1 + 1%}
+                      {% for i in next1..next2 %}
+                        {% if i > 0 %}
+                          {% set SC = SUBCATS[i] %}
+                          <li><a href="/make/{{ M.make_url }}/{{ SC.category_url}}/" {% if SC.category_id == CAT.category_id%} class="active"{% endif %}>{{ SC.category_title }}</a></li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-3">
+                    <ul class="list-3">
+                      {% set next2 = next2 + 1%}
+                      {% for i in next2..next3 %}
+                        {% if i > 1 %}
+                          {% set SC = SUBCATS[i] %}
+                          <li><a href="/make/{{ M.make_url }}/{{ SC.category_url}}/" {% if SC.category_id == CAT.category_id%} class="active"{% endif %}>{{ SC.category_title }}</a></li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-4">
+                    <ul class="list-3">
+                      {% set next3 = next3 + 1%}
+                      {% for i in next4..next4 %}
+                        {% if i > 2 %}
+                          {% set SC = SUBCATS[i] %}
+                          <li><a href="/make/{{ M.make_url }}/{{ SC.category_url}}/" {% if SC.category_id == CAT.category_id%} class="active"{% endif %}>{{ SC.category_title }}</a></li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+          {% endif %}
+          
+          
+          {% if PARAMS %}
+            <div class="info-box">
+              <div class="wrapper" style="padding:10px;">
+                {% set name = '' %}
+                {% if PARAMS.make_name %}{% set name = PARAMS.make_name %}{% endif %}
+                {% if PARAMS.cat_name %}{% set name = name ~ ' ' ~ PARAMS.cat_name %}{% endif %}
+                <h2>{{ name }}</h2>
+                <ul class="list chars params-search fl-left">
+                  {% if PARAMS.price_range %}<li><strong>Цена: </strong> {{ PARAMS.price_range }}</li>{% endif %}
+                  {% if PARAMS.mileage_range %}<li><strong>Пробег: </strong> {{ PARAMS.mileage_range }}</li>{% endif %}
+                  {% if PARAMS.year_range %}<li><strong>Год выпуска: </strong> {{ PARAMS.year_range }}</li>{% endif %}
+                  {% if PARAMS.kuzov %}<li><strong>Тип кузова: </strong> {{ PARAMS.kuzov }}</li>{% endif %}
+                  {% if PARAMS.dvig %}<li><strong>Тип двигателя: </strong> {{ PARAMS.dvig }}</li>{% endif %}
+                </ul>
+                <div class="clear" style="height:20px;"></div>
+                {% if PARAMS.page %}
+                <a href="/">Задать другие параметры поиска</a>
+                {% endif %}
+                {# PARAMS|pr|raw #}
+              </div>
+            </div>
+          {% endif %}
+              {% if CAT.category_description %}
+                <div class="cat-description">{{ CAT.category_description|raw }}</div>
+              {% endif %}
+              
+              {% include "paging.html" %}
+              
+              
+              <ul class="list-2">
+              {% for P in PRODUCTS %}
+                <li{% if loop.index % 4 == 0 %} class="extra"{% endif %}>
+                  <a href="/car/{{ P.product_url }}">
+                    <img alt="" src="/image/141x141/{{ P.image_name }}" border="0">
+                  </a>
+                  <strong><a href="/car/{{ P.product_url }}">{{ P.product_title }}</a></strong>
+                  <b>{{ P.product_price }} руб.</b>
+                </li>
+              {% endfor %}
+              </ul>
+              
+              
+              {% if PRODUCTS is empty and  M %}
+                <h3>К сожалению в этой категории пока нет автомобилей!</h3>
+              {% endif %}
+              
+              {% if PRODUCTS is empty and  M is empty%}
+                <h3>К сожалению поиск с введенными Вами параметрами не дал результатов!<br>
+                    &nbsp;<br>
+                    Попробуйте выбрать другие критерии для поиска или воспользоваться нашим рубрикатором!
+                </h3>
+              {% endif %}
+          </div>
+          {% include "paging.html" %}         
+          {% include "catalogpro/views/dop_info.html" %}
+        </div>
+        <div class="clear"></div>
+      </div>
+{% endblock %}

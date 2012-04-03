@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <author>Прокопов Николай</author>
+  <author_site>http://www.prokopov-nikolai.ru</author_site>
+  <site></site>
+  <title>Catalog Pro</title>
+  <name>catalogpro</name>
+  <version>0.1</version>
+  <description>Плагин для создания каталога на сайте</description>
+</plugin>

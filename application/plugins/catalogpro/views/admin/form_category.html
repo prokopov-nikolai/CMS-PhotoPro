@@ -1,0 +1,48 @@
+<form action="/{{ admin_url}}/catalogpro/add_category/{{ C.category_id }}" method="post">
+   
+    {% if C %}
+      <input type="hidden" name="category_id" value="{{ C.category_id }}" />
+    {% endif %}    
+
+    {% if C is empty %}
+      <div id="form-category">
+    {% endif %}
+
+    <label>Производитель</label>
+    <select name="make_id">
+    {% for M in MAKES %}
+      <option value="{{ M.make_id }}" {% if M.make_id == C.make_id %}selected{% endif %}>{{ M.make_title }}</option>
+    {% endfor %}
+    </select>
+    
+    <label>Название модели <i style="color:#ababab;">(title)</i></label>
+    <input type="text" name="category_title" value="{{ C.category_title }}" />
+    
+    {% if C %}
+      <label>Ссылка <i style="color:#ababab;">(url)</i></label>
+      <input type="text" name="category_url" value="{{ C.category_url }}"/>
+    {% endif %}
+
+    <label>Ключевые слова  <i style="color:#ababab;">(keywords)</i></label>
+    <input type="text" name="category_keywords" value="{{ C.category_keywords }}" />
+
+    <label>Описание <i style="color:#ababab;">(description)</i></label>
+    <textarea name="category_description" style="width:800px; height:400px;">{{ C.category_description }}</textarea>
+    
+    {% if C is empty %}
+      </div>
+    {% endif %}
+    <input type="submit" value="{% if C %}Обновить{% else %}Добавить{% endif %}">
+</form>
+
+{% if C is empty %}
+  <script type="text/javascript">
+    $(function(){
+      $('input[type=submit]').click(function(){
+        $('#form-category').fadeIn();
+        $(this).unbind('click');
+        return false;
+      })
+    })
+  </script>
+{% endif %}

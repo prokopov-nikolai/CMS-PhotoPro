@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block head %}
+<script type="text/javascript">
+    $(function(){
+      $('textarea').redactor({
+        'toolbar':'main',
+        'image_upload': '/{{ admin_url }}/upload/',
+        'file_delete': '/{{ admin_url }}/upload/file_delete/?delete='
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+  {% include "catalogpro/views/admin/form_category.html"%}
+
+  <ul class="list char-list">
+  {% for C in CATEGORY %}
+    <li>
+      &nbsp;•&nbsp;<a href="/{{ admin_url}}/catalogpro/add_category/{{ C.category_id }}">{{ C.category_title }}</a>
+      <a href="/{{ admin_url}}/catalogpro/delete_category/{{ C.category_id }}" class="delete fl-right"></a>
+    </li>
+  {% endfor %}
+  </ul>    
+{% endblock %}

@@ -1,0 +1,161 @@
+/* 
+ * @name   Plugin for CMS PhotoPro "Catalog Pro" 
+ * @author Николай Прокопов
+ * @site   http://prokopov-nikolai.ru
+ * @version v 0.1
+ * @date 24.03.2012
+ */
+
+label {
+  display:block;
+  margin-top:15px;
+}
+#form-make, #form-char, #form-category, .char-select, .form-prod {
+  display:none;
+}
+.list.make-list, .list.char-list {
+  margin-top:20px;
+}
+.list.make-list li{
+  padding:4px 0px 0px 0px;
+}
+.list.make-list .view {
+  margin-bottom:-4px;
+}
+.list.char-list li{
+  padding:4px 0px 0px 0px;
+}
+.list.char-list .delete {
+  top:-2px;
+  right:5px;
+}
+.list.product-list {
+  display:none;
+}
+.char-select li {
+  width:500px;
+}
+.product-photo {
+  display: inline-block;
+  *display:inline;
+  padding:10px;
+  vertical-align:top;
+  zoom:1;
+}
+.product-photo .delete {
+  left:5px!important;
+}
+#conteiner {
+  display:none;
+}
+.preview, .current {
+  position:relative;
+}
+.loader {
+  background: url("/application/plugins/catalogpro/images/ajax.gif") no-repeat scroll 0 0 transparent;
+  bottom: 0;
+  display: none;
+  height: 32px;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 32px;
+  z-index: 10;
+}
+.current .loader {
+  background: url("/application/plugins/catalogpro/images/cur.png") no-repeat scroll 0 0 transparent!important;
+  display:block;
+}
+.slider-box {
+  height:inherit;
+  margin-right:25px;
+  overflow:hidden;
+  width:400px;
+}
+#zoom-in {
+  background: url("/application/plugins/catalogpro/images/zoom_in.png") no-repeat scroll 0 0 transparent!important;
+  display:none;;
+  height:24px;
+  position:absolute;
+  right:0px;;
+  top:10px;
+  width:24px;
+}
+.slider-box:hover #zoom-in {
+  display:block;
+}
+.price0, .price1 {
+  background-color: #F1F1F1;
+  color:#E0171E;
+  font-size: 1.8em;
+  padding: 20px;
+  top: 20px;
+  width: 360px;
+}
+.price0 strong {
+  color:#4B4A4A;
+}
+.price1 {
+  color:#4B4A4A;
+}
+.buy a {
+  background: url("/application/plugins/catalogpro/images/buy.png") no-repeat scroll 0 0 transparent;
+  padding:3px 0 7px 40px;
+  text-decoration:none;
+}
+.pod-zakaz a {
+  background: url("/application/plugins/catalogpro/images/order.png") no-repeat scroll 0 0 transparent;
+  color:#4B4A4A;
+  padding:3px 0 7px 40px;
+  text-decoration:none;
+}
+.chars {
+  font-size:1.2em;
+  margin-bottom: 20px;
+  top: 40px;
+  width:400px;
+}
+.chars li {
+  background-position: 0px 8px;
+  display:inline-block;
+  *display:inline;
+  zoom:1;
+  line-height:1.8em!important;
+  padding:0px 0px 0px 20px;
+  vertical-align: top;
+  width:178px;
+}
+.description {
+  font-size: 1.2em;
+  line-height:1.5em!important;
+  padding:20px 0px;
+}
+.description ul {
+  padding-left:20px;
+}
+.description ul li {
+  list-style:disc;
+}
+.wrapper.make {
+  min-height:600px;
+}
+#make-cats {
+  background: #F1F1F1;
+  margin-right:13px;
+  padding:20px;
+}
+.page h2 a {
+  font-size: 0.6em;
+}
+.page h2 {
+  padding:0px;
+  margin:10px 0px 0px;
+}
+.page h1.title {
+  font-size:1.2em;
+}
+.page h1.title a {
+  font-size:1.65em;
+}

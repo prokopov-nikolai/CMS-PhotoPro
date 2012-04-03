@@ -1,0 +1,41 @@
+<form action="/{{ admin_url}}/catalogpro/add_make/{{ M.make_id }}" method="post">
+   
+    {% if M %}
+      <input type="hidden" name="make_id" value="{{ M.make_id }}" />
+    {% endif %}    
+
+    {% if M is empty %}
+      <div id="form-make">
+    {% endif %}
+
+    <label>Название производителя <i style="color:#ababab;">(title)</i></label>
+    <input type="text" name="make_title" value="{{ M.make_title }}" />
+    
+    {% if M %}
+      <label>Ссылка <i style="color:#ababab;">(url)</i></label>
+      <input type="text" name="make_url" value="{{ M.make_url }}"/>
+    {% endif %}
+
+    <label>Ключевые слова  <i style="color:#ababab;">(keywords)</i></label>
+    <input type="text" name="make_keywords" value="{{ M.make_keywords }}" />
+
+    <label>Описание <i style="color:#ababab;">(description)</i></label>
+    <textarea name="make_description" style="width:800px; height:400px;">{{ M.make_description }}</textarea>
+    
+    {% if M is empty %}
+      </div>
+    {% endif %}
+    <input type="submit" value="{% if M %}Обновить{% else %}Добавить{% endif %}">
+</form>
+
+{% if M is empty %}
+  <script type="text/javascript">
+    $(function(){
+      $('input[type=submit]').click(function(){
+        $('#form-make').fadeIn();
+        $(this).unbind('click');
+        return false;
+      })
+    })
+  </script>
+{% endif %}

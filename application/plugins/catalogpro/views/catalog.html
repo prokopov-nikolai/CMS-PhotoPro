@@ -1,0 +1,11 @@
+<h1>Каталог автомобилей</h1>
+<ul class="list-3 cat-makes">
+  {% for M1 in MAKE %}
+    <li>
+      <a href="/make/{{M1.make_url }}/" class="make{% if M.make_id == M1.make_id%} active{% endif %}">{{M1.make_title }}</a>
+      {% for C1 in CATSBYMAKE[M1.make_id] %}
+        <a href="/make/{{M1.make_url }}/{{ C1.category_url }}/" class="model">{{ C1.category_title }}</a>                
+      {% endfor %}
+    </li>
+  {% endfor %}
+</ul>

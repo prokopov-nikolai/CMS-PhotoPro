@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block head %}
+<script type="text/javascript">
+    $(function(){
+      $('textarea').redactor({        
+        'toolbar':'main',
+        'image_upload': '/{{ admin_url }}/upload/',
+        'file_delete': '/{{ admin_url }}/upload/file_delete/?delete='
+      });
+    })
+  </script>
+{% endblock %}
+
+{% block content %}
+  {% include "catalogpro/views/admin/form_make.html"%}
+  <ul class="list make-list">
+  {% for MK in MAKES %}
+    <li>
+      &nbsp;•&nbsp;<a href="/{{ admin_url}}/catalogpro/add_make/{{ MK.make_id }}">{{ MK.make_title }}</a>
+      <a href="/{{ admin_url}}/catalogpro/delete_make/{{ MK.make_id }}" class="delete fl-right"></a>
+      <a target="_blank" href="/make/{{ MK.make_url }}/" class="view fl-right"></a>
+    </li>
+  {% endfor %}
+  </ul>
+{% endblock %}
