@@ -3,14 +3,14 @@
 {%  block content %}
   <form action="/{{ admin_url }}/gallery/insert/" method="post">
     <div class="form" style="display:none;">
-      <label for="gallery_title">Название галереи <i style="color:#ababab;">(title)</i></label><br />
-      <input type="text" name="gallery_title" value="" /><br />
+      <label for="gallery_title">Название галереи <i style="color:#ababab;">(title)</i></label>
+      <input type="text" name="gallery_title" value="" />
 
-      <label for="gallery_keywords">Ключевые слова <i style="color:#ababab;">(keywords)</i></label><br />
-      <input type="text" name="gallery_keywords" value="" /><br />
+      <label for="gallery_keywords">Ключевые слова <i style="color:#ababab;">(keywords)</i></label>
+      <input type="text" name="gallery_keywords" value="" />
 
-      <label for="gallery_description">Описание галереи <i style="color:#ababab;">(description)</i></label><br />
-      <textarea name="gallery_description" id="gallery_description"></textarea><br />
+      <label for="gallery_description">Описание галереи <i style="color:#ababab;">(description)</i></label>
+      <textarea name="gallery_description" id="gallery_description" style="width:800px; height:300px;"></textarea>
     </div>
     <input type="submit" value="Добавить галерею" onclick="show_form($(this)); return false;" />
   </form>
@@ -25,8 +25,10 @@
   </ul>
   <script type="text/javascript">
     $(function(){
-      $('#gallery_description').cleditor({
-        width:'540px'
+      $('#gallery_description').redactor({
+        'toolbar':'main',
+        'image_upload': '/{{ admin_url }}/upload/',
+        'file_delete': '/{{ admin_url }}/upload/file_delete/?delete='
       });
     });
   </script>

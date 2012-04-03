@@ -1,6 +1,6 @@
-{% set keywords = C.category_keywords %}
-{% set description = C.category_descr %}
 {% set title = C.category_title %}
+{% set keywords = C.category_keywords %}
+{% set description = C.category_description|striptags %}
 {% extends "index.html" %}
 
 {% block content %}
@@ -11,12 +11,12 @@
   {% endif %}
   
       <div class="cat-description">
-        {% autoescape false %}{{ C.category_description }}{% endautoescape %}
+        {{ C.category_description|raw }}
       </div>
       {% for P in PAGES %}
         <div class="page">
           <h2><a href="/{{ P.page_url }}/">{{ P.page_title }}</a></h2>
-          {% autoescape false %}{{ P.page_content_cut }}{% endautoescape %}
+          {{ P.page_content_cut|raw }}
         </div>
       {% endfor %}
   

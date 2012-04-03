@@ -59,6 +59,7 @@ $route['logout'] = 'users/logout';
 $route['category/([a-z0-9-_]+)'] = 'category/show/$1';
 $route['gallery/([a-z0-9-_]+)'] = 'gallery/show/$1';
 $route['image/([0-9]+)x([0-9]+)/([a-z0-9-_\.]+)\.(jpg|gif|png|nginx)'] = 'images/resize/$1/$2/$3.$4';
+$route['image/nw/([0-9]+)x([0-9]+)/([a-z0-9-_\.]+)\.(jpg|gif|png|nginx)'] = 'images/resize/$1/$2/$3.$4/0';
 $route['([a-z0-9-_]+)'] = 'page/show/$1';
 
 // подключим правила роутинга из плагинов
@@ -69,7 +70,7 @@ if(!file_exists($file)){
 }
 $plugins = file($file);
 foreach($plugins as $name) {
-  $file = ROOT . '/' . APPPATH . "plugins/{$name}/routes.php";
+  $file = ROOT . '/' . APPPATH . "plugins/" . trim($name) . "/routes.php";
   if (file_exists($file)){
     include_once($file);
   }

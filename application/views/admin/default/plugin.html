@@ -57,7 +57,7 @@
         <table>
           <thead>
             <tr>
-               <th><input type="checkbox" class="check-all"></th>
+               <th><!--input type="checkbox" class="check-all"--></th>
                <th>Название плагина</th>
                <th>Автор</th>
                <th>Версия</th>
@@ -94,7 +94,7 @@
           <tbody>
             {% for plugin in P %}
               <tr class="{% if loop.index is odd %}alt-row{% endif %}">
-                <td><input type="checkbox"></td>
+                <td><!--input type="checkbox"--></td>
                 <td>
                   {% if plugin.site %}
                     <a href="{{ plugin.site }}" target="_blank">{{ plugin.title }}</a>

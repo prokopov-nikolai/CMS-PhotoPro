@@ -3,22 +3,22 @@
 {% block content %}
   <form action="/{{ admin_url }}/vote/insert/" method="post">
     <div class="form" style="display:none;">
-      <label for="vote_question">Вопрос</label><br />
-      <input type="text" name="vote_question" value="" /><br />
+      <label for="vote_question">Вопрос</label>
+      <input type="text" name="vote_question" value="" />
     </div>
     <input type="submit" value="Добавить опрос" onclick="show_form($(this)); return false;" />
   </form>
   <div>
   <form action="/{{ admin_url }}/vote/insert/" method="post">
     <div class="form" style="display:none;">
-      <label for="vote_question">Вопрос</label><br />
+      <label for="vote_question">Вопрос</label>
       <select id="vote_id">
         {% for vote_id in VOTES|keys %}
         <option value="{{ vote_id }}">{{ VOTES[vote_id].question }}</option>
         {% endfor %}    
       </select>
-      <label for="vote_answer_text">Ответ</label><br />
-      <input type="text" name="vote_answer_text" id="vote_answer_text" value="" /><br />
+      <label for="vote_answer_text">Ответ</label>
+      <input type="text" name="vote_answer_text" id="vote_answer_text" value="" />
     </div>
     <input type="submit" value="Добавить ответ" id="add-answer" />
   </form>

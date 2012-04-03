@@ -26,11 +26,13 @@ class Page extends CMS_Controller {
   	$page = $this->page_model->get_one($page_url);
   	if ($page != null) {
   		$this->append_data('P', $page);
+      $this->append_data('page_id', $page['page_url']);
       $this->display('page.html');
   	} else {
   		$path = ROOT . '/' . APPPATH . 'views/' . config_item('site_template') . 
   		        '/page/' . $page_url . '.html';
   		if (file_exists($path)) {
+        $this->append_data('page_id', $page_url);
   			$this->display("page/{$page_url}.html");
   		} else {
     		show_404();

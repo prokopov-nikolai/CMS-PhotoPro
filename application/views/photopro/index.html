@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta content="CMS PhotoPro" name="generator" />
   <meta content="Nikolai Prokopov" name="author" />
-  <meta content="{{ keywords }}" name="keywords" />
-  <meta content="{{ description }}" name="description" />
+  <meta content="{{ keywords|striptags }}" name="keywords" />
+  <meta content="{{ description|striptags }}" name="description" />
   <link rel="shortcut icon" href="{{ path_template }}/images/favicon.gif" type="image/x-icon" />
   <link type="text/css" href="{{ path_template }}/css/style.css" rel="stylesheet" />
   {% for stl in PLUGIN_HEAD.style %}
@@ -27,7 +27,7 @@
     }
    </script>
   <![endif]-->
-  <title>{{ title }}</title>
+  <title>{{ title|striptags }}</title>
 </head>
 <body>
   {{ plugin_content_top|raw }}

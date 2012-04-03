@@ -70,7 +70,8 @@ class Page extends CMS_Controller {
    * Список страниц
    */
   public function get_list() {
-  	$this->append_data('PAGES', $this->page_model->get_list());
+    $p = $this->page_model->get_list('', false);
+  	$this->append_data('PAGES', $p['pages']);
     $this->display('page/list.html');
   }
   // ---------------------------------------------------------------------------

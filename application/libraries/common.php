@@ -48,17 +48,18 @@ class Common {
    * @param $table - таблица в которой проверять уникальность ссылки без префикса
    * @return str
    */
-  public function get_url($name, $unique = false, $table = '') {
+  public function get_url($name, $unique = false, $table = '', $field = null) {
     $rus_c=array('А','Б','В','Г','Д','Е','Ё','Ж', 'З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю', 'Я',' ',',','(',')','+','"','«');
     $rus = array('а','б','в','г','д','е','ё','ж', 'з','и','й','к','л','м','н','о','п','р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю', 'я','&','.','!','/','_',"'",'»');
     $eng = array('a','b','v','g','d','e','e','zh','z','i','y','k','l','m','n','o','p','r','s','t','u','f','h','ts','ch','sh','sch','', 'i','', 'e','yu','ya','-','' ,'' ,'', '_','', '');
     $rname=str_replace($rus_c,$rus,trim($name));
     $rname=strtolower(str_replace($rus,$eng,$rname));
     $rname=preg_replace('/[^a-zA-Z0-9_\-]+/','',$rname);
+    if (!$field) $field = $table . '_url';
     if ($unique === true) {
       $this->db->select('*');
       $this->db->from($table);
-      $this->db->where($table . '_url', $rname);
+      $this->db->where($field, $rname);
       $this->db->limit(1);
       $query = $this->db->get();
       $i = 1;
@@ -74,7 +75,7 @@ class Common {
         }
         $this->db->select('*');
         $this->db->from($table);
-        $this->db->where($table . '_url', $rname);
+        $this->db->where($field, $rname);
         $this->db->limit(1);
         $query = $this->db->get();
       }

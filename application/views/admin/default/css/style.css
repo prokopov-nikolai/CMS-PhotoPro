@@ -98,6 +98,10 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
     box-shadow: 0 0 8px rgba(198, 56, 40, 0.5);
     outline: medium none;
 }
+label {
+  display:block;
+  margin-top:20px;
+}
 #user_password {
   display:block!important;
   font-size:20px;
@@ -223,6 +227,7 @@ menu#main li {
 }
 menu#main li menu li{
   padding:2px 0px;
+  white-space:nowrap;
 }
 menu#main li menu li a {
   padding-left:70px;
@@ -547,7 +552,19 @@ footer {
   color:#57A000;
 }
 .activated {
-    background: -moz-linear-gradient(center bottom , #57a000 50%, #62b400 100%) repeat scroll 0 0 #62b400;
+    background-image: linear-gradient(bottom, rgb(88,160,0) 50%, rgb(99,180,0) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(88,160,0) 50%, rgb(99,180,0) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(88,160,0) 50%, rgb(99,180,0) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(88,160,0) 50%, rgb(99,180,0) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(88,160,0) 50%, rgb(99,180,0) 100%);
+    
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      color-stop(0.5, rgb(88,160,0)),
+      color-stop(1, rgb(99,180,0))
+    );
     border: 1px solid #57a000;
     border-radius: 2px 2px 2px 2px;
     color: #FFFFFF!important;
@@ -560,7 +577,19 @@ footer {
     width: 100px;
 }
 .deactivated {
-    background: -moz-linear-gradient(center bottom , #C53627 50%, #DD4C39 100%) repeat scroll 0 0 #C53627;
+    background-image: linear-gradient(bottom, rgb(197,54,39) 50%, rgb(221,76,57) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(197,54,39) 50%, rgb(221,76,57) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(197,54,39) 50%, rgb(221,76,57) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(197,54,39) 50%, rgb(221,76,57) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(197,54,39) 50%, rgb(221,76,57) 100%);
+    
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      color-stop(0.5, rgb(197,54,39)),
+      color-stop(1, rgb(221,76,57))
+    );
     border: 1px solid #B0281A;
     border-radius: 2px 2px 2px 2px;
     color: #FFFFFF!important;
@@ -573,3 +602,10 @@ footer {
     width: 100px;
 }
 /*** end плагины ***/
+
+#ajax-loader {
+  display:none;
+  position: fixed;
+  top:10px;
+  right:10px;
+}

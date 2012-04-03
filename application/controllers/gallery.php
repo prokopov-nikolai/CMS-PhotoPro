@@ -65,7 +65,11 @@ class Gallery extends CMS_Controller {
     // достанем данные галереи и пихнем их в плагин и выведем все
     $gallery = $this->gallery_model;
     $gallery->url($gallery_url);
-    $this->append_data('gallery_content', $plugin->get_gallery($gallery->get(), $config_gallery['delay']));
+    $gallery = $gallery->get();
+    $this->append_data('title', 'CMS PhotoPro - ' . $gallery['gallery_title']);
+    $this->append_data('keywords', $gallery['gallery_keywords']);
+    $this->append_data('description', $gallery['gallery_description']);
+    $this->append_data('gallery_content', $plugin->get_gallery($gallery, $config_gallery['delay']));
     $this->display('page/gallery.html');
   }
   // ---------------------------------------------------------------------------

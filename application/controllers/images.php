@@ -32,7 +32,7 @@ class Images extends CMS_Controller {
   /**
    * Выведем заресайз-картинку
    */
-  public function resize($width, $height, $name) {
+  public function resize($width, $height, $name, $wm = true) {
   	date_default_timezone_set('Europe/Moscow');
   	if (($filename = $this->gallery_model->image_get_filename($name)) === false){
   	  show_404();
@@ -43,7 +43,7 @@ class Images extends CMS_Controller {
     if (!file_exists($resize)) {
       // создадим новую картинку 
       $source = ROOT . '/images/source/' . $filename;
-      $this->image->resize($source, $resize, $width, $height, true);
+      $this->image->resize($source, $resize, $width, $height, $wm);
     }
     
     // отправим заголовки

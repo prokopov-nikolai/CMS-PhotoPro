@@ -1,5 +1,16 @@
 $(function(){
   render_results($('.answers'));
+  $('#ajax-loader').ajaxStart(function(){
+    window.start = true;
+    setTimeout(function(){ 
+      if (window.start)
+        $(this).fadeIn();
+    }, 500);
+  });
+  $('#ajax-loader').ajaxStop(function(){
+    window.start = false;
+    $(this).fadeOut();
+  });
 });
 
 function show_form($obj){

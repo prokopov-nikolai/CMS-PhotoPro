@@ -32,8 +32,12 @@ Class Page_model extends CI_Model {
    */
   public function update($post){
   	$this->db->where('page_url', $post['page_url']);
+    if ($post['category_id'] == '') {
+      $this->db->set('category_id = NULL');
+      unset($post['category_id']);
+    }
     if ($this->db->set('page_date_modified', 'NOW()', false)->update('page', $post)) {
-      $this->session->set_userdata(array('message' => 'Страница "'.$post['page_title'].'" успешно добавлена!'));
+      $this->session->set_userdata(array('message' => 'Страница "'.$post['page_title'].'" успешно обновлена!'));
     } else {
       $this->session->set_userdata(array('error' => 'Ошибка добавления страницы в базу!'));
     }
@@ -56,20 +60,30 @@ Class Page_model extends CI_Model {
   /**
    * Извлекаем список галарей
    */
-  public function get_list($cat_url = ''){
-    $page = array();
-    $this->db->select('p.*');
+  public function get_list($cat_url = '', $page_number = 1){
+    $page['pages'] = array();
+    $this->db->select('SQL_CALC_FOUND_ROWS p.*', false);
     $this->db->select('c.category_title, c.category_url');
     $this->db->from('page AS p');
     $this->db->join('category AS c', 'p.category_id = c.category_id', 'left');
     $this->db->order_by('category_title');
-    if ($cat_url != '') $this->db->where('c.category_url', $cat_url);
+    if ($cat_url != '') 
+      $this->db->where('c.category_url', $cat_url);
+    if ($page_number) {
+      $per_page = $this->common->get_per_page(); 
+      $this->db->limit($per_page, ($page_number - 1) * $per_page);
+    }
     $query = $this->db->get();
+    #echo $this->db->last_query();
     foreach ($query->result_array() as $row){
     	$cut = explode('[cut]', $row['page_content']);
     	$row['page_content_cut'] = $cut[0];
-      $page[] = $row;
+      $page['pages'][] = $row;
     }
+    $this->db->select('FOUND_ROWS() AS total_rows', false);
+    $query = $this->db->get();
+    $row = $query->row_array();
+    $page['total_rows'] = $row['total_rows'];
     return $page;
   }
   // ---------------------------------------------------------------------------

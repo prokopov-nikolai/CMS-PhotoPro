@@ -2,38 +2,32 @@
 
 {% block content %}
   <form action="/{{ admin_url }}/page/{{ act }}/{% if act == 'edit' %}{{ P.page_url }}/{% endif %}" method="post">
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="page_title">Название страницы <i style="color:#ababab;">(title)</i></label>
     <div class="cleared"></div>
     <input type="text" name="page_title" value="{{ P.page_title }}" size="26" style="display:block; width:400px; " />
     
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="category_url">Категория</label>
     
     <div class="cleared"></div>
-    <select name="category_id">
+    <select name="category_id" id="category_id">
       <option value="">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</option>
       {% for category_id in CATS|keys %}
         <option value="{{ category_id }}" {% if P.category_id == category_id%}selected{% endif %}>{{ CATS[category_id] }}</option>
       {% endfor %}
     </select>
     
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="page_content">Содержание страницы <i style="color:#ababab;">(разделитель [cut])</i></label>
     <div class="cleared"></div>
-    <textarea name="page_content" id="page_content">{{ P.page_content_raw }}</textarea>
+    <textarea name="page_content" id="page_content" style="width:800px; height:300px;">{{ P.page_content_raw }}</textarea>
 
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="page_keywords">Ключевые слова <i style="color:#ababab;">(keywords)</i></label>
     <div class="cleared"></div>
     <input type="text" name="page_keywords" value="{{ P.page_keywords }}" size="26" style="display:block; width:400px;" />
 
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="page_description">Описание <i style="color:#ababab;">(description)</i></label>
     <div class="cleared"></div>
     <input type="text" name="page_description" value="{{ P.page_description }}" size="26" style="display:block; width:400px;" />
 
-    <div class="cleared" style="margin-top:20px;"></div>
     {% if act == 'edit' %}
       <input type="hidden" name="page_url" value="{{ P.page_url }}" />
     {% endif %}
@@ -41,7 +35,11 @@
   </form>
   <script type="text/javascript">
     $(function(){
-      $('#page_content').cleditor();
+      $('#page_content').redactor({
+        'toolbar':'main',
+        'image_upload': '/{{ admin_url }}/upload/',
+        'file_delete': '/{{ admin_url }}/upload/file_delete/?delete='
+      });    
     });
   </script>
 {% endblock %}

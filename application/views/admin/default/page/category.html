@@ -13,32 +13,32 @@
   
   <form action="" method="post">
     <div id="form-add" style="display:{{ ds }};">
-      <div class="cleared" style="margin-top:20px;"></div>
       <label for="category_title">Название категории <i style="color:#ababab;">(title)</i></label>
       <div class="cleared"></div>
       <input type="text" name="category_title" value="{{ CAT.category_title }}" size="26" style="display:block; width:400px;" />
       
-      <div class="cleared" style="margin-top:20px;"></div>
       <label for="category_keywords">Ключевые слова <i style="color:#ababab;">(keywords)</i></a></label>
       <div class="cleared"></div>
       <input type="text" name="category_keywords" value="{{ CAT.category_keywords }}" size="26" style="display:block; width:400px;" />
 
-      <div class="cleared" style="margin-top:20px;"></div>
       <label for="category_url">Ссылка <i style="color:#ababab;">(url)</i></a></label>
       <div class="cleared"></div>
       <input type="text" name="category_url" id="category_url" value="{{ CAT.category_url }}" size="26" style="display:block; width:400px; background-color:#ededed; color:#777777;" />
         
-      <div class="cleared" style="margin-top:20px;"></div>
       <label for="category_name">Описание категории <i style="color:#ababab;">(description)</i></label>
       <div class="cleared"></div>
-      <textarea name="category_description" id="category_description">{{ CAT.category_description }}</textarea>
+      <textarea name="category_description" id="category_description" style="width:800px; height:300px;">{{ CAT.category_description }}</textarea>
       <div class="cleared" style="margin-top:20px;"></div>
     </div>
     <input type="submit" value="{% if ds == 'none' %}Добавить{% else %}Обновить{% endif %}" id="add" />
   </form>
   <script type="text/javascript">
     $(function(){
-      $('#category_description').cleditor();
+      $('#category_description').redactor({
+        'toolbar':'main',
+        'image_upload': '/{{ admin_url }}/upload/',
+        'file_delete': '/{{ admin_url }}/upload/file_delete/?delete='
+      });
       {% if ds == 'none' %}
         $('#add').click(function(){
           $('#form-add').slideToggle();

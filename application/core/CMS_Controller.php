@@ -96,6 +96,9 @@ class CMS_Controller extends CI_Controller {
       }
     }    
     
+    // проверим браузер
+    $this->_check_browser();
+    
     // авторизуем пользователя
     $this->user_login();
     if ($this->uri->segment(1) == config_item('admin_url') && $this->session->userdata('user_admin') == '') {
@@ -123,6 +126,14 @@ class CMS_Controller extends CI_Controller {
             $this->_extract_menu($menu, $sub_menu, $this->unpacker->get_data());
           }
         }
+        // подключим меню плагинов в админке
+        foreach($this->plugin_list as $plugin_name) {
+          $file = ROOT . '/' . APPPATH . 'plugins/' . $plugin_name . '/' . $plugin_name . '.xml';
+          if (file_exists($file)){
+            $this->unpacker->initialize($file);
+            $this->_extract_menu($menu, $sub_menu, $this->unpacker->get_data());            
+          }
+        }
       }
       closedir($handledir);
       
@@ -144,9 +155,6 @@ class CMS_Controller extends CI_Controller {
       }
       $this->_add_headers($menu, $sub_menu);
     }
-    
-    // проверим браузер
-    $this->_check_browser();
     
     // закроем сайт если нужно
     $this->_site_close();
@@ -455,21 +463,22 @@ class CMS_Controller extends CI_Controller {
     $this->load->library('user_agent');
     $this->append_data('browser_name', $this->agent->browser());
     $this->append_data('browser_version', $this->agent->version());
+    $block = config_item('block_browser_lower');
     // определим браузер
     if ($this->agent->is_browser()){
-       if ($this->agent->browser() == 'Internet Explorer' && intval($this->agent->version()) < config_item('lower_ie')) {
+       if ($this->agent->browser() == 'Internet Explorer' && intval($this->agent->version()) < $block['ie']) {
         $this->_bad_browser();
        }
-       if ($this->agent->browser() == 'Opera' && floatval($this->agent->version()) < config_item('lower_opera')) {
+       if ($this->agent->browser() == 'Opera' && floatval($this->agent->version()) < $block['opera']) {
          $this->_bad_browser();
        }
-       if ($this->agent->browser() == 'Chrome' && floatval($this->agent->version()) < config_item('lower_chrome')) {
+       if ($this->agent->browser() == 'Chrome' && floatval($this->agent->version()) < $block['chrome']) {
          $this->_bad_browser();
        }
-       if ($this->agent->browser() == 'Firefox' && floatval($this->agent->version()) < config_item('lower_firefox')) {
+       if ($this->agent->browser() == 'Firefox' && floatval($this->agent->version()) < $block['firefox']) {
          $this->_bad_browser();
        }
-       if ($this->agent->browser() == 'Safari' && floatval($this->agent->version()) < config_item('lower_safari')) {
+       if ($this->agent->browser() == 'Safari' && floatval($this->agent->version()) < $block['safari']) {
          $this->_bad_browser();
        }
     }

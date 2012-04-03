@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('session');
+$autoload['libraries'] = array('database', 'session', 'common');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('user_model');
 
 /**
  * Функция автолода для классов CMS PhotoPro 
@@ -144,6 +144,7 @@ function prex($array) {
   pr($array);
   exit;
 }
+
 
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */

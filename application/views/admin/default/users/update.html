@@ -2,52 +2,42 @@
 
 {% block content %}
   <form action="" method="post" id="user-data"  enctype="multipart/form-data">
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_email">Email</label>
     <div class="cleared"></div>
     <input type="text" name="user_email" value="{{ USER.user_email }}" size="26" style="display:block; width:400px;" />
     
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_password">Новый пароль <i style="color:#ababab;">(введите если необходим новый)</i></a></label>
     <div class="cleared"></div>
     <input type="text" name="user_password" value="" size="26" style="display:block; width:400px;" />
 
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_last_name">Фамилия</label>
     <div class="cleared"></div>
     <input type="text" name="user_last_name" value="{{ USER.user_last_name }}" size="26" style="display:block; width:400px;" />
 
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_first_name">Имя</label>
     <div class="cleared"></div>
     <input type="text" name="user_first_name" value="{{ USER.user_first_name }}" size="26" style="display:block; width:400px;" />
 
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_patronymic">Отчество</label>
     <div class="cleared"></div>
     <input type="text" name="user_patronymic" value="{{ USER.user_patronymic }}" size="26" style="display:block; width:400px;" />
 
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_about">О себе</label>
     <div class="cleared"></div>
     <textarea name="user_about" style="display:block; width:400px;" >{{ USER.user_about }}</textarea>
 
-    <div class="cleared" style="margin-top:20px;"></div>
-    <label for="user_about">ФОТО (максимум 500x500)</label><br/>
-    <img src="/image/100x100/avatar_{{ U.user_uniqid }}.jpg{{ nginx }}?{{ ''|mktime }} " alt="" /><br />
+    <label for="user_about">ФОТО (максимум 500x500)</label>
+    <img src="/image/100x100/avatar_{{ U.user_uniqid }}.jpg{{ nginx }}?{{ ''|mktime }} " alt="" />
     <input type="file" name="user_photo" />
     
-    <div class="cleared" style="margin-top:20px;"></div>
     <label for="user_sex">Пол</label>
     <div class="cleared"></div>
     <input type="radio" name="user_sex" value="1" {% if USER.user_sex == 1 %}checked{% endif %}/> Мужской
     <input type="radio" name="user_sex" value="0" {% if USER.user_sex == 0 and  USER.user_sex != '' %}checked{% endif %}/> Женский<br/>
-    <div class="cleared" style="margin-top:20px;"></div>
     
-    <input type="checkbox" name="user_admin" {% if USER.user_admin != '' %}checked{% endif %}/> 
-    <label for="user_sex">Пользователь является администратором</label>
+    <br><input type="checkbox" name="user_admin" {% if USER.user_admin != '' %}checked{% endif %}/> 
+    <label for="user_sex" style="display:inline-block; margin-top:0px;">Пользователь является администратором</label><br><br>
 
-    <div class="cleared" style="margin-top:20px;"></div>
     <input type="submit" value="Обновить" id="update" />
   </form>
 

@@ -22,7 +22,8 @@ class TwigExtension extends Twig_Extension_Core{
         'array_shift' => new Twig_Filter_Method($this, 'array_shift'),
         'unset_array_shift' => new Twig_Filter_Method($this, 'unset_array_shift'),
         'pr' => new Twig_Filter_Method($this, 'pr'),
-        'mktime' => new Twig_Filter_Method($this, 'mktime')
+        'mktime' => new Twig_Filter_Method($this, 'mktime'),
+        'striptags' => new Twig_Filter_Method($this, 'striptags'),
       ) 
     );
   }
@@ -102,4 +103,13 @@ class TwigExtension extends Twig_Extension_Core{
   }
   // ---------------------------------------------------------------------------
   
+  /**
+   * Очищаем от тегов текст
+   * @param unknown_type $array
+   * @return unknown_type
+   */
+  public function striptags($text) {
+    return str_replace("\n", ' ', strip_tags(nl2br($text)));
+  }
+  // ---------------------------------------------------------------------------
 }

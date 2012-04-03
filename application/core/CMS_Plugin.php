@@ -7,6 +7,8 @@ class CMS_Plugin  {
   protected $db;
   
   protected $session;
+  
+  protected $load;
 
   public function __construct(){
     $CI = & get_instance();
@@ -15,8 +17,16 @@ class CMS_Plugin  {
       $this->db = $CI->db;
     if(isset($CI->session))
       $this->session = $CI->session;
+    if(isset($CI->load))
+      $this->load = $CI->load;
   }
   // ---------------------------------------------------------------------------
+  
+  public function __get($model_name){
+    if (isset($this->ci->$model_name))
+      return $this->ci->$model_name;
+    return false;
+  }
   
   /**
    * Склеиваем   
@@ -39,11 +49,20 @@ class CMS_Plugin  {
   // ---------------------------------------------------------------------------
   
   /**
-   * Выводим шаблон  
+   * Рендерит шаблон  
    * @return string
    */
   protected function render($template){
     return $this->ci->render($template);
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Выводит шаблон  
+   * @return string
+   */
+  protected function display($template){
+    return $this->ci->display($template);
   }
   // ---------------------------------------------------------------------------
   

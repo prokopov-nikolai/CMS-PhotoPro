@@ -14,10 +14,14 @@
   <script type="text/javascript" src="{{ path_template }}/js/jquery-1.6.2.min.js"></script>
   <script type="text/javascript" src="{{ path_template }}/js/jquery.showpassword.js"></script>
   <script type="text/javascript" src="{{ path_template }}/js/functions.js"></script>
+
+  <link type="text/css" href="{{ path_template }}/redactor/css/redactor.css" rel="stylesheet" />
+  <script type="text/javascript" src="{{ path_template }}/redactor/redactor.js"></script>
   {% for src in PLUGIN_HEAD.script %}
     <script type="text/javascript" src="{{ src }}"></script>
   {% endfor %}
   {% block head %}{% endblock %}
+  <!-- подключим стили и скрипты из xml контроллеров -->
   {% autoescape false %}{{ headers }}{% endautoescape %}
   <!--[if lt IE 9]>
    <script>
@@ -138,6 +142,7 @@
   &copy 2012 <a href="http://www.cms-photopro.ru">CMS PhotoPro</a> (версия {{ cms_version }})<br/>
   <a href="http://www.prokopov-nikolai.ru" target="_blank">Создание сайтов</a> — <a href="http://www.prokopov-nikolai.ru" target="_blank">Николай Прокопов</a>
 </footer>
+<img src="{{ path_template }}/images/ajax-loader.gif" border="0" alt="0" id="ajax-loader" />
 {{ plugin_content_bottom|raw }}
 </body>
 </html>

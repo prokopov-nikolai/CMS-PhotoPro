@@ -1,3 +1,13 @@
+{% if A.user_first_name %}
+  {% set title = 'CMS PhotoPro - ' ~ A.user_first_name ~ ' ' ~ A.user_last_name %}
+  {% set keywords = A.user_about %}
+  {% set description = A.user_about %}
+{% else %}
+  {% set title = 'CMS PhotoPro - Выставки' %}
+  {% set keywords = 'CMS PhotoPro - Выставки' %}
+  {% set description = 'CMS PhotoPro - Выставки' %}
+{% endif %}
+
 {% extends "index.html" %}
 
 {% block content %}
