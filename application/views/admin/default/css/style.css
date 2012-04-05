@@ -609,3 +609,22 @@ footer {
   top:10px;
   right:10px;
 }
+.form {
+  background:#f6f6f6;
+  display:inline-block;
+  padding:10px;
+}
+.form input[type=text], .form textarea, .form select {
+  background-color:#fff;
+  border:#ededed solid 1px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  display:block;
+  margin-top:5px;
+  padding:5px 5px;
+  width:400px;
+}
+.form select {
+  width:410px;
+}

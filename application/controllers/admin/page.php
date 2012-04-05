@@ -119,13 +119,10 @@ class Page extends CMS_Controller {
    */
   public function forms_list(){
     $this->load->model('form_model');
-    $post = $this->input->post();
-    if (isset($post['form_title'])) {
-      $form = array(
-        'form_title' => $post['form_title'],
-        'form_url' => $this->common->get_url($post['form_title'], true, 'form')
-      );
-      $form_id = $this->form_model->insert($form);
+    $form = $this->input->post();
+    if (isset($form['form_title'])) {
+      $form['form_url'] = $this->common->get_url($form['form_title']);
+      $form_id = $this->form_model->add($form);
       if ($form_id) {
         header('Location: /' . config_item('admin_url') . '/page/form/' . $form_id); 
         exit;
@@ -147,6 +144,7 @@ class Page extends CMS_Controller {
       $this->form_model->add_field($field); 
     }
     $this->append_data('F', $this->form_model->get($form_id));
+    $this->append_data('form_content', $this->common->array_to_json($this->form_model->get_fields($form_id)));
     $this->display('page/form.html');
   }
   // --------------------------------------------------------------------------- 

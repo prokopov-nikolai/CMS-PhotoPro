@@ -1,56 +1,92 @@
 {% extends "index.html" %}
 
 {% block head %}
+<script type="text/javascript" src="{{ path_template }}/js/form-constructor.js"></script>
+<script type="text/javascript" src="{{ path_template }}/js/jquery.maskedinput-1.3.min.js"></script>
 <script type="text/javascript">
   $(function (){
+    formConstructor.init($('.form'));
+    $('.redactor').redactor({
+      'toolbar':'main',
+      'image_upload': '/{{ admin_url }}/upload/',
+      'file_delete': '/{{ admin_url }}/upload/file_delete/?delete='
+    });
+    $('.phone').each(function(){
+      if ($(this).attr('data-mask') != undefined) {
+        $(this).mask($(this).attr('data-mask'));
+      }
+    }); 
     $('#field_type').change(function(){
       var val = $(this).val();
       if (val == 'text'){
-        $('#field_redactor').addClass('dn').find('input').val(0);
+        $('#field_redactor').removeAttr('checked').val('0').parent().addClass('dn');
         $('#field_validate').removeClass('dn');
-        $('#field_dopinfo').addClass('dn');
-        $('#field_necessarily').removeClass('dn');
-      } else if(val == 'textarea') {
-        $('#field_redactor').removeClass('dn').find('input').val(0);
+        $('#field_mask').addClass('dn').find('input').val('');
+        $('#field_select').addClass('dn').find('input').val('');
+        $('#field_necessarily').removeAttr('checked').val('0').parent().removeClass('dn');
+      } 
+      else if(val == 'textarea') {
+        $('#field_redactor').removeAttr('checked').val('0').parent().removeClass('dn');
         $('#field_validate').removeClass('dn');
-        $('#field_dopinfo').addClass('dn');
-        $('#field_necessarily').removeClass('dn');
-      } else if(val == 'select'){
-        $('#field_redactor').addClass('dn').find('input').val(0);
+        $('#field_mask').addClass('dn').find('input').val('');
+        $('#field_select').addClass('dn').find('input').val('');
+        $('#field_necessarily').removeAttr('checked').val('0').parent().removeClass('dn');
+      } 
+      else if(val == 'select'){
+        $('#field_redactor').removeAttr('checked').val('0').parent().addClass('dn');
         $('#field_validate').addClass('dn');
-        $('#field_dopinfo').removeClass('dn');
-        $('#field_necessarily').removeClass('dn');
-      } else if(val == 'phone'){
-        $('#field_redactor').addClass('dn').find('input').val(0);
+        $('#field_mask').addClass('dn').find('input').val('');
+        $('#field_select').removeClass('dn').find('input').val('');
+        $('#field_necessarily').removeAttr('checked').val('0').parent().removeClass('dn');
+      } 
+      else if(val == 'phone'){
+        $('#field_redactor').removeAttr('checked').val('0').parent().addClass('dn');
+        $('#field_validate').removeClass('dn');
+        $('#field_mask').removeClass('dn').find('input').val('(999) 999-99-99');
+        $('#field_select').addClass('dn').find('input').val('');
+        $('#field_necessarily').removeAttr('checked').val('0').parent().removeClass('dn');
+      } 
+      else if(val == 'email'){
+        $('#field_redactor').removeAttr('checked').val('0').parent().addClass('dn');
+        $('#field_validate').removeClass('dn');
+        $('#field_mask').addClass('dn').find('input').val('');
+        $('#field_select').addClass('dn').find('input').val('');
+        $('#field_necessarily').removeAttr('checked').val('0').parent().removeClass('dn');
+      } 
+      else if(val == 'checkbox'){
+        $('#field_redactor').removeAttr('checked').val('0').parent().addClass('dn');
         $('#field_validate').addClass('dn');
-        $('#field_dopinfo').addClass('dn');
-        $('#field_necessarily').removeClass('dn');
-      } else if(val == 'email'){
-        $('#field_redactor').addClass('dn').find('input').val(0);
-        $('#field_validate').addClass('dn');
-        $('#field_dopinfo').addClass('dn');
-        $('#field_necessarily').removeClass('dn');
-      } else if(val == 'checkbox'){
-        $('#field_redactor').addClass('dn').find('input').val(0);
-        $('#field_validate').addClass('dn');
-        $('#field_dopinfo').addClass('dn');
-        $('#field_necessarily').addClass('dn');
+        $('#field_mask').addClass('dn').find('input').val('');
+        $('#field_select').addClass('dn').find('input').val('');
+        $('#field_necessarily').removeAttr('checked').val('0').parent().addClass('dn');
       }
     });
+
     $('#field_type').val('text');
-    $('#field_redactor').addClass('dn').find('input').val(0);
+    $('#field_redactor').removeAttr('checked').val('0').parent().addClass('dn');
     $('#field_validate').removeClass('dn');
-    $('#field_dopinfo').addClass('dn');
-    $('#field_necessarily').removeClass('dn');
+    $('#field_necessarily').removeAttr('checked').val('0').parent().removeClass('dn')
+    $('#field_mask').addClass('dn').find('input').val('');
+    
+    $('input[type="checkbox"]').click(function(){
+      if ($(this).val() == 0) $(this).val(1);
+        else $(this).val(0);
+    });
   });
 </script>
 {% endblock %}
 
 {% block content %}
+<b>Форма {{ F.form_title }}</b>
+<div class="cleared" style="margin:5px;"></div> 
+Код для вставки на страницу: [form={{ F.form_url }}] или [form={{ F.form_id }}] 
+<div class="cleared" style="margin:5px;"></div> 
+<div class="form" data-form-content='{{ form_content }}'></div>
 <form action="" method="post">
-  <input type="hidden" id="form_id" name="form_id" value="{{ F.form_id }}"/>  
-  <b>Форма {{ F.form_title }}</b>
+  <input type="hidden" id="form_id" name="form_id" value="{{ F.form_id }}"/>
   
+  <div class="cleared" style="border-bottom:#ededed solid 1px; margin:20px;"></div>  
+  <b>Добавить поле</b>
   <label for="field_title">Заголовок поля</label>
   <input type="text" name="field_title"  />
   
@@ -64,24 +100,31 @@
     <option value="checkbox">Чекбокс</option>
   </select>
   
-  <label for="field_redactor" id="field_redactor"><input type="checkbox" name="field_redactor" value="0" /> Использовать редактор</label>
+  <label for="field_redactor"><input type="checkbox" id="field_redactor" name="field_redactor" value="0" /> Использовать редактор</label>
 
   <div id="field_validate" class="">
-    <label for="field_validate">Обработка</label>
+    <label for="field_validate">Функция обработки</label>
     <select name="field_validate">
       <option value="none">Не обрабатывать</option>
-      <option value="text">Только текст</option>
-      <option value="number">Только числа</option>
-      <option value="text_number">Текст + числа</option>
+      <option value="text">Оставить только текст</option>
+      <option value="number">Оставить только числа</option>
+      <option value="text_number">Оставить только текст + числа</option>
+      <option value="phone">Обработать как телефон ([0-9()- ])</option>
+      <option value="email">Обработать как Email</option>
     </select>
   </div>
   
-  <div id="field_dopinfo" class="dn">
-    <label for="field_dopinfo">Значения списка (через ; без пробелов)</label>
-    <input type="text" name="field_dopinfo" value="" />
+  <div id="field_select" class="dn">
+    <label for="field_select">Значения списка (через ; без пробелов)</label>
+    <input type="text" name="field_select" value="" />
   </div>
   
-  <label for="field_necessarily" id="field_necessarily"><input type="checkbox" name="field_dopinfo" value="0" /> Обязательно для заполнения</label>
+  <div id="field_mask" class="dn">
+    <label for="field_mask">Маска для ввода телефона</label>
+    <input type="text" name="field_mask" value="" />
+  </div>
+  
+  <label for="field_necessarily"><input id="field_necessarily" type="checkbox" name="field_necessarily" value="0" /> Обязательно для заполнения</label>
   
   <br>
   <input type="submit" value="Добавить" />

@@ -607,3 +607,30 @@ dl.star-rating li.current {
   margin:10px 0px 0px 0px;
 }
 /*** end голосование ***/
+
+
+/*** forms ***/
+label {
+  display:block;
+  margin-top:20px;
+}
+.form {
+  background:#f6f6f6;
+  display:inline-block;
+  padding:10px;
+}
+.form input[type=text], .form textarea, .form select {
+  background-color:#fff;
+  border:#ededed solid 1px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  display:block;
+  margin-top:5px;
+  padding:5px 5px;
+  width:400px;
+}
+.form select {
+  width:410px;
+}
+/*** end forms ***/

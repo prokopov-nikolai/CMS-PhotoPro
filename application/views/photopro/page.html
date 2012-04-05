@@ -4,6 +4,30 @@
 
 {% extends "index.html" %}
 
+{% block head %}
+  {% if form_exist %}
+    <link type="text/css" href="{{ path_template }}/redactor/css/redactor.css" rel="stylesheet" />
+    <script type="text/javascript" src="{{ path_template }}/redactor/redactor.js"></script>
+    <script type="text/javascript" src="{{ path_template }}/js/form-constructor.js"></script>
+    <script type="text/javascript" src="{{ path_template }}/js/jquery.maskedinput-1.3.min.js"></script>
+    <script type="text/javascript">
+      $(function (){
+        formConstructor.init($('.form'));
+        $('.redactor').redactor({
+          'toolbar':'main',
+          'image_upload': '/{{ admin_url }}/upload/',
+          'file_delete': '/{{ admin_url }}/upload/file_delete/?delete='
+        });
+        $('.phone').each(function(){
+          if ($(this).attr('data-mask') != undefined) {
+            $(this).mask($(this).attr('data-mask'));
+          }
+        }); 
+      });
+    </script>
+  {% endif %}
+{% endblock %}
+
 {% block content %}
   <h1>{% if P.category_url and P.category_title %}<a href="/category/{{ P.category_url }}/">{{ P.category_title }}</a> / {% endif %}{{ P.page_title }}</h1>
   <div class="page-content">{% autoescape false %}{{ P.page_content }}{% endautoescape %}</div>

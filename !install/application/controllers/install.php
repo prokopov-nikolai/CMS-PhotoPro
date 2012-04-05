@@ -130,6 +130,7 @@ class Install extends CMS_Controller {
         ROOT . '/images/buffer/'
       , ROOT . '/images/resize/'
       , ROOT . '/images/source/'
+      , ROOT . '/images/upload/'
       , ROOT . '/' . APPPATH . 'cache/db/'
       , ROOT . '/' . APPPATH . 'cache/twig/'
     );
