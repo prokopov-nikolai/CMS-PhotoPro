@@ -27,4 +27,14 @@
     <name>category</name>
     <description>Создайте рубрики для Ваших страниц</description>
   </method>       
+  <method>
+    <title>Формы</title>
+    <name>forms_list</name>
+    <description>Конструктор форм (Обратная связь, заказ и т.д.)</description>
+  </method>
+  <method display="none">
+    <title>Форма</title>
+    <name>form</name>
+    <description></description>
+  </method>   
 </controller>

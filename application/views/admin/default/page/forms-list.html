@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<form action="" method="post">    
+  <label>Название формы:</label>
+  <input type="text" name="form_title" />
+  
+  <label>Тема письма:</label>
+  <input type="text" name="form_subject" />
+  
+  <label>Email для отправки:</label>
+  <input type="text" name="form_email" />
+
+  <input type="submit" value="Добавить" />
+</form>
+<ul class="list">
+  {% for F in FORM %}
+    <li>
+      <a href="/{{ admin_url }}/page/form/{{ F.form_id }}" class="title fl-left">• &nbsp;{{ F.form_title }}</a>
+      <a target="_blank" href="/form/{{ F.form_id }}" class="view fl-left"></a>
+      <a href="/{{ admin_url }}/page/form_delete/{{ F.form_id }}" class="delete fl-left"></a>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

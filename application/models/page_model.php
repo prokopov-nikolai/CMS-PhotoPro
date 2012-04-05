@@ -9,7 +9,7 @@ Class Page_model extends CI_Model {
   /**
    * Конструктор
    */
-  public function index(){
+  public function __construct(){
     parent::__construct();
   }
   // ---------------------------------------------------------------------------

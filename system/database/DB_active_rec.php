@@ -1002,6 +1002,22 @@ class CI_DB_active_record extends CI_DB_driver {
 	// --------------------------------------------------------------------
 	
 	/**
+   * Get Row
+   * 
+   *
+   * @param string the table
+   * @param string the limit clause
+   * @param string the offset clause
+   * @return  value
+   */
+  public function get_row($table = '', $limit = null, $offset = null)
+  {
+    $res = $this->get($table, $limit, $offset);
+    return $res->first_row('array');
+  }
+  // --------------------------------------------------------------------
+  
+	/**
 	 * "Count All Results" query
 	 *
 	 * Generates a platform-specific query string that counts all records

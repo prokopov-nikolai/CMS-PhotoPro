@@ -55,7 +55,7 @@ a:hover {
   margin:0px;
   padding:0px;
 }
-.ds-none {
+.ds-none, .dn {
   display:none;
 }
 #wrapper {

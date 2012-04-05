@@ -1,0 +1,90 @@
+{% extends "index.html" %}
+
+{% block head %}
+<script type="text/javascript">
+  $(function (){
+    $('#field_type').change(function(){
+      var val = $(this).val();
+      if (val == 'text'){
+        $('#field_redactor').addClass('dn').find('input').val(0);
+        $('#field_validate').removeClass('dn');
+        $('#field_dopinfo').addClass('dn');
+        $('#field_necessarily').removeClass('dn');
+      } else if(val == 'textarea') {
+        $('#field_redactor').removeClass('dn').find('input').val(0);
+        $('#field_validate').removeClass('dn');
+        $('#field_dopinfo').addClass('dn');
+        $('#field_necessarily').removeClass('dn');
+      } else if(val == 'select'){
+        $('#field_redactor').addClass('dn').find('input').val(0);
+        $('#field_validate').addClass('dn');
+        $('#field_dopinfo').removeClass('dn');
+        $('#field_necessarily').removeClass('dn');
+      } else if(val == 'phone'){
+        $('#field_redactor').addClass('dn').find('input').val(0);
+        $('#field_validate').addClass('dn');
+        $('#field_dopinfo').addClass('dn');
+        $('#field_necessarily').removeClass('dn');
+      } else if(val == 'email'){
+        $('#field_redactor').addClass('dn').find('input').val(0);
+        $('#field_validate').addClass('dn');
+        $('#field_dopinfo').addClass('dn');
+        $('#field_necessarily').removeClass('dn');
+      } else if(val == 'checkbox'){
+        $('#field_redactor').addClass('dn').find('input').val(0);
+        $('#field_validate').addClass('dn');
+        $('#field_dopinfo').addClass('dn');
+        $('#field_necessarily').addClass('dn');
+      }
+    });
+    $('#field_type').val('text');
+    $('#field_redactor').addClass('dn').find('input').val(0);
+    $('#field_validate').removeClass('dn');
+    $('#field_dopinfo').addClass('dn');
+    $('#field_necessarily').removeClass('dn');
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+  <input type="hidden" id="form_id" name="form_id" value="{{ F.form_id }}"/>  
+  <b>Форма {{ F.form_title }}</b>
+  
+  <label for="field_title">Заголовок поля</label>
+  <input type="text" name="field_title"  />
+  
+  <label for="field_type">Тип поля</label>
+  <select name="field_type" id="field_type">
+    <option value="text">Текстовая строка</option>
+    <option value="textarea">Текстовое поле</option>
+    <option value="select">Список</option>
+    <option value="phone">Телефон</option>
+    <option value="email">Email</option>
+    <option value="checkbox">Чекбокс</option>
+  </select>
+  
+  <label for="field_redactor" id="field_redactor"><input type="checkbox" name="field_redactor" value="0" /> Использовать редактор</label>
+
+  <div id="field_validate" class="">
+    <label for="field_validate">Обработка</label>
+    <select name="field_validate">
+      <option value="none">Не обрабатывать</option>
+      <option value="text">Только текст</option>
+      <option value="number">Только числа</option>
+      <option value="text_number">Текст + числа</option>
+    </select>
+  </div>
+  
+  <div id="field_dopinfo" class="dn">
+    <label for="field_dopinfo">Значения списка (через ; без пробелов)</label>
+    <input type="text" name="field_dopinfo" value="" />
+  </div>
+  
+  <label for="field_necessarily" id="field_necessarily"><input type="checkbox" name="field_dopinfo" value="0" /> Обязательно для заполнения</label>
+  
+  <br>
+  <input type="submit" value="Добавить" />
+</form>
+
+{% endblock %}

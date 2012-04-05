@@ -16,7 +16,7 @@ Class User_model extends CI_Model {
   /**
    * Конструктор
    */
-  public function index(){
+  public function __construct(){
     parent::__construct();
     $this->_reset_variables();
   }

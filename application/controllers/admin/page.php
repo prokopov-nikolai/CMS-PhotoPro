@@ -106,12 +106,61 @@ class Page extends CMS_Controller {
   // ---------------------------------------------------------------------------
   
   /**
-   * 
+   * Удаляем категорию
    */
-  public function category_delete($category_url = ''){
+  public function cateory_delete($category_url = ''){
   	$this->page_model->cat_delete($category_url);
   	header('Location: /' . config_item('admin_url') . '/page/category/');
   }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Выводим список форм
+   */
+  public function forms_list(){
+    $this->load->model('form_model');
+    $post = $this->input->post();
+    if (isset($post['form_title'])) {
+      $form = array(
+        'form_title' => $post['form_title'],
+        'form_url' => $this->common->get_url($post['form_title'], true, 'form')
+      );
+      $form_id = $this->form_model->insert($form);
+      if ($form_id) {
+        header('Location: /' . config_item('admin_url') . '/page/form/' . $form_id); 
+        exit;
+      }
+    }
+    $this->append_data('FORM', $this->form_model->get_list());
+    $this->display('page/forms-list.html');
+  }
+  // ---------------------------------------------------------------------------  
+
+  /**
+   * Выводим форму
+   */
+  public function form($form_id = ''){
+    $this->load->model('form_model');
+    $field = $this->input->post();
+    if (count($field) > 1 && isset($field['form_id'])) {
+      $field['field_url'] = $this->common->get_url($field['field_title']);
+      $this->form_model->add_field($field); 
+    }
+    $this->append_data('F', $this->form_model->get($form_id));
+    $this->display('page/form.html');
+  }
+  // --------------------------------------------------------------------------- 
+  
+  /**
+   * Удаляем форму
+   */
+  public function form_delete($form_id = ''){
+    $this->load->model('form_model');
+    $this->form_model->delete($form_id);
+    header('Location: /' . config_item('admin_url') . '/page/forms_list/'); 
+    exit;
+  }
+  // ---------------------------------------------------------------------------    
 }
 
 /* End of file image.php */

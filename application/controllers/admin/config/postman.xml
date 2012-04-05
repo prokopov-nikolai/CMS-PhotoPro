@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <controller>
-  <title>Настройки</title>
-  <name>settings</name>
+  <title>Почтальон</title>
+  <name>postman</name>
   <description>В этом разделе Вы можете изменить необходимые настройки</description>
-  <sort>7</sort>
+  <sort>4</sort>
   <method display="none">
     <title>Настройки сайта</title>
     <name>index</name>
