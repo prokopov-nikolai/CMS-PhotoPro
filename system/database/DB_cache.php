@@ -160,6 +160,10 @@ class CI_DB_Cache {
 	 */
 	function delete($segment_one = '', $segment_two = '')
 	{
+	  if ($segment_one == '' && $segment_two == '') {
+	    $segment_one = ($this->CI->uri->segment(1) == FALSE) ? 'default' : $this->CI->uri->segment(1);
+      $segment_two = ($this->CI->uri->segment(2) == FALSE) ? 'index' : $this->CI->uri->segment(2);
+	  }
 		if ($segment_one == '')
 		{
 			$segment_one  = ($this->CI->uri->segment(1) == FALSE) ? 'default' : $this->CI->uri->segment(1);

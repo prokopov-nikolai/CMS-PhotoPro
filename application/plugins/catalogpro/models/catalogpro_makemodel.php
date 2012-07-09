@@ -59,6 +59,7 @@ Class Catalogpro_makemodel extends CI_Model {
     $this->db->from('catalogpro_category');
     if ($make_id > 0)
       $this->db->where('make_id', $make_id);
+    $this->db->order_by('category_title');
     return $this->db->get_array();
   }
   //----------------------------------------------------------------------------

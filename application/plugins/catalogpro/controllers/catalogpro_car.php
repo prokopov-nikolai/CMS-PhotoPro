@@ -45,7 +45,9 @@ class Catalogpro_car extends CMS_Plugin {
     $this->append_data('PRODUCTS', $this->catalogpro_productmodel->get_last());
 
     $this->append_data('page_id', "car-last");
-    
+    $this->append_data('title', 'ГрАмада - Новые поступления');
+    $this->append_data('keywords', 'ГрАмада - Новые поступления');
+    $this->append_data('description', 'ГрАмада - Новые поступления');
     $this->display('catalogpro/views/make.html');
   }
   //----------------------------------------------------------------------------
@@ -75,7 +77,9 @@ class Catalogpro_car extends CMS_Plugin {
     $this->append_data('base_url', "/make/availabile/");
     
     $this->append_data('page_id', "car-availabile");
-    
+    $this->append_data('title', 'ГрАмада - Автомобили в наличии');
+    $this->append_data('keywords', 'ГрАмада - Автомобили в наличии');
+    $this->append_data('description', 'ГрАмада - Автомобили в наличии');    
     $this->display('catalogpro/views/make.html');
   }
   //----------------------------------------------------------------------------

@@ -112,7 +112,6 @@
       <label for="db_cache_on">Кеширование</label>
       <input type="radio" name="db_cache_on" value="TRUE" id="db_cache_on" {% if CONFIG.db_cache_on == true %}checked="true"{% endif %} /><label for="db_cache_on" style="display: inline-block; margin-top:0px;"> Вкл.</label>
       <input type="radio" name="db_cache_on" value="FALSE" id="db_cache_off" {% if CONFIG.db_cache_on == false %}checked="true"{% endif %} /><label for="db_cache_off" style="display: inline-block; margin-top:0px;"> Откл.</label>
-      </div>
     </div>
 
     {# Четвертая вкладка - общие #}
@@ -174,10 +173,10 @@
       <label for="title">Заголовок (title)</label>
       <input type="text" name="main_page[title]" id="title" value="{{ CONFIG.main_page.title }}" size="26" style="display:block; width:400px;" />
       
-      <label for="keywords">Заголовок (keywords)</label>
+      <label for="keywords">Ключевые слова (keywords)</label>
       <input type="text" name="main_page[keywords]" id="keywords" value="{{ CONFIG.main_page.keywords }}" size="26" style="display:block; width:400px;" />
       
-      <label for="description">Заголовок (description)</label>
+      <label for="description">Описание (description)</label>
       <input type="text" name="main_page[description]" id="description" value="{{ CONFIG.main_page.description }}" size="26" style="display:block; width:400px;" />
       
     </div>

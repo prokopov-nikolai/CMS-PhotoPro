@@ -94,4 +94,121 @@ Class Form_model extends CI_Model {
   }
   // ---------------------------------------------------------------------------
   
+  /**
+   * Отправляем собщение
+   * 
+   *[form_id] => 1
+    [fio] => Агейчик
+    [telefon] => (904) 033-52-33
+    [vash-otziv-s-kartikoy] => 
+
+dfdfsgsdfgdfg
+
+    [vipadayuschiy-spisok] => зачение 1
+    [u-menya-est-avto] => on
+   */
+  public function send_message($data) {
+    $fields = $this->get_fields($data['form_id']);
+    $message_content = '';
+    foreach($fields as $f){
+      if (isset($data[$f['field_url']])) {
+        $value = $this->$f['field_validate']($data[$f['field_url']]);
+        $message_content .= "<br>{$f['field_title']}: {$value}";
+      }
+    }
+    /*$this->load->library('mailer');
+    $this->mailer->type = TYPE_MES_MIXED;
+    $this->mailer->mixed_main_type = TYPE_MIXED_HTML;
+    $this->mailer->boundary = "Gramada-123456789";
+    $this->mailer->from = config_item('smtp_login');
+    $this->mailer->to = $fields[0]['message_email'];
+    $this->mailer->subject = $fields[0]['message_subject'];
+    $this->mailer->data = "<html><body>{$message_content}</body></html>";
+    $this->mailer->build_and_send_message(); */
+   
+    /* укажем email на который будем отсылать письмо*/
+    $to= $fields[0]['message_email']; 
+     
+    /* тема письма */
+    $subject = $fields[0]['message_subject'] . "\r\n";
+    $subject = iconv('utf-8', 'cp1251', $subject ); 
+ 
+    /* сообщение для отправки в формате HTML */
+    $message_content = str_replace('../images/upload/', 'http://www.gramada33.ru/images/upload/', $message_content);
+    $message = "<html><body>{$message_content}</body></html>";
+    $message = iconv('utf-8', 'cp1251', $message ); 
+ 
+    /* Укажем необходимые заголовки */
+    $headers= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-type: text/html; charset=windows-1251\r\n";
+    $headers .= "From: GrAmada33.ru <robot@gramada33.ru>\r\n"; 
+     
+    /* отправим письмо */
+    mail($to, $subject, $message, $headers);
+    #prex($message_content);
+    return true;
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Ничего не валидируем
+   */
+  private function none($value){
+    return $value;
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Функция валидациитекста
+   */
+  private function number($value){   
+    preg_match_all(' /([0-9.,]+)/', $value, $matches, PREG_PATTERN_ORDER);
+    if (isset($matches[0])){
+      return implode('', $matches[0]);
+    }
+    return '';
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Функция валидации текста
+   */
+  private function text($value){
+    return preg_replace('/([<>`~]+)/', '', $value);;
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Функция валидации текста
+   */
+  private function number_text($value){
+    preg_match_all('/([0-9.,!?\"\':;a-zа-я]+)/i', $value, $matches, PREG_PATTERN_ORDER);
+    if (isset($matches[0])){
+      return implode('', $matches[0]);
+    }
+    return '';
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Функция валидации телефона
+   */
+  private function phone($value){
+    preg_match_all('/([0-9() +-]+)/', $value, $matches, PREG_PATTERN_ORDER);
+    if (isset($matches[0])){
+      return implode('', $matches[0]);
+    }
+    return '';
+  }
+  // ---------------------------------------------------------------------------
+  
+  /**
+   * Функция валидации мылв
+   */
+  private function email($value){
+    return $this->common->check_email($value);
+  }
+  // ---------------------------------------------------------------------------
+
+  
 }

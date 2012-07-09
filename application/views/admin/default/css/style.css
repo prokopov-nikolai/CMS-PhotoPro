@@ -119,14 +119,14 @@ label {
   background:url(../images/delete.png) no-repeat;
   height:22px;
   width:22px;
-  top:4px;
+  top:0px;
 }
 .view {
   background:url(../images/view.png) no-repeat;
   display:block;
   height:28px;
   margin-right:10px;
-  top:0px;
+  top:-4px;
   width:28px;
 }
 .list li {
@@ -408,7 +408,7 @@ footer {
   zoom:1;
   margin-right:40px;
   overflow:hidden;
-  padding:0px;
+  padding:4px 0px;
   width:600px;
 }
 .list li:hover {

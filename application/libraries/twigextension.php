@@ -112,4 +112,67 @@ class TwigExtension extends Twig_Extension_Core{
     return str_replace("\n", ' ', strip_tags(nl2br($text)));
   }
   // ---------------------------------------------------------------------------
+  
+  /**
+   * Разница между двумя датами
+   * 1 д. 14 ч.
+   */
+  public function dateDiff($dateFrom, $dateTo, $long = 2, $full = true){
+    $diff = date_diff(new \DateTime($dateTo), new \DateTime($dateFrom));
+    $res = '';
+    if ($full) {
+      // развернуто
+      if ($diff->y) {
+        $res .= '<nobr>' . $diff->y . ' ' . $this->sklonenie($diff->y, array('год', 'года', 'лет')) . '</nobr> ';
+        --$long;
+      }
+      if ($diff->m && $long) {
+        $res .= '<nobr>' . $diff->m . ' ' . $this->sklonenie($diff->m, array('месяц', 'месяца', 'месяцев')) . '</nobr> ';
+        --$long;
+      }
+      if ($diff->d && $long) {
+        $res .= '<nobr>' . $diff->d . ' ' . $this->sklonenie($diff->d, array('день', 'дня', 'дней')) . '</nobr> ';
+        --$long;
+      }
+      if ($diff->h && $long) {
+        $res .= '<nobr>' . $diff->h . ' ' . $this->sklonenie($diff->h, array('час', 'часа', 'часов')) . '</nobr> ';
+        --$long;
+      }
+      if ($diff->i && $long) {
+        $res .= '<nobr>' . $diff->i . ' ' . $this->sklonenie($diff->i, array('минута', 'минуты', 'минут')) . '</nobr> ';
+        --$long;
+      }
+      if ($diff->s && $long) {
+        $res .= '<nobr>' . $diff->s . ' ' . $this->sklonenie($diff->s, array('секунда', 'секунды', 'секунд')) . '</nobr> ';
+        --$long;
+      }
+    } else {
+      // кратко
+      if ($diff->y) {
+        $res .= $diff->y . ' г. ';
+        --$long;
+      }
+      if ($diff->m && $long) {
+        $res .= $diff->m . ' м. ';
+        --$long;
+      }
+      if ($diff->d && $long) {
+        $res .= $diff->d . ' д. ';
+        --$long;
+      }
+      if ($diff->h && $long) {
+        $res .= $diff->h . ' ч. ';
+        --$long;
+      }
+      if ($diff->i && $long) {
+        $res .= $diff->i . ' м. ';
+        --$long;
+      }
+      if ($diff->s && $long) {
+        $res .= $diff->s . ' с. ';
+        --$long;
+      }
+    }
+    return trim($res);
+  }
 }

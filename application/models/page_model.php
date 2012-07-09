@@ -33,7 +33,6 @@ Class Page_model extends CI_Model {
   public function update($post){
   	$this->db->where('page_url', $post['page_url']);
     if ($post['category_id'] == '') {
-      $this->db->set('category_id = NULL');
       unset($post['category_id']);
     }
     if ($this->db->set('page_date_modified', 'NOW()', false)->update('page', $post)) {

@@ -30,7 +30,7 @@ class Page extends CMS_Controller {
         $this->load->model('form_model');
         $form = $this->input->post();
         if (count($form) > 1 && $form['form_id']) {
-          prex($form);
+          $this->form_model->send_message($form);
           $form_content = 'Данные успешно отправлены!';
         } else {
           $form_content = $this->form_model->get_to_page($matches[0][2]);

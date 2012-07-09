@@ -977,6 +977,9 @@ class CI_DB_active_record extends CI_DB_driver {
 	{
 		$result = array();
 		$res = $this->get($table, $limit, $offset);
+		if (is_array($res->result_array)) {
+      return $res->result_array;
+    }
 		while($row = $res->_fetch_assoc()) {
 			$result[] = $row;
 		}

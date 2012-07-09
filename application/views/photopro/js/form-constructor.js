@@ -114,6 +114,13 @@ var formConstructor = {
     return $('<input/>')
              .attr('name', f.field_url)
              .attr('id', f.field_url)
-             .attr('type', 'checkbox');
+             .attr('type', 'checkbox')
+             .removeAttr('cheched')
+             .val('Нет').click(function(){
+               if ($(this).val() == 'Нет') 
+                 $(this).val('Да');
+               else 
+                 $(this).val('Нет');
+             });
   }
 }

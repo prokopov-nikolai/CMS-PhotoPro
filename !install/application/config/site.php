@@ -92,6 +92,9 @@ $config['per_page'] = 12;
 $config['main_page']['gallery_url'] = 'nashi-detki';
 $config['main_page']['gallery_delay'] = 5;
 $config['main_page']['gallery_count'] = 4;
+$config['main_page']['title'] = 'CMS PhotoPro - универсальная cms для фотографов';
+$config['main_page']['keywords'] = "cms для фотографа,бесплатная cms,фото цмс";
+$config['main_page']['description'] = 'CMS PhotoPro - универсальная cms для фотографов';
 
 /*
 |-------------------------------------------------------------------------------

@@ -39,7 +39,12 @@ class Images extends CMS_Controller {
   	}
   	// проверим существование исходника запрашиваемой картинки
   	$this->image->source_exists($filename);
-    $resize = ROOT . '/images/resize/' . $width . 'x' . $height . '/' . $filename;
+    if ($wm) {
+      $resize = ROOT . '/images/resize/' . $width . 'x' . $height . '/' . $filename;
+    } else {
+      $resize = ROOT . '/images/resize/' . $width . 'x' . $height . '/nw_' . $filename;
+    }
+    
     if (!file_exists($resize)) {
       // создадим новую картинку 
       $source = ROOT . '/images/source/' . $filename;

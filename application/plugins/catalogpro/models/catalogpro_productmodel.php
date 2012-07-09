@@ -255,6 +255,7 @@ Class Catalogpro_productmodel extends CI_Model {
     $this->db->join('catalogpro_char_value ch', 'ch.product_id = p.product_id AND ch.char_id = 5', 'left');
     $this->db->group_by('p.product_id');
     $this->db->order_by('p.product_title');
+    $this->db->where('product_pod_zakaz', 0);
     if ($page_number) {
       $per_page = $this->common->get_per_page(); 
       $this->db->limit($per_page, ($page_number - 1) * $per_page);
@@ -277,7 +278,7 @@ Class Catalogpro_productmodel extends CI_Model {
   
   public function add($set){
     $chars = $set['char_values'];
-    unset($set['chor_ar_values']);
+    unset($set['char_values']);
     $this->session->set_userdata(array('message' => 'Автомобиль "' . $set['product_title'] .'" успешно добавлен!'));    
     $this->db->insert('catalogpro_product', $set);
     $prod_id = $this->db->insert_id();

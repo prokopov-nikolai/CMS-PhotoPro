@@ -1,6 +1,6 @@
 {% set title = P.page_title %}
 {% set keywords = P.page_keywords %}
-{% set description = P.page_description %}
+{% set description = P.page_description|striptags %}
 
 {% extends "index.html" %}
 
@@ -15,8 +15,8 @@
         formConstructor.init($('.form'));
         $('.redactor').redactor({
           'toolbar':'main',
-          'image_upload': '/{{ admin_url }}/upload/',
-          'file_delete': '/{{ admin_url }}/upload/file_delete/?delete='
+          'image_upload': '/upload/',
+          'file_delete': '/upload/file_delete/?delete='
         });
         $('.phone').each(function(){
           if ($(this).attr('data-mask') != undefined) {
@@ -29,6 +29,9 @@
 {% endblock %}
 
 {% block content %}
-  <h1>{% if P.category_url and P.category_title %}<a href="/category/{{ P.category_url }}/">{{ P.category_title }}</a> / {% endif %}{{ P.page_title }}</h1>
-  <div class="page-content">{% autoescape false %}{{ P.page_content }}{% endautoescape %}</div>
+  <div class="page">
+    <h1 class="title">{% if P.category_url and P.category_title %}<a href="/category/{{ P.category_url }}/">{{ P.category_title }}</a> / {% endif %}{{ P.page_title }}</h1>
+    {{ P.page_content|raw }}
+  </div>
+  {% include "catalogpro/views/dop_info.html" %}
 {% endblock %}

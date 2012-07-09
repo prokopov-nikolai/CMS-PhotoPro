@@ -2,7 +2,7 @@
 <controller>
   <title>Почтальон</title>
   <name>postman</name>
-  <description>В этом разделе Вы можете изменить необходимые настройки</description>
+  <description>Раздел в разработке</description>
   <sort>4</sort>
   <method display="none">
     <title>Настройки сайта</title>

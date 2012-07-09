@@ -68,11 +68,10 @@ class Settings extends CMS_Controller {
 	  			}
                
 	      }
-	      if ($file != '.' && $file != '..' && $file != '.svn' && $file != ''){
-          closedir($dir);
-          opendir($dir.'.');
-	      	rmdir($dir);
-	      }
+	      if (basename(trim($dir, '/')) != 'twig') {
+          closedir($dh);
+          rmdir($dir);
+        }
   		}
   	}
   }

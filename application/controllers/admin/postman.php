@@ -18,6 +18,6 @@ class Postman extends CMS_Controller {
    * Функция по умолчанию
    */
   public function index(){
-    
+    $this->display('postman/index.html');
   }
 }
